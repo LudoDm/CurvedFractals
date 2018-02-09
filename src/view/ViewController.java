@@ -6,6 +6,7 @@ import java.util.ResourceBundle;
 import com.jme3.material.Material;
 import com.jme3.system.AppSettings;
 
+import controleur.Controleur;
 import controllers.Controller;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -21,7 +22,7 @@ public class ViewController {
 	private ImageView theImageView;
 
 	private Scene scene;
-	private Controller controleurPrincipal;
+	private Controleur controleurPrincipal;
 
 	public ViewController() {
 
@@ -41,7 +42,7 @@ public class ViewController {
 		
 	}
 
-	public void setControleurPrincipal(Controller controleurPrincipal) {
+	public void setControleurPrincipal(Controleur controleurPrincipal) {
 		this.controleurPrincipal = controleurPrincipal;
 	}
 

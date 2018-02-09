@@ -4,6 +4,7 @@ import com.jme3.material.Material;
 
 import javafx.scene.Scene;
 import modele.FractalFactory;
+import view.ViewController;
 
 public class Controleur {
 	private ViewController view;
@@ -13,6 +14,7 @@ public class Controleur {
 	}
 	
 	public Scene getScene() {
+		return null;
 	}
 	
 	public Material getMaterial() {

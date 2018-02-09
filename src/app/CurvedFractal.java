@@ -1,4 +1,4 @@
-package app;
+package APP;
 
 import controleur.Controleur;
 import javafx.application.Application;
