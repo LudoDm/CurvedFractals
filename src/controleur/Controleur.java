@@ -4,10 +4,10 @@ import com.jme3.material.Material;
 
 import javafx.scene.Scene;
 import modele.FractalFactory;
-import view.ViewController;
+import vue.ControlleurVue;
 
 public class Controleur {
-	private ViewController view;
+	private ControlleurVue view;
 	private FractalFactory modele;
 	
 	public Controleur() {
