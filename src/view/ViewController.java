@@ -7,7 +7,6 @@ import com.jme3.material.Material;
 import com.jme3.system.AppSettings;
 
 import controleur.Controleur;
-import controllers.Controller;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Scene;
@@ -26,12 +25,18 @@ public class ViewController {
 
 	public ViewController() {
 
+		/***
+		
+		
 		final ImageView imageView = new ImageView();
 
 		final AppSettings settings = JmeToJFXIntegrator.prepareSettings(new AppSettings(true), 60);
 		final JmeToJFXApplication application = new TestApplication();
 
 		JmeToJFXIntegrator.startAndBindMainViewPort(application, imageView, Thread::new);
+		
+		***/
+		
 	}
 
 	public Scene getScene() {
