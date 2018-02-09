@@ -7,14 +7,17 @@ import modele.FractalFactory;
 import vue.ControlleurVue;
 
 public class Controleur {
-	private ControlleurVue view;
+	private ControlleurVue vue;
 	private FractalFactory modele;
 	
 	public Controleur() {
+		vue = new ControlleurVue();
+		modele = new FractalFactory();
+		vue.setControleurPrincipal(this);
 	}
 	
 	public Scene getScene() {
-		return null;
+		return vue.getScene();
 	}
 	
 	public Material getMaterial() {
