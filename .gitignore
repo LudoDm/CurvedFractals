@@ -4,3 +4,7 @@ Documents/Documents de conceptions/.~lock.*
 .classpath
 .project
 /bin/
+*.prefs
+.settings/
+.metadata/
+.settings/
