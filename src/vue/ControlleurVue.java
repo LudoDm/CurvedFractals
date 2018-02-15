@@ -49,6 +49,8 @@ public class ControlleurVue {
 		} catch (IOException ex) {
 			System.out.println("Exception lors du chargement des ressources dans controlleur vue");
 		}
+		
+		System.out.println(theImageView);
 
 	}
 
