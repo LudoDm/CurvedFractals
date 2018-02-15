@@ -39,6 +39,10 @@
 	<classpathentry kind="lib" path="libraries/lwjgl-opengl-3.1.2.jar"/>
 	<classpathentry kind="lib" path="libraries/RLib-6.7.4-sources.jar"/>
 	<classpathentry kind="lib" path="libraries/RLib-6.7.4.jar"/>
-	<classpathentry kind="lib" path="libraries/jme3-fx/jme-jfx-1.7.4.jar"/>
+	<classpathentry kind="lib" path="libraries/jme3-fx/jme-jfx-1.7.4.jar" sourcepath="libraries/jme3-fx/jme-jfx-1.7.4-sources.jar">
+		<attributes>
+			<attribute name="javadoc_location" value="jar:platform:/resource/CurvedFractals/libraries/jme3-fx/jme-jfx-1.7.4-javadoc.jar!/"/>
+		</attributes>
+	</classpathentry>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

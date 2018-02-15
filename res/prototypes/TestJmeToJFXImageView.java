@@ -25,7 +25,7 @@ import org.jetbrains.annotations.NotNull;
 /**
  * The test to show how to integrate jME to ImageView.
  *
- * @author JavaSaBr
+ * @author JavaSaBr4
  */
 public class TestJmeToJFXImageView extends Application {
 
