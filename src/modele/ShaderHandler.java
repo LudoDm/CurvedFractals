@@ -8,7 +8,12 @@ public class ShaderHandler {
 	
 	private Shader shaderBase;
 	private Shader shaderUpdatedBase;
-	private String Formula;
+	private String formula = "";
+
+	public enum SyntaxCheckCode {
+		VALID, INVALIDVAR, INVALIDCHAR, INCOMPLETE;
+		
+	}
 
 	public ShaderHandler(File shaderBase) {
 	}
@@ -16,18 +21,24 @@ public class ShaderHandler {
 	private void setShaderBase(File shaderBase) {
 	}
 	
-	public void setFormula(String formula){
+	public SyntaxCheckCode setFormula(String formula){
+		SyntaxCheckCode c = SyntaxCheckCode.INCOMPLETE;
 		if(validateFormula(formula)) {
-			this.Formula = formula;
+			this.formula = formula;
 		}
+		return c;
 	}
 
 	public String getFormula() {
-		return Formula;
+		return formula;
 	}
 
 	private static boolean validateFormula(String formula) {
-		return false;
+		boolean out = false;
+//		if(formula.matches(
+//				"(vec2([].[xy]))"
+//				)
+		return out;
 	}
 
 	
