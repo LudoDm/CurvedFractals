@@ -3,7 +3,6 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
@@ -15,12 +14,8 @@
    <center>
       <StackPane prefHeight="150.0" prefWidth="200.0" BorderPane.alignment="CENTER">
          <children>
-            <ImageView fitHeight="724.0" fitWidth="1302.0" pickOnBounds="true" preserveRatio="true">
-               <image>
-                  <Image url="@../../../../../Desktop/Workspace%20Eclipse/fractal.jpg" />
-               </image>
-            </ImageView>
-            <VBox maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="506.0" prefWidth="149.0" spacing="10.0" translateX="550.0" translateY="-90.0">
+            <ImageView fitHeight="724.0" fitWidth="1302.0" pickOnBounds="true" preserveRatio="true" />
+            <VBox maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="578.0" prefWidth="149.0" spacing="10.0" translateX="550.0" translateY="-55.0">
                <children>
                   <Button mnemonicParsing="false" prefHeight="130.0" prefWidth="130.0" text="Button">
                      <VBox.margin>
@@ -46,7 +41,7 @@
                   <Insets />
                </opaqueInsets>
             </VBox>
-            <VBox layoutX="100.0" layoutY="100.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="187.0" prefWidth="259.0" translateX="-500.0" translateY="255.0">
+            <VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="187.0" prefWidth="320.0" translateX="-470.0" translateY="255.0">
                <children>
                   <HBox prefHeight="100.0" prefWidth="200.0">
                      <children>
@@ -55,27 +50,39 @@
                               <Font size="40.0" />
                            </font>
                         </Label>
-                        <Label text="Label" />
-                     </children>
-                  </HBox>
-                  <HBox prefHeight="100.0" prefWidth="200.0">
-                     <children>
-                        <Label text="y:">
+                        <Label text="0000">
                            <font>
                               <Font size="40.0" />
                            </font>
                         </Label>
-                        <Label text="Label" />
                      </children>
                   </HBox>
                   <HBox prefHeight="100.0" prefWidth="200.0">
                      <children>
-                        <Label text="courbure:">
+                        <Label text="y: ">
                            <font>
                               <Font size="40.0" />
                            </font>
                         </Label>
-                        <Label text="Label" />
+                        <Label text="0000">
+                           <font>
+                              <Font size="40.0" />
+                           </font>
+                        </Label>
+                     </children>
+                  </HBox>
+                  <HBox prefHeight="100.0" prefWidth="200.0">
+                     <children>
+                        <Label text="courbure: ">
+                           <font>
+                              <Font size="40.0" />
+                           </font>
+                        </Label>
+                        <Label text="0000">
+                           <font>
+                              <Font size="40.0" />
+                           </font>
+                        </Label>
                      </children>
                   </HBox>
                </children>
