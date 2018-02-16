@@ -6,15 +6,17 @@ import javafx.stage.Stage;
 
 public class CurvedFractal extends Application {
 	
-	private Controleur contrl;
+	private Controleur controleur;
 
 	public static void main(String[] args) {
-		
+		Application.launch(args);
 	}
 	@Override
-	public void start(Stage arg0) throws Exception {
-		// TODO Auto-generated method stub
-		
+	public void start(Stage stage) throws Exception {
+		controleur = new Controleur();
+		stage.setTitle("CurvedFractals");
+		stage.setScene(controleur.getScene());
+		stage.show();		
 	}
 	
 }

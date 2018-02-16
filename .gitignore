@@ -1,5 +1,12 @@
 
 Documents/Documents de conceptions/.~lock.*
-/.metadata/
 /bin/
 /.gradle/
+*.prefs
+.settings/
+.metadata/
+<<<<<<< HEAD
+.settings/
+=======
+.settings/
+>>>>>>> master
