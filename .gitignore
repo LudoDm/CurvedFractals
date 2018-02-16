@@ -2,4 +2,11 @@
 Documents/Documents de conceptions/.~lock.*
 /.metadata/
 /bin/
+<<<<<<< HEAD
 /.gradle/
+=======
+*.prefs
+.settings/
+.metadata/
+.settings/
+>>>>>>> bfaf7a2d2e278f31bb6fda40ef3080f221a131bf
