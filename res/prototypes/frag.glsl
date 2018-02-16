@@ -7,7 +7,7 @@ uniform vec2 m_Resolution;
 
 int mandelbrot(vec2 c) {
     vec2 z = c;
-    for (int i = 0; i < 300; i++) {
+    for (int i = 0; i < 400; i++) {
         // dot(z, z) > 4.0 is the same as length(z) > 2.0, but perhaps faster.
         // (x+yi)^2 = (x+yi) * (x+yi) = x^2 + (yi)^2 + 2xyi = x^2 - y^2 + 2xyi
     	if (dot(z, z) > 4.0) return i;
