@@ -5,6 +5,8 @@
 <?import javafx.scene.control.ColorPicker?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.effect.Glow?>
+<?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.FlowPane?>
@@ -25,7 +27,13 @@
                         <Insets />
                      </VBox.margin>
                      <graphic>
-                        <ImageView fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true" />
+                        <ImageView fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../../res/images/F_of_x.svg.png" />
+                           </image>
+                           <effect>
+                              <Glow />
+                           </effect></ImageView>
                      </graphic>
                   </Button>
                   <Button fx:id="bMatrix" mnemonicParsing="false" onAction="#showMatrixBox" prefHeight="75.0" prefWidth="75.0">
@@ -33,7 +41,13 @@
                         <Insets />
                      </VBox.margin>
                      <graphic>
-                        <ImageView fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true" />
+                        <ImageView fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../../res/images/Neo_main_page.png" />
+                           </image>
+                           <effect>
+                              <Glow />
+                           </effect></ImageView>
                      </graphic>
                   </Button>
                   <Button fx:id="bColor" mnemonicParsing="false" onAction="#showColorBox" prefHeight="75.0" prefWidth="75.0">
@@ -41,12 +55,24 @@
                         <Insets />
                      </VBox.margin>
                      <graphic>
-                        <ImageView fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true" />
+                        <ImageView fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../../res/images/paint-brush.png" />
+                           </image>
+                           <effect>
+                              <Glow />
+                           </effect></ImageView>
                      </graphic>
                   </Button>
                   <Button fx:id="bZoom" mnemonicParsing="false" onAction="#showZoomBox" prefHeight="75.0" prefWidth="75.0">
                      <graphic>
-                        <ImageView fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true" />
+                        <ImageView fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../../res/images/zoom-in.png" />
+                           </image>
+                           <effect>
+                              <Glow />
+                           </effect></ImageView>
                      </graphic></Button>
                </children>
                <padding>
@@ -93,6 +119,9 @@
                <padding>
                   <Insets left="10.0" />
                </padding>
+               <effect>
+                  <Glow level="0.79" />
+               </effect>
             </VBox>
             <HBox fx:id="functionbox" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="75.0" prefWidth="275.0" spacing="10.0" translateX="390.0" translateY="-125.0">
                <children>
