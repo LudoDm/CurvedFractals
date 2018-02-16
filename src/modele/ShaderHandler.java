@@ -34,7 +34,11 @@ public class ShaderHandler {
 	}
 
 	private static boolean validateFormula(String formula) {
-		return false;
+		boolean out = false;
+//		if(formula.matches(
+//				"(vec2([].[xy]))"
+//				)
+		return out;
 	}
 
 	

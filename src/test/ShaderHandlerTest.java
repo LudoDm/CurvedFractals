@@ -11,7 +11,8 @@ import modele.ShaderHandler;
 public class ShaderHandlerTest {
 
 	ShaderHandler s;
-	String validF = "z*z + c";
+	String validF = "vec2(z.x * z.x - z.y * z.y, 2.0 * z.x * z.y) + c";
+	String validF2 = "(z.x)*z + c";
 	String invalidChar = "!z*z + c";
 	String invalidVar = "x*x + c";
 	String incomplete = "";

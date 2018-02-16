@@ -24,7 +24,8 @@ public class RegexDemo {
                 //https://www.regexpal.com/93433
 //                System.out.println("\nEnter input string to search: ");
 //                String inputStr = in.readLine();
-            	String f = "z*z + c";
+//            	String f = "vec2(z.x * z.x - z.y * z.y, 2.0 * z.x * z.y) + c";
+            	String f = "vec2(c.x) + c";
                 Matcher matcher = pattern.matcher(f);
  
                 boolean found = false;
