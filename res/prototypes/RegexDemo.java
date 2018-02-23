@@ -14,7 +14,12 @@ public class RegexDemo {
         while (true) {
             try{
                 System.out.println("Enter your regex: ");
-                String regExStr = in.readLine();
+//                String regExStr = in.readLine();
+                String re1=".*?";	// Non-greedy match on filler
+                String re2="(?:[a-z][a-z0-9_]*)";	// Uninteresting: var
+                String re3=".*?";	// Non-greedy match on filler
+                String re4="((?:[a-z][a-z0-9_]*))";	// Variable Name 1
+                String regExStr = re1+re2+re3+re4;
                 Pattern pattern = Pattern.compile(regExStr);
 
                 //https://www.codeproject.com/articles/5412/writing-own-regular-expression-parser
@@ -25,7 +30,7 @@ public class RegexDemo {
 //                System.out.println("\nEnter input string to search: ");
 //                String inputStr = in.readLine();
 //            	String f = "vec2(z.x * z.x - z.y * z.y, 2.0 * z.x * z.y) + c";
-            	String f = "vec2(c.x) + c";
+            	String f = "vec2(z) + c";
                 Matcher matcher = pattern.matcher(f);
  
                 boolean found = false;

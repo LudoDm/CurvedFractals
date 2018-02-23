@@ -1,5 +1,7 @@
 
 
+
+
 uniform vec4 m_Color;
 uniform vec2 m_Resolution;
 
@@ -11,8 +13,6 @@ int mandelbrot(vec2 c) {
     	if (dot(z, z) > 4.0) return i;
 	//Equation (la ligne suivante sera celle qui sera overwrite par l'utilisateur
 	//Elle doit mettre en relation la variable d'it�ration(nombre complexe aka vecteur R2) et la condition initiale (le point a tester) (nb complexe aka vec R2)
-    //OUTPUT_EQ_NEXT_LINE
-
         z = vec2(z.x * z.x - z.y * z.y, 2.0 * z.x * z.y) + c;
     }
     return 0;

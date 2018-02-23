@@ -28,6 +28,8 @@ public class MaterialHandler {
 	}
 	
 	public void writeFormula(String formula) {
+		shaderHandler.WriteFormula(formula);
+		shaderHandler.getShaderUpdatedBase()
 		
 	}
 

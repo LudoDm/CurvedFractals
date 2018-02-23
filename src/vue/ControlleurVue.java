@@ -35,7 +35,7 @@ public class ControlleurVue {
 	public ControlleurVue() {
 		try {
 			// Création du loader.
-			FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/vue/FxmlVue.fxml"));
+			FXMLLoader fxmlLoader = new FXMLLoader(this.getClass().getResource("/vue/FxmlVue.fxml"));
 
 			// Associer le contrôleur
 			fxmlLoader.setController(this);
