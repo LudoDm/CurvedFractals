@@ -131,12 +131,12 @@
                      </font>
                   </Label>
                   <TextField fx:id="tFunction" prefHeight="25.0" prefWidth="135.0" />
-                  <Button fx:id="bFunctionEnter" maxHeight="-Infinity" maxWidth="-Infinity" mnemonicParsing="false" onAction="#closeFunctionBox" prefHeight="25.0" prefWidth="30.0" text="✓" />
+                  <Button fx:id="bFunctionEnter" maxHeight="-Infinity" maxWidth="-Infinity" mnemonicParsing="false" onAction="#closeFunctionBox" prefHeight="25.0" prefWidth="30.0" text="✓" textFill="#39ff14" />
                </children>
             </HBox>
             <HBox fx:id="matrixbox" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="75.0" prefWidth="275.0" translateX="400.0" translateY="-43.0">
                <children>
-                  <FlowPane alignment="CENTER" hgap="10.0" prefHeight="72.0" prefWidth="76.0" vgap="10.0">
+                  <FlowPane alignment="CENTER" hgap="5.0" prefHeight="72.0" prefWidth="76.0" vgap="5.0">
                      <children>
                         <TextField fx:id="tMatrix1" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="30.0" prefWidth="30.0" />
                         <TextField fx:id="tMatrix2" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="30.0" prefWidth="30.0" />
@@ -144,7 +144,7 @@
                         <TextField fx:id="tMatrix4" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="30.0" prefWidth="30.0" />
                      </children>
                   </FlowPane>
-                  <Button fx:id="bMatrixEnter" maxHeight="-Infinity" maxWidth="-Infinity" mnemonicParsing="false" onAction="#closeMatrixBox" prefHeight="25.0" prefWidth="30.0" text="✓">
+                  <Button fx:id="bMatrixEnter" maxHeight="-Infinity" maxWidth="-Infinity" mnemonicParsing="false" onAction="#closeMatrixBox" prefHeight="25.0" prefWidth="30.0" text="✓" textFill="#39ff14">
                      <HBox.margin>
                         <Insets left="10.0" />
                      </HBox.margin>
@@ -163,7 +163,7 @@
                      </font>
                   </Label>
                   <ColorPicker fx:id="colpic2" style="-fx-color-label-visible: false;" />
-                  <Button fx:id="bColorEnter" maxHeight="-Infinity" maxWidth="-Infinity" mnemonicParsing="false" onAction="#closeColorBox" prefHeight="25.0" prefWidth="30.0" text="✓" />
+                  <Button fx:id="bColorEnter" maxHeight="-Infinity" maxWidth="-Infinity" mnemonicParsing="false" onAction="#closeColorBox" prefHeight="25.0" prefWidth="30.0" text="✓" textFill="#39ff14" />
                </children>
             </HBox>
             <HBox fx:id="zoombox" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="75.0" prefWidth="275.0" spacing="10.0" translateX="400.0" translateY="128.0">
@@ -174,7 +174,7 @@
                      </font>
                   </Label>
                   <TextField fx:id="tZoom" prefHeight="25.0" prefWidth="131.0" />
-                  <Button fx:id="bZoomEnter" maxHeight="-Infinity" maxWidth="-Infinity" mnemonicParsing="false" onAction="#closeZoomBox" prefHeight="25.0" prefWidth="30.0" text="✓" />
+                  <Button fx:id="bZoomEnter" maxHeight="-Infinity" maxWidth="-Infinity" mnemonicParsing="false" onAction="#closeZoomBox" prefHeight="25.0" prefWidth="30.0" text="✓" textFill="#39ff14" />
                </children>
             </HBox>
          </children>
