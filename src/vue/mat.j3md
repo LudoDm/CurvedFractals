@@ -1,0 +1,13 @@
+MaterialDef Test Material 123{
+	MaterialParameters{
+		Vector3 Color
+		Vector2 Resolution
+	}
+	Technique {
+    VertexShader GLSL140 : /vue/shaderVert.glsl
+    FragmentShader GLSL140 :/vue/genericShaderFrag.glsl
+   	WorldParameters {
+   	WorldViewProjectionMatrix
+    }
+    }
+}

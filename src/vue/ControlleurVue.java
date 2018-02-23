@@ -225,7 +225,7 @@ public class ControlleurVue {
 	@FXML
 	void showSideMenu(MouseEvent event) {
 		System.out.println("lol");
-		
+
 		System.out.println(visibleSet.toString());
 
 		if (!sidemenu.isVisible()) {
@@ -261,12 +261,18 @@ public class ControlleurVue {
 	// TODO Enlever l'annotation @notnull ?
 	private static @NotNull JmeToJFXApplication makeJmeApplication() {
 
-		final AppSettings settings = JmeToJFXIntegrator.prepareSettings(new AppSettings(true), 60);
-		// TODO Changer l'application jme pour d'autre chose que la classe prototype
-		// "hey"...
-		final JmeToJFXApplication application = new hey();
+		
+		// Ici c'est le bloc pour nos settings personnels
+		AppSettings theAppSettings = new AppSettings(true);
+		theAppSettings.setResolution(1920, 1080);
+		//theAppSettings.setFullscreen(true);
+		
+		// Ici c'est la magie du plugin Jme-jfx en oeuvre DONT TOUCH
+		final AppSettings settings = JmeToJFXIntegrator.prepareSettings(theAppSettings, 60);
+		final JmeToJFXApplication application = new JMonkeyApp();
 		application.setSettings(settings);
 		application.setShowSettings(false);
+
 		return application;
 	}
 
