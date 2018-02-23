@@ -39,8 +39,10 @@ public class ControlleurVue {
 
 	private Scene scene;
 	private Controleur controleurPrincipal;
-	private String m11, m12, m21, m22;
+	private String m11, m12, m21, m22, function, zoomVal;
 	private ObservableSet<Node> visibleSet;
+
+	private Color c1, c2;
 
 	@FXML
 	private ImageView theImageView;
@@ -114,8 +116,8 @@ public class ControlleurVue {
 	@FXML
 	void closeColorBox(ActionEvent event) {
 
-		Color c1 = colpic1.getValue();
-		Color c2 = colpic2.getValue();
+		c1 = colpic1.getValue();
+		c2 = colpic2.getValue();
 
 		System.out.println(c1.toString());
 
@@ -126,7 +128,7 @@ public class ControlleurVue {
 	@FXML
 	void closeFunctionBox(ActionEvent event) {
 
-		String function = tFunction.getText();
+		function = tFunction.getText();
 
 		System.out.println(function);
 
@@ -165,7 +167,7 @@ public class ControlleurVue {
 	@FXML
 	void closeZoomBox(ActionEvent event) {
 
-		String zoomVal = tZoom.getText();
+		zoomVal = tZoom.getText();
 
 		System.out.println(zoomVal);
 
