@@ -86,7 +86,7 @@ public class ControlleurVue {
 
 			// TODO Ajouter la feuille de style
 			// attacher la feuille de style
-			scene.getStylesheets().add(getClass().getResource("/vue/NewFile.css").toString());
+			scene.getStylesheets().add(getClass().getResource("/vue/curved_fractals.css").toString());
 
 			// Création de l'application JMonkey
 			final JmeToJFXApplication application = makeJmeApplication();
