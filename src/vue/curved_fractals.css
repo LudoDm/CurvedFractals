@@ -86,8 +86,9 @@
 }
 
 .text-field {
-	-fx-background-color: #333333; -fx-border-radius : 5; -fx-border-color :
-	#39FF14;
+	-fx-background-color: #333333;
+	-fx-border-radius: 5;
+	-fx-border-color: #39FF14;
 	-fx-text-fill: #39FF14;
 	-fx-border-radius: 5;
 	-fx-border-color: #39FF14;

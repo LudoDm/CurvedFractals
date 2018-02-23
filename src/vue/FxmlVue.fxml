@@ -102,6 +102,9 @@
                            <font>
                               <Font name="Consolas" size="14.0" />
                            </font>
+                           <effect>
+                              <DropShadow color="#39ff14" />
+                           </effect>
                         </Label>
                      </children>
                   </HBox>
@@ -116,6 +119,9 @@
                            <font>
                               <Font name="Consolas" size="14.0" />
                            </font>
+                           <effect>
+                              <DropShadow color="#39ff14" />
+                           </effect>
                         </Label>
                      </children>
                   </HBox>
@@ -126,9 +132,6 @@
                <padding>
                   <Insets left="10.0" />
                </padding>
-               <effect>
-                  <Glow level="0.79" />
-               </effect>
             </VBox>
             <HBox fx:id="functionbox" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="75.0" prefWidth="275.0" spacing="10.0" translateX="400.0" translateY="-127.0">
                <children>
