@@ -8,9 +8,11 @@ import java.util.List;
 import org.jetbrains.annotations.NotNull;
 
 import com.jme3.material.Material;
+import com.jme3.math.Vector4f;
 import com.jme3.system.AppSettings;
 import com.jme3x.jfx.injfx.JmeToJFXApplication;
 import com.jme3x.jfx.injfx.JmeToJFXIntegrator;
+import com.ss.rlib.util.NumberUtils;
 
 import controleur.Controleur;
 import javafx.collections.FXCollections;
@@ -43,6 +45,8 @@ public class ControlleurVue {
 	private ObservableSet<Node> visibleSet;
 
 	private Color c1, c2;
+
+	private Vector4f vec1, vec2;
 
 	@FXML
 	private ImageView theImageView;
@@ -119,7 +123,11 @@ public class ControlleurVue {
 		c1 = colpic1.getValue();
 		c2 = colpic2.getValue();
 
-		System.out.println(c1.toString() + " " + c2.toString());
+		vec1 = new Vector4f((float) c1.getRed(), (float) c1.getGreen(), (float) c1.getBlue(), (float) c1.getOpacity());
+
+		vec2 = new Vector4f((float) c2.getRed(), (float) c2.getGreen(), (float) c2.getBlue(), (float) c2.getOpacity());
+
+		System.out.println(vec1.toString() + " " + vec2.toString());
 
 		colorbox.setVisible(false);
 		visibleSet.remove(colorbox);
@@ -266,6 +274,38 @@ public class ControlleurVue {
 
 	public Scene getScene() {
 		return scene;
+	}
+
+	public String getM11() {
+		return m11;
+	}
+
+	public String getM12() {
+		return m12;
+	}
+
+	public String getM21() {
+		return m21;
+	}
+
+	public String getM22() {
+		return m22;
+	}
+
+	public String getFunction() {
+		return function;
+	}
+
+	public String getZoomVal() {
+		return zoomVal;
+	}
+
+	public Vector4f getVec1() {
+		return vec1;
+	}
+
+	public Vector4f getVec2() {
+		return vec2;
 	}
 
 	public void refreshMaterial(Material mat) {
