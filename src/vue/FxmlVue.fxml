@@ -15,7 +15,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane fx:id="borderpane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1">
+<BorderPane fx:id="borderpane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1280.0" stylesheets="@NewFile.css" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1">
    <center>
       <StackPane fx:id="stackpane" onMouseClicked="#showSideMenu" prefHeight="150.0" prefWidth="200.0" BorderPane.alignment="CENTER">
          <children>
@@ -123,29 +123,18 @@
                   <Glow level="0.79" />
                </effect>
             </VBox>
-            <HBox fx:id="functionbox" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="75.0" prefWidth="275.0" spacing="10.0" translateX="390.0" translateY="-125.0">
+            <HBox fx:id="functionbox" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="75.0" prefWidth="275.0" spacing="10.0" translateX="400.0" translateY="-127.0">
                <children>
                   <Label fx:id="lFunction" text="fc(z) = ">
                      <font>
                         <Font name="Consolas" size="12.0" />
                      </font>
                   </Label>
-                  <TextField fx:id="tFunction" />
+                  <TextField fx:id="tFunction" prefHeight="25.0" prefWidth="135.0" />
                   <Button fx:id="bFunctionEnter" maxHeight="-Infinity" maxWidth="-Infinity" mnemonicParsing="false" onAction="#closeFunctionBox" prefHeight="25.0" prefWidth="30.0" text="✓" />
                </children>
             </HBox>
-            <HBox fx:id="zoombox" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="75.0" prefWidth="275.0" spacing="10.0" translateX="390.0" translateY="125.0">
-               <children>
-                  <Label fx:id="lZoom" text="nb zoom : ">
-                     <font>
-                        <Font name="Consolas" size="12.0" />
-                     </font>
-                  </Label>
-                  <TextField fx:id="tZoom" />
-                  <Button fx:id="bZoomEnter" maxHeight="-Infinity" maxWidth="-Infinity" mnemonicParsing="false" onAction="#closeZoomBox" prefHeight="25.0" prefWidth="30.0" text="✓" />
-               </children>
-            </HBox>
-            <HBox fx:id="matrixbox" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="94.0" prefWidth="137.0" translateX="460.0" translateY="-40.0">
+            <HBox fx:id="matrixbox" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="75.0" prefWidth="275.0" translateX="400.0" translateY="-43.0">
                <children>
                   <FlowPane alignment="CENTER" hgap="10.0" prefHeight="72.0" prefWidth="76.0" vgap="10.0">
                      <children>
@@ -165,7 +154,7 @@
                   <Insets left="10.0" right="10.0" />
                </padding>
             </HBox>
-            <HBox fx:id="colorbox" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="53.0" prefWidth="200.0" spacing="10.0" translateX="430.0" translateY="45.0">
+            <HBox fx:id="colorbox" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="76.0" prefWidth="275.0" spacing="10.0" translateX="400.0" translateY="43.0">
                <children>
                   <ColorPicker fx:id="colpic1" style="-fx-color-label-visible: false;" />
                   <Label text="→">
@@ -175,6 +164,17 @@
                   </Label>
                   <ColorPicker fx:id="colpic2" style="-fx-color-label-visible: false;" />
                   <Button fx:id="bColorEnter" maxHeight="-Infinity" maxWidth="-Infinity" mnemonicParsing="false" onAction="#closeColorBox" prefHeight="25.0" prefWidth="30.0" text="✓" />
+               </children>
+            </HBox>
+            <HBox fx:id="zoombox" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="75.0" prefWidth="275.0" spacing="10.0" translateX="400.0" translateY="128.0">
+               <children>
+                  <Label fx:id="lZoom" prefHeight="14.0" prefWidth="61.0" text="nb zoom :">
+                     <font>
+                        <Font name="Consolas" size="12.0" />
+                     </font>
+                  </Label>
+                  <TextField fx:id="tZoom" prefHeight="25.0" prefWidth="131.0" />
+                  <Button fx:id="bZoomEnter" maxHeight="-Infinity" maxWidth="-Infinity" mnemonicParsing="false" onAction="#closeZoomBox" prefHeight="25.0" prefWidth="30.0" text="✓" />
                </children>
             </HBox>
          </children>
