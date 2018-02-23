@@ -64,7 +64,7 @@ public class ControlleurVue {
 	private Button bFunction, bMatrix, bColor, bZoom, bFunctionEnter, bZoomEnter, bMatrixEnter, bColorEnter;
 
 	@FXML
-	private Label lX, lXValue, lY, lYValue, lFunction, lZoom;
+	private Label lX, lXValue, lY, lYValue, lFunction, lZoom, lArrow;
 
 	@FXML
 	private HBox functionbox, zoombox, matrixbox, colorbox;

@@ -34,6 +34,10 @@
 	-fx-text-fill: #39FF14;
 }
 
+#lArrow {
+	-fx-text-fill: #39FF14;
+}
+
 #bZoom {
 	-fx-background-radius: 15;
 }
@@ -49,7 +53,6 @@
 #bColor {
 	-fx-background-radius: 15;
 }
-
 
 #bFunctionEnter {
 	-fx-background-color: #333333;
@@ -74,13 +77,18 @@
 
 .text-field {
 	-fx-background-color: #39FF14, #333333;
-	-fx-background-insets: 0 -1 0 -1,, 0 -1 2 -1;
+	-fx-text-fill: #39FF14;
 }
 
 .text-field:hover {
 	-fx-background-color: #39FF14, #333333;
-	-fx-background-insets: 0 -1 0 -1,, 0 -1 2 -1;
+	-fx-background-insets: 0 -1 0 -1, 0 -1 2 -1;
 	-fx-effect: dropshadow(three-pass-box, #39FF14, 10, 0.3, 0, 0);
+}
+
+.text-field:focused {
+	-fx-border-radius: 5;
+	-fx-border-color: #39FF14;
 }
 
 #bZoomEnter {
@@ -116,11 +124,13 @@
 	-fx-effect: dropshadow(three-pass-box, #39FF14, 10, 0.3, 0, 0);
 	-fx-text-fill: #39FF14;
 }
+
 #bMatrixEnter:pressed {
 	-fx-background-color: #8DFF8D;
 	-fx-border-radius: 5;
 	-fx-border-color: #39FF14;
 }
+
 #bColorEnter {
 	-fx-background-color: #333333;
 	-fx-border-radius: 5;
@@ -135,6 +145,7 @@
 	-fx-effect: dropshadow(three-pass-box, #39FF14, 10, 0.3, 0, 0);
 	-fx-text-fill: #39FF14;
 }
+
 #bColorEnter:pressed {
 	-fx-background-color: #8DFF8D;
 	-fx-border-radius: 5;
