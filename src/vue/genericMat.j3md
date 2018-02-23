@@ -1,12 +1,11 @@
 MaterialDef Test Material 123{
 	MaterialParameters{
-		Vector4 ColorMin
-		Vector4 ColorMax
+		Vector3 Color
 		Vector2 Resolution
 	}
 	Technique {
-    VertexShader GLSL140 : /prototypes/vert.glsl
-    FragmentShader GLSL140 :/prototypes/frag.glsl
+    VertexShader GLSL140 : /vue/shaderVert.glsl
+    FragmentShader GLSL140 :/vue/
    	WorldParameters {
    	WorldViewProjectionMatrix
     }

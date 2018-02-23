@@ -1,5 +1,7 @@
 package controleur;
 
+import java.io.File;
+
 import com.jme3.material.Material;
 
 import javafx.scene.Scene;
@@ -20,8 +22,8 @@ public class Controleur {
 		return vue.getScene();
 	}
 	
-	public Material getMaterial() {
-		return modele.getMaterial();
+	public File getMaterial() {
+		return modele.getMaterialDef();
 	}
 	
 	public void setFormula(String formula) {

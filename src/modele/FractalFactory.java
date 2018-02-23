@@ -1,6 +1,8 @@
 package modele;
 import modele.ShaderHandler;
 
+import java.io.File;
+
 import com.jme3.material.Material;
 import com.jme3.material.MaterialDef;
 
@@ -12,7 +14,7 @@ public class FractalFactory {
 	public FractalFactory() {
 	}
 
-	public Material getMaterial() {
+	public File getMaterialDef() {
 		return null;
 	}
 	

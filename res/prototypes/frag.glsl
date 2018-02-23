@@ -1,6 +1,7 @@
 
 
-uniform vec4 m_Color;
+uniform vec4 m_ColorMin;
+uniform vec4 m_ColorMax;
 uniform vec2 m_Resolution;
 
 int mandelbrot(vec2 c) {
@@ -30,7 +31,11 @@ vec4 Image(vec2 f) {
     float ret = float(mandelbrot(uv));
 
     // Turn the iteration count into a color.
-	return vec4(sin(vec3(0.1, 0.2, 0.5) * ret), 1);
+	//return vec4(sin(vec3(0.1, 0.2, 0.5) * ret), 1) * mix(m_ColorMin, m_ColorMax, ret) ;
+   	vec4 couleurfinale = (sin(vec4(0.1,0.2,0.5,0) * mix(m_ColorMin, m_ColorMax, ret)));
+   	if (ret == 0.0) return vec4(0.0,0.0,0.0,1);
+   	return couleurfinale;
+
 }
 
 void main(){

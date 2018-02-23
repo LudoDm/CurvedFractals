@@ -58,6 +58,7 @@ public class ShaderHandlerTest {
 	public void testShaderBase() {
 		System.out.println("shader exisit: " +shadB.exists());
 		System.out.println("shader: " + s.getShaderBase());
+		System.out.println(shadB.getName());
 	}
 	
 	@Test

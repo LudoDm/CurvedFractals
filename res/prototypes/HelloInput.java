@@ -63,7 +63,8 @@ public class HelloInput extends SimpleApplication {
 		// "Common/MatDefs/Misc/Unshaded.j3md");
 
 		Material mat = new Material(assetManager, "/prototypes/mat.j3md");
-		mat.setColor("Color", ColorRGBA.Blue);
+		mat.setColor("ColorMin", ColorRGBA.Blue);
+		mat.setColor("ColorMax", ColorRGBA.Green);
 		mat.setVector2("Resolution", new Vector2f(w,h));
 		//pour désactiver le mouvement
 		flyCam.setEnabled(false);

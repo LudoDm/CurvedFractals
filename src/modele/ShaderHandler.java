@@ -94,6 +94,7 @@ public class ShaderHandler {
 			if (setFormula(formula)) {
 				File newShader;
 				newShader = File.createTempFile("tempShaderFrag", ".glsl", getShaderBase().getParentFile());
+				newShader.deleteOnExit();
 				System.out.println(newShader.exists());
 				setShaderUpdatedBase(newShader);
 				setShaderBaseData(OpenFile(getShaderBase()));
@@ -158,6 +159,7 @@ public class ShaderHandler {
 		return shaderUpdatedBase;
 	}
 
+	//TODO
 	public void clear() {
 
 	}
