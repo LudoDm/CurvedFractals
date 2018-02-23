@@ -123,6 +123,7 @@ public class ControlleurVue {
 
 		colorbox.setVisible(false);
 		visibleSet.remove(colorbox);
+		bColor.setStyle("-fx-background-radius: 15");
 	}
 
 	@FXML
@@ -134,6 +135,7 @@ public class ControlleurVue {
 
 		functionbox.setVisible(false);
 		visibleSet.remove(functionbox);
+		bFunction.setStyle("-fx-background-radius: 15");
 
 	}
 
@@ -161,6 +163,7 @@ public class ControlleurVue {
 
 		matrixbox.setVisible(false);
 		visibleSet.remove(matrixbox);
+		bMatrix.setStyle("-fx-background-radius: 15");
 
 	}
 
@@ -173,6 +176,7 @@ public class ControlleurVue {
 
 		zoombox.setVisible(false);
 		visibleSet.remove(zoombox);
+		bZoom.setStyle("-fx-background-radius: 15");
 
 	}
 
@@ -193,6 +197,7 @@ public class ControlleurVue {
 		if (!colorbox.isVisible()) {
 			colorbox.setVisible(true);
 			visibleSet.add(colorbox);
+			bColor.setStyle("-fx-background-radius: 0 50 30 0;");
 
 		} else {
 			closeColorBox(event);
@@ -205,6 +210,7 @@ public class ControlleurVue {
 		if (!functionbox.isVisible()) {
 			functionbox.setVisible(true);
 			visibleSet.add(functionbox);
+			bFunction.setStyle("-fx-background-radius: 0 50 30 0;");
 
 		} else {
 			closeFunctionBox(event);
@@ -217,6 +223,7 @@ public class ControlleurVue {
 		if (!matrixbox.isVisible()) {
 			matrixbox.setVisible(true);
 			visibleSet.add(matrixbox);
+			bMatrix.setStyle("-fx-background-radius: 0 50 30 0;");
 
 		} else {
 			closeMatrixBox(event);
@@ -250,6 +257,7 @@ public class ControlleurVue {
 		if (!zoombox.isVisible()) {
 			zoombox.setVisible(true);
 			visibleSet.add(zoombox);
+			bZoom.setStyle("-fx-background-radius: 0 50 30 0;");
 
 		} else {
 			closeZoomBox(event);

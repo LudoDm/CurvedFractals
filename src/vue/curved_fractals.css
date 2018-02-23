@@ -1,0 +1,51 @@
+.button {
+	-fx-background-color: #a9a9a9;
+}
+
+#colorbox {
+	-fx-alignement: center;
+	-fx-background-color: #333333;
+	-fx-background-radius: 30 0 0 50;
+}
+
+#functionbox {
+	-fx-alignement: center;
+	-fx-background-color: #333333;
+	-fx-background-radius: 30 0 0 50;
+}
+
+#matrixbox {
+	-fx-alignement: center;
+	-fx-background-color: #333333;
+	-fx-background-radius: 30 0 0 50;
+}
+
+#zoombox {
+	-fx-alignement: center;
+	-fx-background-color: #333333;
+	-fx-background-radius: 30 0 0 50;
+}
+
+#lFunction {
+	-fx-text-fill: #39FF14;
+}
+
+#lZoom {
+	-fx-text-fill: #39FF14;
+}
+
+#bZoom {
+	-fx-background-radius: 15;
+}
+
+#bFunction {
+	-fx-background-radius: 15;
+}
+
+#bMatrix {
+	-fx-background-radius: 15;
+}
+
+#bColor {
+	-fx-background-radius: 15;
+}
