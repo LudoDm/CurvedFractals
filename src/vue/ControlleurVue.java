@@ -119,7 +119,7 @@ public class ControlleurVue {
 		c1 = colpic1.getValue();
 		c2 = colpic2.getValue();
 
-		System.out.println(c1.toString());
+		System.out.println(c1.toString() + " " + c2.toString());
 
 		colorbox.setVisible(false);
 		visibleSet.remove(colorbox);
