@@ -2,7 +2,14 @@ package vue;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Hashtable;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.ResourceBundle;
+import java.util.Set;
+import java.util.TreeSet;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -14,9 +21,13 @@ import com.jme3x.jfx.injfx.JmeToJFXApplication;
 import com.jme3x.jfx.injfx.JmeToJFXIntegrator;
 
 import controleur.Controleur;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.collections.ObservableSet;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -30,15 +41,18 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 import prototypes.hey;
 
 public class ControlleurVue {
 
-	@FXML
-	private ImageView theImageView;
-
 	private Scene scene;
 	private Controleur controleurPrincipal;
+	private String m11, m12, m21, m22;
+	private ObservableSet<Node> visibleSet;
+
+	@FXML
+	private ImageView theImageView;
 
 	@FXML
 	private BorderPane borderpane;
@@ -47,88 +61,21 @@ public class ControlleurVue {
 	private StackPane stackpane;
 
 	@FXML
-	private VBox sidemenu;
+	private VBox sidemenu, infobox;
 
 	@FXML
-	private Button bFunction;
+	private Button bFunction, bMatrix, bColor, bZoom, bFunctionEnter, bZoomEnter, bMatrixEnter, bColorEnter;
 
 	@FXML
-	private Button bMatrix;
+	private Label lX, lXValue, lY, lYValue, lFunction, lZoom;
 
 	@FXML
-	private Button bColor;
+	private HBox functionbox, zoombox, matrixbox, colorbox;
 
 	@FXML
-	private Button bZoom;
-
+	private TextField tFunction, tZoom, tMatrix1, tMatrix2, tMatrix3, tMatrix4;
 	@FXML
-	private VBox infobox;
-
-	@FXML
-	private Label lX;
-
-	@FXML
-	private Label lXValue;
-
-	@FXML
-	private Label lY;
-
-	@FXML
-	private Label lYValue;
-
-	@FXML
-	private HBox functionbox;
-
-	@FXML
-	private Label lFunction;
-
-	@FXML
-	private TextField tFunction;
-
-	@FXML
-	private Button bFunctionEnter;
-
-	@FXML
-	private HBox zoombox;
-
-	@FXML
-	private Label lZoom;
-
-	@FXML
-	private TextField tZoom;
-
-	@FXML
-	private Button bZoomEnter;
-
-	@FXML
-	private HBox matrixbox;
-
-	@FXML
-	private TextField tMatrix1;
-
-	@FXML
-	private TextField tMatrix2;
-
-	@FXML
-	private TextField tMatrix3;
-
-	@FXML
-	private TextField tMatrix4;
-
-	@FXML
-	private Button bMatrixEnter;
-
-	@FXML
-	private HBox colorbox;
-
-	@FXML
-	private ColorPicker colpic1;
-
-	@FXML
-	private ColorPicker colpic2;
-
-	@FXML
-	private Button bColorEnter;
+	private ColorPicker colpic1, colpic2;
 
 	public ControlleurVue() {
 		try {
@@ -161,6 +108,8 @@ public class ControlleurVue {
 			matrixbox.setVisible(false);
 			zoombox.setVisible(false);
 
+			visibleSet = FXCollections.observableSet();
+
 		} catch (IOException ex) {
 			System.out.println("Exception lors du chargement des ressources dans controlleur vue");
 		}
@@ -169,24 +118,67 @@ public class ControlleurVue {
 
 	}
 
+	// TODO - Changer le type de retour des méthodes "closeBox"
+
 	@FXML
 	void closeColorBox(ActionEvent event) {
-		String s = tFunction.getText();
 
+		Color c1 = colpic1.getValue();
+		Color c2 = colpic2.getValue();
+
+		System.out.println(c1.toString());
+
+		colorbox.setVisible(false);
+		visibleSet.remove(colorbox);
 	}
 
 	@FXML
 	void closeFunctionBox(ActionEvent event) {
 
+		String function = tFunction.getText();
+
+		System.out.println(function);
+
+		functionbox.setVisible(false);
 	}
 
 	@FXML
 	void closeMatrixBox(ActionEvent event) {
 
+		List<String> matrix = new ArrayList<String>();
+
+		try {
+			m11 = (tMatrix1.getText());
+			m12 = (tMatrix2.getText());
+			m21 = (tMatrix3.getText());
+			m22 = (tMatrix4.getText());
+
+			matrix.add(m11);
+			matrix.add(m12);
+			matrix.add(m21);
+			matrix.add(m22);
+
+		} catch (Exception e) {
+
+		}
+
+		System.out.println(matrix);
+
+		matrixbox.setVisible(false);
 	}
 
 	@FXML
 	void closeZoomBox(ActionEvent event) {
+
+		tZoom.getText();
+
+		zoombox.setVisible(false);
+	}
+
+	void closeSideMenu() {
+
+		sidemenu.setVisible(false);
+		visibleSet.remove(sidemenu);
 
 	}
 
@@ -199,8 +191,10 @@ public class ControlleurVue {
 	void showColorBox(ActionEvent event) {
 		if (!colorbox.isVisible()) {
 			colorbox.setVisible(true);
+			visibleSet.add(colorbox);
+
 		} else {
-			colorbox.setVisible(false);
+			closeColorBox(event);
 		}
 
 	}
@@ -209,8 +203,10 @@ public class ControlleurVue {
 	void showFunctionBox(ActionEvent event) {
 		if (!functionbox.isVisible()) {
 			functionbox.setVisible(true);
+			visibleSet.add(functionbox);
+
 		} else {
-			functionbox.setVisible(false);
+			closeFunctionBox(event);
 		}
 
 	}
@@ -219,15 +215,26 @@ public class ControlleurVue {
 	void showMatrixBox(ActionEvent event) {
 		if (!matrixbox.isVisible()) {
 			matrixbox.setVisible(true);
+			visibleSet.add(matrixbox);
+
 		} else {
-			matrixbox.setVisible(false);
+			closeMatrixBox(event);
 		}
 	}
 
 	@FXML
 	void showSideMenu(MouseEvent event) {
 		System.out.println("lol");
-		sidemenu.setVisible(true);
+		
+		System.out.println(visibleSet.toString());
+
+		if (!sidemenu.isVisible()) {
+			sidemenu.setVisible(true);
+
+		} else {
+			closeSideMenu();
+		}
+
 	}
 
 	@FXML
@@ -235,7 +242,7 @@ public class ControlleurVue {
 		if (!zoombox.isVisible()) {
 			zoombox.setVisible(true);
 		} else {
-			zoombox.setVisible(false);
+			closeZoomBox(event);
 		}
 	}
 
