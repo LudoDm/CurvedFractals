@@ -1,17 +1,9 @@
 package vue;
 
 import java.io.IOException;
-import java.net.URL;
 import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Hashtable;
-import java.util.LinkedList;
+
 import java.util.List;
-import java.util.ResourceBundle;
-import java.util.Set;
-import java.util.TreeSet;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -22,7 +14,6 @@ import com.jme3x.jfx.injfx.JmeToJFXIntegrator;
 
 import controleur.Controleur;
 import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.collections.ObservableSet;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -140,6 +131,8 @@ public class ControlleurVue {
 		System.out.println(function);
 
 		functionbox.setVisible(false);
+		visibleSet.remove(functionbox);
+
 	}
 
 	@FXML
@@ -165,14 +158,20 @@ public class ControlleurVue {
 		System.out.println(matrix);
 
 		matrixbox.setVisible(false);
+		visibleSet.remove(matrixbox);
+
 	}
 
 	@FXML
 	void closeZoomBox(ActionEvent event) {
 
-		tZoom.getText();
+		String zoomVal = tZoom.getText();
+
+		System.out.println(zoomVal);
 
 		zoombox.setVisible(false);
+		visibleSet.remove(zoombox);
+
 	}
 
 	void closeSideMenu() {
@@ -224,15 +223,22 @@ public class ControlleurVue {
 
 	@FXML
 	void showSideMenu(MouseEvent event) {
-		System.out.println("lol");
-		
+
 		System.out.println(visibleSet.toString());
 
 		if (!sidemenu.isVisible()) {
 			sidemenu.setVisible(true);
+			visibleSet.add(sidemenu);
+
+			for (Node n : visibleSet) {
+				n.setVisible(true);
+			}
 
 		} else {
 			closeSideMenu();
+			for (Node n : visibleSet) {
+				n.setVisible(false);
+			}
 		}
 
 	}
@@ -241,6 +247,8 @@ public class ControlleurVue {
 	void showZoomBox(ActionEvent event) {
 		if (!zoombox.isVisible()) {
 			zoombox.setVisible(true);
+			visibleSet.add(zoombox);
+
 		} else {
 			closeZoomBox(event);
 		}
