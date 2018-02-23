@@ -1,5 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.effect.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ColorPicker?>
@@ -15,7 +22,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane fx:id="borderpane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1280.0" stylesheets="@NewFile.css" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1">
+<BorderPane fx:id="borderpane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1280.0" stylesheets="@NewFile.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
    <center>
       <StackPane fx:id="stackpane" onMouseClicked="#showSideMenu" prefHeight="150.0" prefWidth="200.0" BorderPane.alignment="CENTER">
          <children>
@@ -95,6 +102,9 @@
                            <font>
                               <Font name="Consolas" size="14.0" />
                            </font>
+                           <effect>
+                              <DropShadow color="#39ff14" />
+                           </effect>
                         </Label>
                      </children>
                   </HBox>
@@ -109,6 +119,9 @@
                            <font>
                               <Font name="Consolas" size="14.0" />
                            </font>
+                           <effect>
+                              <DropShadow color="#39ff14" />
+                           </effect>
                         </Label>
                      </children>
                   </HBox>
@@ -119,9 +132,6 @@
                <padding>
                   <Insets left="10.0" />
                </padding>
-               <effect>
-                  <Glow level="0.79" />
-               </effect>
             </VBox>
             <HBox fx:id="functionbox" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="75.0" prefWidth="275.0" spacing="10.0" translateX="400.0" translateY="-127.0">
                <children>
@@ -157,7 +167,7 @@
             <HBox fx:id="colorbox" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="76.0" prefWidth="275.0" spacing="10.0" translateX="400.0" translateY="43.0">
                <children>
                   <ColorPicker fx:id="colpic1" style="-fx-color-label-visible: false;" />
-                  <Label text="→">
+                  <Label fx:id="lArrow" text="→">
                      <font>
                         <Font size="36.0" />
                      </font>

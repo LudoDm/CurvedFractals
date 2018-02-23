@@ -12,7 +12,6 @@ import com.jme3.math.Vector4f;
 import com.jme3.system.AppSettings;
 import com.jme3x.jfx.injfx.JmeToJFXApplication;
 import com.jme3x.jfx.injfx.JmeToJFXIntegrator;
-import com.ss.rlib.util.NumberUtils;
 
 import controleur.Controleur;
 import javafx.collections.FXCollections;
@@ -64,7 +63,7 @@ public class ControlleurVue {
 	private Button bFunction, bMatrix, bColor, bZoom, bFunctionEnter, bZoomEnter, bMatrixEnter, bColorEnter;
 
 	@FXML
-	private Label lX, lXValue, lY, lYValue, lFunction, lZoom;
+	private Label lX, lXValue, lY, lYValue, lFunction, lZoom, lArrow;
 
 	@FXML
 	private HBox functionbox, zoombox, matrixbox, colorbox;
@@ -114,8 +113,6 @@ public class ControlleurVue {
 		System.out.println(theImageView);
 
 	}
-
-	// TODO - Changer le type de retour des méthodes "closeBox"
 
 	@FXML
 	void closeColorBox(ActionEvent event) {
