@@ -265,12 +265,14 @@ public class ControlleurVue {
 		// Ici c'est le bloc pour nos settings personnels
 		AppSettings theAppSettings = new AppSettings(true);
 		theAppSettings.setResolution(1920, 1080);
-		//theAppSettings.setFullscreen(true);
+		theAppSettings.setFullscreen(true);
 		
 		// Ici c'est la magie du plugin Jme-jfx en oeuvre DONT TOUCH
-		final AppSettings settings = JmeToJFXIntegrator.prepareSettings(theAppSettings, 60);
+		
+		//TODO make that shit work 
+		//final AppSettings settings = JmeToJFXIntegrator.prepareSettings(theAppSettings, 60);
 		final JmeToJFXApplication application = new JMonkeyApp();
-		application.setSettings(settings);
+		application.setSettings(theAppSettings);
 		application.setShowSettings(false);
 
 		return application;
