@@ -89,7 +89,11 @@ public class ControlleurVue {
 
 			// TODO Ajouter la feuille de style
 			// attacher la feuille de style
+<<<<<<< HEAD
 			scene.getStylesheets().add(getClass().getResource("/vue/curved_fractals.css").toString());
+=======
+			scene.getStylesheets().add(getClass().getResource("/vue/CurvedFractals.css").toString());
+>>>>>>> JoeBranch
 
 			// Création de l'application JMonkey
 			final JmeToJFXApplication application = makeJmeApplication();
@@ -237,6 +241,10 @@ public class ControlleurVue {
 
 	@FXML
 	void showSideMenu(MouseEvent event) {
+<<<<<<< HEAD
+=======
+		System.out.println("lol");
+>>>>>>> JoeBranch
 
 		System.out.println(visibleSet.toString());
 
@@ -316,12 +324,20 @@ public class ControlleurVue {
 	// TODO Enlever l'annotation @notnull ?
 	private static @NotNull JmeToJFXApplication makeJmeApplication() {
 
-		final AppSettings settings = JmeToJFXIntegrator.prepareSettings(new AppSettings(true), 60);
-		// TODO Changer l'application jme pour d'autre chose que la classe prototype
-		// "hey"...
-		final JmeToJFXApplication application = new hey();
-		application.setSettings(settings);
+		
+		// Ici c'est le bloc pour nos settings personnels
+		AppSettings theAppSettings = new AppSettings(true);
+		theAppSettings.setResolution(1920, 1080);
+		theAppSettings.setFullscreen(true);
+		
+		// Ici c'est la magie du plugin Jme-jfx en oeuvre DONT TOUCH
+		
+		//TODO make that shit work 
+		//final AppSettings settings = JmeToJFXIntegrator.prepareSettings(theAppSettings, 60);
+		final JmeToJFXApplication application = new JMonkeyApp();
+		application.setSettings(theAppSettings);
 		application.setShowSettings(false);
+
 		return application;
 	}
 

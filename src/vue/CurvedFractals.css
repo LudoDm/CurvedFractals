@@ -1,0 +1,27 @@
+.button {
+	-fx-background-color: #a9a9a9;
+
+}
+
+#colorbox {
+	-fx-alignement: center;
+	-fx-background-color: #333333;
+}
+#functionbox {
+	-fx-alignement: center;
+	-fx-background-color: #333333;
+}#matrixbox {
+	-fx-alignement: center;
+	-fx-background-color: #333333;
+}#zoombox {
+	-fx-alignement: center;
+	-fx-background-color: #333333;
+}
+
+#lFunction {
+	-fx-text-fill: #39FF14;
+}
+
+#lZoom {
+	-fx-text-fill: #39FF14;
+}
