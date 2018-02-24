@@ -29,9 +29,10 @@ vec4 Image(vec2 f) {
     float ret = float(mandelbrot(uv));
 
     // Turn the iteration count into a color.
-	vec4 couleurfinale = (sin(vec4(0.1,0.2,0.5,0) * mix(m_ColorMin, m_ColorMax, ret)));
+   	vec4 couleurfinale = mix(sin(vec4(0.1,0.2,0.5,0)), mix(m_ColorMin, m_ColorMax, ret), ret/400);
    	if (ret == 0.0) return vec4(0.0,0.0,0.0,1);
    	return couleurfinale;
+}
 
 
 void main(){

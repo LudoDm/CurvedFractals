@@ -34,6 +34,7 @@ public class HelloInput extends SimpleApplication {
 	public static void main(String[] args) {
 		HelloInput app = new HelloInput();
 		AppSettings s = new AppSettings(true);
+//		s.setResolution(1200, 800);
 		s.setResolution(1920, 1080);
 		s.setFullscreen(true);
 		app.setSettings(s);
@@ -63,8 +64,8 @@ public class HelloInput extends SimpleApplication {
 		// "Common/MatDefs/Misc/Unshaded.j3md");
 
 		Material mat = new Material(assetManager, "/prototypes/mat.j3md");
-		mat.setColor("ColorMin", ColorRGBA.Blue);
-		mat.setColor("ColorMax", ColorRGBA.Green);
+		mat.setColor("ColorMin", ColorRGBA.randomColor());
+		mat.setColor("ColorMax", ColorRGBA.randomColor());
 		mat.setVector2("Resolution", new Vector2f(w,h));
 		//pour désactiver le mouvement
 		flyCam.setEnabled(false);
