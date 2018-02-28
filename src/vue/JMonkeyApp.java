@@ -1,5 +1,6 @@
 package vue;
 
+import java.io.File;
 
 import com.jme3.app.LegacyApplication;
 import com.jme3.app.SimpleApplication;
@@ -32,51 +33,39 @@ import com.jme3.input.controls.MouseButtonTrigger;
  */
 public class JMonkeyApp extends JmeToJFXApplication {
 
-	public static void main(String[] args) {
-		JMonkeyApp app = new JMonkeyApp();
-		AppSettings s = new AppSettings(true);
-		s.setResolution(1920, 1080);
-		s.setFullscreen(true);
-		app.setSettings(s);
-		app.setShowSettings(false);
-		app.start();
-	}
-
 	protected Geometry player;
 	private boolean isRunning = true;
+	private Material mat;
 
-	//https://cis.temple.edu/~lakaemper/courses/cis4350_2014_SPRING/classNotes/JMonkeyNotes.pdf
+	// https://cis.temple.edu/~lakaemper/courses/cis4350_2014_SPRING/classNotes/JMonkeyNotes.pdf
 	@Override
 	public void simpleInitApp() {
 		float w = this.getContext().getSettings().getWidth();
 		float h = this.getContext().getSettings().getHeight();
-		System.out.println("w: " + w+ " h: " + h);
-		cam.setLocation(Vector3f.ZERO.add(new Vector3f(0.0f, 0.0f,10f)));
+		System.out.println("w: " + w + " h: " + h);
+		cam.setLocation(Vector3f.ZERO.add(new Vector3f(0.0f, 0.0f, 10f)));
 		float camZ = cam.getLocation().getZ();
-		float ratio = w/h;
-		float width = camZ*ratio;
+		float ratio = w / h;
+		float width = camZ * ratio;
 		float height = camZ;
 
 		Quad b = new Quad(width, height);
 		player = new Geometry("Player", b);
-//		player.setIgnoreTransform(true);
-		// Material mat = new Material(assetManager,
-		// "Common/MatDefs/Misc/Unshaded.j3md");
 
-		Material mat = new Material(assetManager, "/vue/mat.j3md");
+		Material mat = new Material(assetManager, "/vue/genericMat.j3md");
+
 		mat.setColor("Color", ColorRGBA.Blue);
-		mat.setVector2("Resolution", new Vector2f(w,h));
-		//pour désactiver le mouvement
+		mat.setVector2("Resolution", new Vector2f(w, h));
+		// pour désactiver le mouvement
 		flyCam.setEnabled(false);
 		player.setMaterial(mat);
 		player.setCullHint(CullHint.Never);
-		player.setLocalTranslation(-(width/2), -(height/2) , 0);
+		player.setLocalTranslation(-(width / 2), -(height / 2), 0);
 		rootNode.attachChild(player);
-
 
 		Node coord = createCoordinationNode(1, 1);
 		rootNode.attachChild(coord);
-		// initKeys(); // load my custom keybinding
+
 	}
 
 	/**
@@ -173,49 +162,8 @@ public class JMonkeyApp extends JmeToJFXApplication {
 
 	}
 
-	/**
-	 * Custom Keybinding: Map named actions to inputs.
-	 */
-	// private void initKeys() {
-	// // You can map one or several inputs to one named action
-	// inputManager.addMapping("Pause", new KeyTrigger(KeyInput.KEY_P));
-	// inputManager.addMapping("Left", new KeyTrigger(KeyInput.KEY_J));
-	// inputManager.addMapping("Right", new KeyTrigger(KeyInput.KEY_K));
-	// inputManager.addMapping("Rotate", new KeyTrigger(KeyInput.KEY_SPACE),
-	// new MouseButtonTrigger(MouseInput.BUTTON_LEFT));
-	// // Add the names to the action listener.
-	// inputManager.addListener(actionListener, "Pause");
-	// inputManager.addListener(analogListener, "Left", "Right", "Rotate");
-	//
-	// }
+	public void refreshMaterial() {
+		player.setMaterial(assetManager.loadMaterial("/Materials/newMaterial.j3md"));
+	}
 
-	private final ActionListener actionListener = new ActionListener() {
-		@Override
-		public void onAction(String name, boolean keyPressed, float tpf) {
-			if (name.equals("Pause") && !keyPressed) {
-				isRunning = !isRunning;
-			}
-		}
-	};
-
-	// private final AnalogListener analogListener = new AnalogListener() {
-	// @Override
-	// public void onAnalog(String name, float value, float tpf) {
-	//// if (isRunning) {
-	//// if (name.equals("Rotate")) {
-	//// player.rotate(0, value * speed, 0);
-	//// }
-	//// if (name.equals("Right")) {
-	//// Vector3f v = player.getLocalTranslation();
-	//// player.setLocalTranslation(v.x + value * speed, v.y, v.z);
-	//// }
-	//// if (name.equals("Left")) {
-	//// Vector3f v = player.getLocalTranslation();
-	//// player.setLocalTranslation(v.x - value * speed, v.y, v.z);
-	//// }
-	//// } else {
-	//// System.out.println("Press P to unpause.");
-	//// }
-	// }
-	// };
 }
