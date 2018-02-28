@@ -121,8 +121,6 @@ public class ControlleurVue {
 			System.out.println("Exception lors du chargement des ressources dans controlleur vue");
 		}
 
-		System.out.println(theImageView);
-
 	}
 
 	@FXML
@@ -135,8 +133,6 @@ public class ControlleurVue {
 
 		vec2 = new Vector4f((float) c2.getRed(), (float) c2.getGreen(), (float) c2.getBlue(), (float) c2.getOpacity());
 
-		System.out.println(vec1.toString() + " " + vec2.toString());
-
 		colorbox.setVisible(false);
 		visibleSet.remove(colorbox);
 		bColor.setStyle("-fx-background-radius: 15");
@@ -146,8 +142,6 @@ public class ControlleurVue {
 	void closeFunctionBox(ActionEvent event) {
 
 		function = tFunction.getText();
-
-		System.out.println(function);
 
 		functionbox.setVisible(false);
 		visibleSet.remove(functionbox);
@@ -175,8 +169,6 @@ public class ControlleurVue {
 
 		}
 
-		System.out.println(matrix);
-
 		matrixbox.setVisible(false);
 		visibleSet.remove(matrixbox);
 		bMatrix.setStyle("-fx-background-radius: 15");
@@ -187,8 +179,6 @@ public class ControlleurVue {
 	void closeZoomBox(ActionEvent event) {
 
 		zoomVal = tZoom.getText();
-
-		System.out.println(zoomVal);
 
 		zoombox.setVisible(false);
 		visibleSet.remove(zoombox);
@@ -248,8 +238,6 @@ public class ControlleurVue {
 
 	@FXML
 	void showSideMenu(MouseEvent event) {
-
-		System.out.println(visibleSet.toString());
 
 		if (!sidemenu.isVisible()) {
 			sidemenu.setVisible(true);
@@ -342,16 +330,13 @@ public class ControlleurVue {
 	// TODO Enlever l'annotation @notnull ?
 	private static @NotNull JMonkeyApp makeJmeApplication() {
 
-		// Ici c'est le bloc pour nos settings personnels
-		AppSettings theAppSettings = new AppSettings(true);
-		theAppSettings.setResolution(1920, 1080);
-		theAppSettings.setFullscreen(false);
-
 		// Ici c'est la magie du plugin Jme-jfx en oeuvre DONT TOUCH
 
 		AppSettings settings = JmeToJFXIntegrator.prepareSettings(new AppSettings(true), 60);
+		settings.setResolution(1920, 1080);
+
 		final JMonkeyApp application = new JMonkeyApp();
-		application.setSettings(theAppSettings);
+		application.setSettings(settings);
 		application.setShowSettings(false);
 
 		return application;
