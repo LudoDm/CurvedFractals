@@ -5,12 +5,13 @@ import javafx.application.Application;
 import javafx.stage.Stage;
 
 public class CurvedFractal extends Application {
-	
+
 	private Controleur controleur;
 
 	public static void main(String[] args) {
 		Application.launch(args);
 	}
+
 	@Override
 	public void start(Stage stage) throws Exception {
 		controleur = new Controleur();
@@ -19,6 +20,5 @@ public class CurvedFractal extends Application {
 		stage.show();		
 		this.stop();
 	}
-	
-}
 
+}
