@@ -11,6 +11,8 @@ import java.util.List;
 import org.jetbrains.annotations.NotNull;
 
 import com.jme3.material.Material;
+import com.jme3.math.Matrix4f;
+import com.jme3.math.Transform;
 import com.jme3.math.Vector4f;
 import com.jme3.system.AppSettings;
 import com.jme3x.jfx.injfx.JmeToJFXApplication;
@@ -53,6 +55,7 @@ public class ControlleurVue {
 
 	private Vector4f vec1, vec2;
 	private MaterialHandler matHandler;
+	private Transform zoomTrans = new Transform();
 
 	@FXML
 	private ImageView theImageView;
@@ -203,6 +206,9 @@ public class ControlleurVue {
 	@FXML
 	void gererZoom(ScrollEvent event) {
 
+		zoomTrans = zoomTrans.setScale(zoomTrans.getScale().x + (float) event.getTextDeltaY());
+
+		System.out.println(getZoomMat());
 	}
 
 	@FXML
@@ -310,6 +316,11 @@ public class ControlleurVue {
 	public Vector4f getVec2() {
 		return vec2;
 	}
+	
+	public Matrix4f getZoomMat() {
+		return zoomTrans.toTransformMatrix();
+	}
+
 
 	private void initializeMaterialHandler() throws URISyntaxException {
 		File shadFrag = new File(this.getClass().getResource("/vue/genericShaderFrag.glsl").toURI());
