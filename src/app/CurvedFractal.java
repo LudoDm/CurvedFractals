@@ -17,6 +17,7 @@ public class CurvedFractal extends Application {
 		stage.setTitle("CurvedFractals");
 		stage.setScene(controleur.getScene());
 		stage.show();		
+		this.stop();
 	}
 	
 }

@@ -19,6 +19,7 @@ public class ShaderHandlerTest {
 
 	ShaderHandler s;
 	String validF = "vec2(z.x * z.x - z.y * z.y, 2.0 * z.x * z.y) +c";
+	String validF2 = "z+c";
 	String invalidVar = "x*x + c";
 	String incomplete = "";
 	File shadB;
@@ -43,15 +44,20 @@ public class ShaderHandlerTest {
 		System.out.println("out :" + outF);
 		assertTrue(validF.equals(outF));
 
+		s.setFormula(validF2);
+		String outF2 = s.getFormula();
+		System.out.println("out :" + outF2);
+		assertTrue(validF.equals(outF2));
+
 		s.setFormula(invalidVar);
 		String outF1 = s.getFormula();
 		System.out.println("out :" + outF1);
 		assertFalse(invalidVar.equals(outF1));
 
 		s.setFormula(incomplete);
-		String outF2 = s.getFormula();
-		System.out.println("out :" + outF2);
-		assertFalse(incomplete.equals(outF2));
+		String outF3 = s.getFormula();
+		System.out.println("out :" + outF3);
+		assertFalse(incomplete.equals(outF3));
 	}
 
 	@Test
