@@ -46,6 +46,7 @@ public class hey extends JmeToJFXApplication {
 		// Add the names to the action listener.
 		inputManager.addListener(actionListener, "Pause");
 		inputManager.addListener(analogListener, "Left", "Right", "Rotate");
+		
 
 	}
 

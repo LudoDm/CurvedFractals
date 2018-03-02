@@ -1,5 +1,7 @@
 package vue;
 
+import java.awt.MouseInfo;
+import java.awt.PointerInfo;
 import java.io.IOException;
 import java.util.ArrayList;
 
@@ -8,6 +10,8 @@ import java.util.List;
 import org.jetbrains.annotations.NotNull;
 
 import com.jme3.material.Material;
+import com.jme3.math.Matrix4f;
+import com.jme3.math.Vector3f;
 import com.jme3.math.Vector4f;
 import com.jme3.system.AppSettings;
 import com.jme3x.jfx.injfx.JmeToJFXApplication;
@@ -42,6 +46,7 @@ public class ControlleurVue {
 	private Controleur controleurPrincipal;
 	private String m11, m12, m21, m22, function, zoomVal;
 	private ObservableSet<Node> visibleSet;
+	private float xInitLocation, yInitLocation;
 
 	private Color c1, c2;
 
@@ -255,6 +260,22 @@ public class ControlleurVue {
 				n.setVisible(false);
 			}
 		}
+
+	}
+
+	@FXML
+	void positionInit() {
+		xInitLocation = (float) MouseInfo.getPointerInfo().getLocation().getX();
+		yInitLocation = (float) MouseInfo.getPointerInfo().getLocation().getY();
+		System.out.println(xInitLocation + " " + yInitLocation);
+	}
+
+	@FXML
+	void mouseDrag() {
+
+		Vector3f vec = new Vector3f((float) -(xInitLocation - MouseInfo.getPointerInfo().getLocation().getX()),
+				(float) (yInitLocation - MouseInfo.getPointerInfo().getLocation().getY()), 0);
+		System.out.println("[ " + vec.x + " " + vec.y + " ]");
 
 	}
 
