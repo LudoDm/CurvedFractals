@@ -19,7 +19,7 @@ public class ShaderHandlerTest {
 
 	ShaderHandler s;
 	String validF = "vec2(z.x * z.x - z.y * z.y, 2.0 * z.x * z.y) +c";
-	String validF2 = "z+c";
+	String validF2 = "z+c.xx";
 	String invalidVar = "x*x + c";
 	String incomplete = "";
 	File shadB;
