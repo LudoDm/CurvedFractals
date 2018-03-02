@@ -67,28 +67,35 @@ public class ShaderHandler {
 
 	private static boolean validateFormula(String formula) {
 		boolean out = false;
-		StringTokenizer t = new StringTokenizer(formula);
-		boolean containZ = false;
-		boolean containC = false;
-		while (t.hasMoreTokens() && !out) {
-			String tok = t.nextToken();
-			System.out.println(tok);
-			if (tok.contains(VAR_ITT)) {
-				containZ = true;
+
+		if (formula != null) {
+
+			StringTokenizer t = new StringTokenizer(formula);
+			boolean containZ = false;
+			boolean containC = false;
+			while (t.hasMoreTokens() && !out) {
+				String tok = t.nextToken();
+				System.out.println(tok);
+				if (tok.contains(VAR_ITT)) {
+					containZ = true;
+				}
+
+				if (tok.matches("(" + VAR_POS + "|" + VAR_POS + ".*|[+-]" + VAR_POS + ")")) {
+					containC = true;
+				}
+
+				if (containZ && containC) {
+					out = true;
+				}
 			}
 
-			if (tok.matches("(" + VAR_POS + "|" + VAR_POS + ".*|[+-]" + VAR_POS + ")")) {
-				containC = true;
-			}
-
-			if (containZ && containC) {
-				out = true;
-			}
 		}
 		return out;
 	}
 
-	public void WriteFormula(String formula) {
+	public boolean WriteFormula(String formula) {
+		boolean out = false;
+		
 		try {
 
 			if (setFormula(formula)) {
@@ -103,7 +110,7 @@ public class ShaderHandler {
 				boolean done = false;
 				for (int i = 0; i < data.size() && !done; i++) {
 					if (data.get(i).contains(EQNEXTLINEINDICATOR)) {
-						data.add(i + 1,"z = " + getFormula());
+						data.add(i + 1, "z = " + getFormula() + ";");
 						done = true;
 					}
 				}
@@ -112,10 +119,14 @@ public class ShaderHandler {
 				writeFile(getShaderBaseData(), getShaderUpdatedBase());
 			}
 
+			out = true;
+			
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		
+		return out;
 	}
 
 	public void writeFile(ArrayList<String> data, File file) {
@@ -159,7 +170,7 @@ public class ShaderHandler {
 		return shaderUpdatedBase;
 	}
 
-	//TODO
+	// TODO
 	public void clear() {
 
 	}

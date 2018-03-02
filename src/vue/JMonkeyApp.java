@@ -52,9 +52,10 @@ public class JMonkeyApp extends JmeToJFXApplication {
 		Quad b = new Quad(width, height);
 		player = new Geometry("Player", b);
 
-		Material mat = new Material(assetManager, "/vue/genericMat.j3md");
+		Material mat = new Material(assetManager, "/vue/initialMat.j3md");
 
-		mat.setColor("Color", ColorRGBA.Blue);
+		mat.setColor("ColorMin", ColorRGBA.randomColor());
+		mat.setColor("ColorMax", ColorRGBA.randomColor());
 		mat.setVector2("Resolution", new Vector2f(w, h));
 		// pour désactiver le mouvement
 		flyCam.setEnabled(false);
@@ -162,8 +163,13 @@ public class JMonkeyApp extends JmeToJFXApplication {
 
 	}
 
-	public void refreshMaterial() {
-		player.setMaterial(assetManager.loadMaterial("/Materials/newMaterial.j3md"));
+	public void refreshMaterial(File theFile) {
+		String thePath = ("/vue/" + theFile.getName());	
+		mat = new Material(assetManager, thePath);
+		mat.setColor("ColorMin", ColorRGBA.randomColor());
+		mat.setColor("ColorMax", ColorRGBA.randomColor());
+		mat.setVector2("Resolution", new Vector2f(1920, 1080));
+		player.setMaterial(mat);
 	}
 
 }

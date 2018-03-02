@@ -147,6 +147,13 @@ public class ControlleurVue {
 		visibleSet.remove(functionbox);
 		bFunction.setStyle("-fx-background-radius: 15");
 
+		try {
+			changerEquation(tFunction.getText());
+		} catch (IOException e) {
+
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	@FXML
@@ -318,9 +325,9 @@ public class ControlleurVue {
 
 	// TODO à ajouter dans le fxml
 	public void changerEquation(String eq) throws IOException {
-		matHandler.writeFormula(eq);
-		Files.copy(matHandler.getMatdefBaseUpdated().toPath(), new File("/assets/Materials/newMaterial.j3md").toPath());
-		application.refreshMaterial();
+		
+		matHandler.writeFormula(eq);	
+		application.refreshMaterial(matHandler.getMatdefBaseUpdated());
 	}
 
 	public void setControleurPrincipal(Controleur controleurPrincipal) {
