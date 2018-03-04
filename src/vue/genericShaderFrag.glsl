@@ -63,8 +63,8 @@ vec4 Image(vec2 f) {
 	if (ret == 0.0) {
 		couleurfinale = vec4(0.0,0.0,0.0,1.0);
 	} else {
-		//couleurfinale = mix(sin(vec4(0.1,0.2,0.5,1.0)), mix(m_ColorMin,m_ColorMax, ret), ret/100);
-		couleurfinale = sin(mix(m_ColorMax, m_ColorMin, ret/40));
+		couleurfinale = mix(sin(vec4(0.1,0.2,0.5,1.0)), mix(m_ColorMin, m_ColorMax, ret), ret/400);
+		//couleurfinale = sin(mix(m_ColorMin, m_ColorMax, ret/30));
 	}
 	return couleurfinale;
 }

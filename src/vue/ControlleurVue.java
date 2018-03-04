@@ -135,9 +135,9 @@ public class ControlleurVue {
 		// TODO regler ca, sur le premier mat, il est null et on ne peut pas changer la
 		// couleur...
 		if (!application.isMatNull()) {
-			application.setColorMinMat(new ColorRGBA((float) c1.getRed(), (float) c1.getGreen(), (float) c1.getBlue(),
+			application.setColorMaxMat(new ColorRGBA((float) c1.getRed(), (float) c1.getGreen(), (float) c1.getBlue(),
 					(float) c1.getOpacity()));
-			application.setColorMaxMat(new ColorRGBA((float) c2.getRed(), (float) c2.getGreen(), (float) c2.getBlue(),
+			application.setColorMinMat(new ColorRGBA((float) c2.getRed(), (float) c2.getGreen(), (float) c2.getBlue(),
 					(float) c2.getOpacity()));
 		}
 
@@ -157,6 +157,7 @@ public class ControlleurVue {
 
 		try {
 			changerEquation(tFunction.getText());
+			application.setZoomTransformMat(Transform.IDENTITY.toTransformMatrix());
 		} catch (IOException e) {
 			// TODO Bloc catch généré automatiquement
 			e.printStackTrace();

@@ -39,8 +39,8 @@ public class JMonkeyApp extends JmeToJFXApplication {
 	protected Geometry player;
 	private boolean isRunning = true;
 	private Material mat;
-	private ColorRGBA ColorMin = ColorRGBA.Blue;
-	private ColorRGBA ColorMax = ColorRGBA.Magenta;
+	private ColorRGBA ColorMin = ColorRGBA.Magenta;
+	private ColorRGBA ColorMax = ColorRGBA.Blue;
 
 
 	private Vector2f Resolution;
@@ -71,8 +71,8 @@ public class JMonkeyApp extends JmeToJFXApplication {
 		Material mat = new Material(assetManager, "/vue/initialMat.j3md");
 		mat.setTransparent(false);
 
-		mat.setColor("ColorMin", getColorMin());
-		mat.setColor("ColorMax", getColorMax());
+		mat.setColor("ColorMin", getColorMax());
+		mat.setColor("ColorMax", getColorMin());
 		mat.setVector2("Resolution", new Vector2f(w, h));
 		// pour désactiver le mouvement
 		flyCam.setEnabled(false);
