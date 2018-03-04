@@ -1,17 +1,14 @@
 package prototypes;
 
 
-import com.jme3.app.LegacyApplication;
 import com.jme3.app.SimpleApplication;
 import com.jme3.material.Material;
-import com.jme3.material.MaterialDef;
 import com.jme3.math.Vector3f;
 import com.jme3.scene.Geometry;
 import com.jme3.scene.Node;
 import com.jme3.scene.Spatial.CullHint;
 import com.jme3.scene.debug.Arrow;
 import com.jme3.scene.debug.Grid;
-import com.jme3.scene.shape.Box;
 import com.jme3.scene.shape.Quad;
 import com.jme3.system.AppSettings;
 
@@ -19,17 +16,13 @@ import jme3tools.optimize.GeometryBatchFactory;
 
 import com.jme3.math.ColorRGBA;
 import com.jme3.math.Vector2f;
-import com.jme3.input.KeyInput;
-import com.jme3.input.MouseInput;
 import com.jme3.input.controls.ActionListener;
-import com.jme3.input.controls.AnalogListener;
-import com.jme3.input.controls.KeyTrigger;
-import com.jme3.input.controls.MouseButtonTrigger;
 
 /**
  * Sample 5 - how to map keys and mousebuttons to actions
  */
 public class HelloInput extends SimpleApplication {
+	
 
 	public static void main(String[] args) {
 		HelloInput app = new HelloInput();

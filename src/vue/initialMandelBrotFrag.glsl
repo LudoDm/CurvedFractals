@@ -1,4 +1,4 @@
-
+﻿
 uniform vec4 m_ColorMin;
 uniform vec4 m_ColorMax;
 uniform vec2 m_Resolution;
@@ -31,9 +31,15 @@ vec4 Image(vec2 f) {
     float ret = float(mandelbrot(uv));
 
     // Turn the iteration count into a color.
-   	vec4 couleurfinale = mix(sin(vec4(0.1,0.2,0.5,0)), mix(m_ColorMin, m_ColorMax, ret), ret/400);
-   	if (ret == 0.0) return vec4(0.0,0.0,0.0,1);
-   	return couleurfinale;
+	//Pour une raison inconnue (triste Jmonkey...), la couleur change avec le Alpha, et n'est plus aucunement la couleur voulue.
+	//Donc le alpha doit toujours rester 1!!
+	vec4 couleurfinale;
+	if (ret == 0.0) {
+		couleurfinale = vec4(0.0,0.0,0.0,1.0);
+	} else {
+		couleurfinale = mix(sin(vec4(0.1,0.2,0.5,1.0)), mix(m_ColorMin,m_ColorMax, ret), ret/400);
+	}
+	return couleurfinale;
 }
 
 

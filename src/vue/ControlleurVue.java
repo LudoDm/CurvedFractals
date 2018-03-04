@@ -11,10 +11,12 @@ import java.util.List;
 import org.jetbrains.annotations.NotNull;
 
 import com.jme3.material.Material;
+import com.jme3.math.ColorRGBA;
 import com.jme3.math.Matrix4f;
 import com.jme3.math.Transform;
 import com.jme3.math.Vector4f;
 import com.jme3.system.AppSettings;
+import com.jme3.system.JmeContext.Type;
 import com.jme3x.jfx.injfx.JmeToJFXApplication;
 import com.jme3x.jfx.injfx.JmeToJFXIntegrator;
 import com.sun.javafx.geom.Path2D;
@@ -52,8 +54,6 @@ public class ControlleurVue {
 	private JMonkeyApp application;
 
 	private Color c1, c2;
-
-	private Vector4f vec1, vec2;
 	private MaterialHandler matHandler;
 	private Transform zoomTrans = new Transform();
 
@@ -132,9 +132,14 @@ public class ControlleurVue {
 		c1 = colpic1.getValue();
 		c2 = colpic2.getValue();
 
-		vec1 = new Vector4f((float) c1.getRed(), (float) c1.getGreen(), (float) c1.getBlue(), (float) c1.getOpacity());
-
-		vec2 = new Vector4f((float) c2.getRed(), (float) c2.getGreen(), (float) c2.getBlue(), (float) c2.getOpacity());
+		// TODO regler ca, sur le premier mat, il est null et on ne peut pas changer la
+		// couleur...
+		if (!application.isMatNull()) {
+			application.setColorMinMat(new ColorRGBA((float) c1.getRed(), (float) c1.getGreen(), (float) c1.getBlue(),
+					(float) c1.getOpacity()));
+			application.setColorMaxMat(new ColorRGBA((float) c2.getRed(), (float) c2.getGreen(), (float) c2.getBlue(),
+					(float) c2.getOpacity()));
+		}
 
 		colorbox.setVisible(false);
 		visibleSet.remove(colorbox);
@@ -153,8 +158,7 @@ public class ControlleurVue {
 		try {
 			changerEquation(tFunction.getText());
 		} catch (IOException e) {
-
-			// TODO Auto-generated catch block
+			// TODO Bloc catch généré automatiquement
 			e.printStackTrace();
 		}
 	}
@@ -206,8 +210,23 @@ public class ControlleurVue {
 	@FXML
 	void gererZoom(ScrollEvent event) {
 
-		zoomTrans = zoomTrans.setScale(zoomTrans.getScale().x + (float) event.getTextDeltaY());
+		//TODO ça tout seul ca chie. 
+		float ds = (float) event.getTextDeltaY();
+		ds /= 5;
+		System.out.println(ds);
+		if(ds < 0 && Math.abs(ds) != 1) {
+			ds = 1.0f/-ds;
+		} else if( ds ==0 ) {
+			ds = 1;
+		} 
+		float out =  zoomTrans.getScale().x;
+		zoomTrans = zoomTrans.setScale(out * ds);
 
+		if (!application.isMatNull()) {
+			application.setZoomTransformMat(getZoomMat());
+		} else {
+			System.out.println("FUUUUUUUUUUUUUUUUUUCCCCCCCCCCCCCCCCCCCLLLLLLLLLLLLLLLLLL");
+		}
 		System.out.println(getZoomMat());
 	}
 
@@ -309,18 +328,9 @@ public class ControlleurVue {
 		return zoomVal;
 	}
 
-	public Vector4f getVec1() {
-		return vec1;
-	}
-
-	public Vector4f getVec2() {
-		return vec2;
-	}
-	
 	public Matrix4f getZoomMat() {
 		return zoomTrans.toTransformMatrix();
 	}
-
 
 	private void initializeMaterialHandler() throws URISyntaxException {
 		File shadFrag = new File(this.getClass().getResource("/vue/genericShaderFrag.glsl").toURI());
@@ -336,8 +346,8 @@ public class ControlleurVue {
 
 	// TODO à ajouter dans le fxml
 	public void changerEquation(String eq) throws IOException {
-		
-		matHandler.writeFormula(eq);	
+
+		matHandler.writeFormula(eq);
 		application.refreshMaterial(matHandler.getMatdefBaseUpdated());
 	}
 
@@ -353,10 +363,9 @@ public class ControlleurVue {
 		AppSettings settings = JmeToJFXIntegrator.prepareSettings(new AppSettings(true), 60);
 		settings.setResolution(1920, 1080);
 
-		final JMonkeyApp application = new JMonkeyApp();
+		final JMonkeyApp application = new JMonkeyApp(1920, 1080);
 		application.setSettings(settings);
 		application.setShowSettings(false);
-
 		return application;
 	}
 
