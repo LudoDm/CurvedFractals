@@ -16,11 +16,15 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
+<<<<<<< HEAD
 <BorderPane fx:id="borderpane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1280.0" stylesheets="@NewFile.css" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1">
+=======
+<BorderPane fx:id="borderpane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1280.0" stylesheets="@NewFile.css" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1">
+>>>>>>> jay-v3
    <center>
       <StackPane fx:id="stackpane" onMouseClicked="#showSideMenu" prefHeight="150.0" prefWidth="200.0" BorderPane.alignment="CENTER">
          <children>
-            <ImageView fx:id="theImageView" fitHeight="720.0" fitWidth="1280.0" onScroll="#gererZoom" pickOnBounds="true" preserveRatio="true" />
+            <ImageView fx:id="theImageView" fitHeight="720.0" fitWidth="1280.0" onMouseDragged="#mouseDrag" onMousePressed="#positionInit" onScroll="#gererZoom" pickOnBounds="true" preserveRatio="true" />
             <VBox fx:id="sidemenu" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="351.0" prefWidth="94.0" spacing="10.0" translateX="575.0">
                <children>
                   <Button fx:id="bFunction" mnemonicParsing="false" onAction="#showFunctionBox" prefHeight="75.0" prefWidth="75.0">

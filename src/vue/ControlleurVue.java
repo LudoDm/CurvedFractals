@@ -1,5 +1,6 @@
 package vue;
 
+import java.awt.MouseInfo;
 import java.io.File;
 import java.io.IOException;
 import java.net.URISyntaxException;
@@ -14,6 +15,7 @@ import com.jme3.material.Material;
 import com.jme3.math.ColorRGBA;
 import com.jme3.math.Matrix4f;
 import com.jme3.math.Transform;
+import com.jme3.math.Vector3f;
 import com.jme3.math.Vector4f;
 import com.jme3.system.AppSettings;
 import com.jme3.system.JmeContext.Type;
@@ -56,6 +58,8 @@ public class ControlleurVue {
 	private Color c1, c2;
 	private MaterialHandler matHandler;
 	private Transform zoomTrans = new Transform();
+	private float xInitLocation, yInitLocation;
+	private Vector3f vecTranslation;
 
 	@FXML
 	private ImageView theImageView;
@@ -82,6 +86,7 @@ public class ControlleurVue {
 	private TextField tFunction, tZoom, tMatrix1, tMatrix2, tMatrix3, tMatrix4;
 	@FXML
 	private ColorPicker colpic1, colpic2;
+
 
 	public ControlleurVue() {
 		try {
@@ -299,6 +304,22 @@ public class ControlleurVue {
 		} else {
 			closeZoomBox(event);
 		}
+	}
+	
+	@FXML
+	void positionInit() {
+		xInitLocation = (float) MouseInfo.getPointerInfo().getLocation().getX();
+		yInitLocation = (float) MouseInfo.getPointerInfo().getLocation().getY();
+		System.out.println(xInitLocation + " " + yInitLocation);
+	}
+
+	@FXML
+	void mouseDrag() {
+
+		vecTranslation = new Vector3f((float) -(xInitLocation - MouseInfo.getPointerInfo().getLocation().getX()),
+				(float) (yInitLocation - MouseInfo.getPointerInfo().getLocation().getY()), 0);
+		System.out.println("[ " + vecTranslation.x + " " + vecTranslation.y + " ]");
+
 	}
 
 	public Scene getScene() {
