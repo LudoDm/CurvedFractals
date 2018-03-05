@@ -2,6 +2,8 @@
 uniform vec4 m_ColorMin;
 uniform vec4 m_ColorMax;
 uniform vec2 m_Resolution;
+uniform mat4 m_Zoom;
+uniform vec2 m_Translat;
 
 out vec4 color;
 
@@ -28,7 +30,9 @@ vec4 Image(vec2 f) {
    // float zm = dot(ms2,ms2);
     //uv /= zm;
     // Evaluate mandelbrot for this coordinate.
-    float ret = float(mandelbrot(uv));
+	vec4 pos = m_Zoom * vec4(uv.x,uv.y,0,0);
+
+    float ret = float(mandelbrot(pos.xy));
 
     // Turn the iteration count into a color.
 	//Pour une raison inconnue (triste Jmonkey...), la couleur change avec le Alpha, et n'est plus aucunement la couleur voulue.

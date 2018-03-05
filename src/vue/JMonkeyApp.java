@@ -45,7 +45,7 @@ public class JMonkeyApp extends JmeToJFXApplication {
 
 	private Vector2f Resolution;
 	private Matrix4f ZoomTransform = new Transform().IDENTITY.toTransformMatrix();
-	private Matrix4f TranslateTransform;
+	private Vector2f TranslatTransform = new Vector2f(0,0);
 
 	public JMonkeyApp(float Resx, float Resy) {
 		setResolution(new Vector2f(Resx, Resy));
@@ -74,6 +74,8 @@ public class JMonkeyApp extends JmeToJFXApplication {
 		mat.setColor("ColorMin", getColorMax());
 		mat.setColor("ColorMax", getColorMin());
 		mat.setVector2("Resolution", new Vector2f(w, h));
+		mat.setMatrix4("Zoom", getZoomTransform());
+		mat.setVector2("Translat", getTranslateTransform());
 		// pour désactiver le mouvement
 		flyCam.setEnabled(false);
 		player.setMaterial(mat);
@@ -187,6 +189,7 @@ public class JMonkeyApp extends JmeToJFXApplication {
 		setColorMaxMat(getColorMax());
 		mat.setVector2("Resolution", new Vector2f(1920, 1080));
 		setZoomTransformMat(getZoomTransform());
+		setTranslateTransformMat(getTranslateTransform());
 		player.setMaterial(mat);
 	}
 	
@@ -239,16 +242,21 @@ public class JMonkeyApp extends JmeToJFXApplication {
 	}
 
 	public void setZoomTransformMat(Matrix4f zoomTransform) {
-		TranslateTransform = zoomTransform;
+		setZoomTransform(zoomTransform);
 		mat.setMatrix4("Zoom", zoomTransform);
 	}
 
-	public Matrix4f getTranslateTransform() {
-		return TranslateTransform;
+	public Vector2f getTranslateTransform() {
+		return this.TranslatTransform;
 	}
 
-	private void setTranslateTransform(Matrix4f translateTransform) {
-		TranslateTransform = translateTransform;
+	private void setTranslateTransform(Vector2f translateTransform) {
+		this.TranslatTransform = translateTransform;
+	}
+
+	public void setTranslateTransformMat(Vector2f translateTransform) {
+		setTranslateTransform(translateTransform);
+		mat.setVector2("Translat", translateTransform);
 	}
 
 }
