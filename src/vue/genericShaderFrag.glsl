@@ -1,4 +1,4 @@
-﻿uniform vec4 m_ColorMin;
+uniform vec4 m_ColorMin;
 uniform vec4 m_ColorMax;
 uniform vec2 m_Resolution;
 uniform mat4 m_Zoom;

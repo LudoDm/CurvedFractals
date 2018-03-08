@@ -127,6 +127,7 @@ public class ControlleurVue {
 
 		} catch (Exception ex) {
 			System.out.println("Exception lors du chargement des ressources dans controlleur vue");
+			ex.printStackTrace();
 		}
 
 	}
