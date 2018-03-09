@@ -1,4 +1,4 @@
-﻿precision highp float;
+precision highp float;
 
 uniform vec4 m_ColorMin;
 uniform vec4 m_ColorMax;
@@ -39,7 +39,7 @@ int mandelbrot(vec2 c) {
 		if (dot(z, z) > 4.0)
 			return i;
 		//Equation (la ligne suivante sera celle qui sera overwrite par l'utilisateur
-		//Elle doit mettre en relation la variable d'it�ration(nombre complexe aka vecteur R2) et la condition initiale (le point a tester) (nb complexe aka vec R2)
+		//Elle doit mettre en relation la variable d'it?ration(nombre complexe aka vecteur R2) et la condition initiale (le point a tester) (nb complexe aka vec R2)
 		//OUTPUT_EQ_NEXT_LINE
 
 	}
@@ -54,7 +54,6 @@ vec4 Image(vec2 f) {
 	vec4 transInit = vec4(2.,1.5,0,0);
 	vec2 translation = (m_Translat*2.0 - m_Resolution) *2.0 /m_Resolution.x;
 	vec4 t = vec4(translation.x,translation.y,0,0);
-
 	vec4 transtot = transInit + t;
 
 	c -= transtot;
