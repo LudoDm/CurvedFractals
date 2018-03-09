@@ -15,8 +15,9 @@ import com.jme3.material.Material;
 import com.jme3.math.ColorRGBA;
 import com.jme3.math.Matrix4f;
 import com.jme3.math.Transform;
-import com.jme3.math.Vector3f;
+import com.jme3.math.Vector2f;
 import com.jme3.math.Vector4f;
+import com.jme3.opencl.Platform;
 import com.jme3.system.AppSettings;
 import com.jme3.system.JmeContext.Type;
 import com.jme3x.jfx.injfx.JmeToJFXApplication;
@@ -59,7 +60,7 @@ public class ControlleurVue {
 	private MaterialHandler matHandler;
 	private Transform zoomTrans = new Transform();
 	private float xInitLocation, yInitLocation;
-	private Vector3f vecTranslation;
+	private Vector2f vecTranslation = new Vector2f(0, 0);
 
 	@FXML
 	private ImageView theImageView;
@@ -86,7 +87,6 @@ public class ControlleurVue {
 	private TextField tFunction, tZoom, tMatrix1, tMatrix2, tMatrix3, tMatrix4;
 	@FXML
 	private ColorPicker colpic1, colpic2;
-
 
 	public ControlleurVue() {
 		try {
@@ -155,19 +155,20 @@ public class ControlleurVue {
 	@FXML
 	void closeFunctionBox(ActionEvent event) {
 
-		function = tFunction.getText();
+			functionbox.setVisible(false);
+			visibleSet.remove(functionbox);
+			bFunction.setStyle("-fx-background-radius: 15");
 
-		functionbox.setVisible(false);
-		visibleSet.remove(functionbox);
-		bFunction.setStyle("-fx-background-radius: 15");
-
-		try {
-			changerEquation(tFunction.getText());
-			application.setZoomTransformMat(Transform.IDENTITY.toTransformMatrix());
-		} catch (IOException e) {
-			// TODO Bloc catch généré automatiquement
-			e.printStackTrace();
-		}
+			try {
+				changerEquation(tFunction.getText());
+				// on reset le zoom sur le changement d'équation pour pas avoir de zoom trop
+				// brusque au premier scroll
+				application.setZoomTransformMat(Transform.IDENTITY.toTransformMatrix());
+				this.zoomTrans = Transform.IDENTITY;
+			} catch (IOException e) {
+				// TODO Bloc catch généré automatiquement
+				e.printStackTrace();
+			}
 	}
 
 	@FXML
@@ -217,16 +218,16 @@ public class ControlleurVue {
 	@FXML
 	void gererZoom(ScrollEvent event) {
 
-		//TODO ça tout seul ca chie. 
+		// TODO ça tout seul ca chie.
 		float ds = (float) event.getTextDeltaY();
-		ds /= 5;
+		ds /= 10;
 		System.out.println(ds);
-		if(ds < 0 && Math.abs(ds) != 1) {
-			ds = 1.0f/-ds;
-		} else if( ds ==0 ) {
+		if (ds < 0 && Math.abs(ds) != 1) {
+			ds = 1.0f / -ds;
+		} else if (ds == 0) {
 			ds = 1;
-		} 
-		float out =  zoomTrans.getScale().x;
+		}
+		float out = zoomTrans.getScale().x;
 		zoomTrans = zoomTrans.setScale(out * ds);
 
 		if (!application.isMatNull()) {
@@ -306,7 +307,7 @@ public class ControlleurVue {
 			closeZoomBox(event);
 		}
 	}
-	
+
 	@FXML
 	void positionInit() {
 		xInitLocation = (float) MouseInfo.getPointerInfo().getLocation().getX();
@@ -317,9 +318,21 @@ public class ControlleurVue {
 	@FXML
 	void mouseDrag() {
 
-		vecTranslation = new Vector3f((float) -(xInitLocation - MouseInfo.getPointerInfo().getLocation().getX()),
-				(float) (yInitLocation - MouseInfo.getPointerInfo().getLocation().getY()), 0);
-		System.out.println("[ " + vecTranslation.x + " " + vecTranslation.y + " ]");
+		Vector2f NvecTranslation = new Vector2f(
+				(float) (xInitLocation - MouseInfo.getPointerInfo().getLocation().getX()) / 100.0f,
+				(float) -(yInitLocation - MouseInfo.getPointerInfo().getLocation().getY()) / 100.0f);
+		System.out.println("[ " + NvecTranslation.x + " " + NvecTranslation.y + " ]");
+		System.out.println("                [ " + vecTranslation.x + " " + vecTranslation.y + " ]");
+
+		System.out.println(xInitLocation + ", " + yInitLocation);
+
+		if (!application.isMatNull()) {
+			vecTranslation = vecTranslation.add(NvecTranslation);
+			application.setTranslateTransformMat(vecTranslation);
+			// System.out.println(zoomTrans.toTransformMatrix());
+			// application.setZoomTransformMat(zoomTrans.toTransformMatrix());
+
+		}
 
 	}
 
