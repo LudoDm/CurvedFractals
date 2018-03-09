@@ -26,6 +26,7 @@ import javafx.scene.control.ColorPicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.BorderPane;
@@ -264,20 +265,35 @@ public class ControlleurVue {
 	@FXML
 	void showSideMenu(MouseEvent event) {
 
-		if (!sidemenu.isVisible()) {
-			sidemenu.setVisible(true);
-			visibleSet.add(sidemenu);
+		if (event.getButton().equals(MouseButton.SECONDARY)) {
+			System.out.println("yo bitch");
+			gererRightClick();
+		} else if (event.getButton().equals(MouseButton.PRIMARY)) {
+			if (!sidemenu.isVisible()) {
+				sidemenu.setVisible(true);
+				visibleSet.add(sidemenu);
 
-			for (Node n : visibleSet) {
-				n.setVisible(true);
-			}
+				for (Node n : visibleSet) {
+					n.setVisible(true);
+				}
 
-		} else {
-			closeSideMenu();
-			for (Node n : visibleSet) {
-				n.setVisible(false);
+			} else {
+				closeSideMenu();
+				for (Node n : visibleSet) {
+					n.setVisible(false);
+				}
 			}
 		}
+
+	}
+
+	private void gererRightClick() {
+
+		Button b = new Button("allo");
+		VBox promptBox = new VBox();
+		promptBox.getChildren().add(b);
+
+		stackpane.getChildren().add(promptBox);
 
 	}
 

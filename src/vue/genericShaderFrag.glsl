@@ -48,6 +48,7 @@ int mandelbrot(vec2 c) {
 
 
 
+
 vec4 Image(vec2 f) {
 	// Screen coordinate, roughly -2 to +2
 	vec2 uv = (f.xy * 2.0 - m_Resolution.xy) * 2.0 / m_Resolution.x;
