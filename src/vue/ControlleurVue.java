@@ -316,9 +316,7 @@ public class ControlleurVue {
 			application.setTranslateTransformMat(vecTranslation);
 			// System.out.println(zoomTrans.toTransformMatrix());
 			// application.setZoomTransformMat(zoomTrans.toTransformMatrix());
-
 		}
-
 	}
 
 	public Scene getScene() {
@@ -372,7 +370,6 @@ public class ControlleurVue {
 	 * l'application
 	 */
 	private void changerEquationInitilialisation() {
-
 		if (changed == false) {
 
 			try {
@@ -383,7 +380,7 @@ public class ControlleurVue {
 				this.zoomTrans = Transform.IDENTITY;
 				changed = true;
 			} catch (IOException e) {
-				// TODO Bloc catch généré automatiquement
+				System.out.println("Exception lance dans la methode hacky pour regler le zoom au lancement de l'app");
 				e.printStackTrace();
 			}
 		}
@@ -393,9 +390,8 @@ public class ControlleurVue {
 	private static @NotNull JMonkeyApp makeJmeApplication() {
 
 		AppSettings settings = JmeToJFXIntegrator.prepareSettings(new AppSettings(true), 60);
-		settings.setResolution(1920, 1020);
 
-		final JMonkeyApp application = new JMonkeyApp(1920, 1080);
+		final JMonkeyApp application = new JMonkeyApp(1920, 1280);
 		application.setSettings(settings);
 		application.setShowSettings(false);
 		application.setDisplayFps(true);
