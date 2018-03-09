@@ -1,8 +1,11 @@
 MaterialDef Test Material 123{
 	MaterialParameters{
-		Vector4 ColorMax;
-		Vector4 ColorMin;
+		Vector4 ColorMax
+		Vector4 ColorMin
 		Vector2 Resolution
+		Matrix4 Zoom
+		Vector2 Translat
+
 	}
 	Technique {
     VertexShader GLSL140 : /vue/shaderVert.glsl

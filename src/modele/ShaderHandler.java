@@ -43,7 +43,7 @@ public class ShaderHandler {
 		}
 	}
 
-	public ArrayList<String> getShaderBaseData() {
+	private ArrayList<String> getShaderBaseData() {
 		return shaderBaseData;
 	}
 
@@ -110,7 +110,7 @@ public class ShaderHandler {
 				boolean done = false;
 				for (int i = 0; i < data.size() && !done; i++) {
 					if (data.get(i).contains(EQNEXTLINEINDICATOR)) {
-						data.add(i + 1, "z = " + getFormula() + ";");
+						data.add(i + 1, "        z = " + getFormula() + ";");
 						done = true;
 					}
 				}
@@ -129,7 +129,7 @@ public class ShaderHandler {
 		return out;
 	}
 
-	public void writeFile(ArrayList<String> data, File file) {
+	private void writeFile(ArrayList<String> data, File file) {
 		try {
 			PrintWriter out = new PrintWriter(getShaderUpdatedBase());
 
@@ -145,7 +145,7 @@ public class ShaderHandler {
 
 	}
 
-	public ArrayList<String> OpenFile(File file) {
+	private ArrayList<String> OpenFile(File file) {
 		ArrayList<String> out = new ArrayList<>();
 		String ligne;
 		try {

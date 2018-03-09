@@ -34,7 +34,7 @@ vec4 Image(vec2 f) {
 	//return vec4(sin(vec3(0.1, 0.2, 0.5) * ret), 1) * mix(m_ColorMin, m_ColorMax, ret) ;
    	//vec4 couleurfinale = (sin(vec4(0.1,0.2,0.5,0) * mix(m_ColorMin, m_ColorMax, ret/400)));
    	vec4 couleurfinale = mix(sin(vec4(0.1,0.2,0.5,0)), mix(m_ColorMin, m_ColorMax, ret), ret/400);
-   	if (ret == 0.0) return vec4(0.0,0.0,0.0,1);
+   	if (ret == 0.0) return sin(vec4(0.1,0.2,0.5,0));
    	return couleurfinale;
 }
 

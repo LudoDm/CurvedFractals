@@ -1,6 +1,7 @@
 package vue;
 
 import java.io.File;
+import java.net.URISyntaxException;
 
 import com.jme3.app.LegacyApplication;
 import com.jme3.app.SimpleApplication;
@@ -20,6 +21,8 @@ import com.jme3x.jfx.injfx.JmeToJFXApplication;
 import jme3tools.optimize.GeometryBatchFactory;
 
 import com.jme3.math.ColorRGBA;
+import com.jme3.math.Matrix4f;
+import com.jme3.math.Transform;
 import com.jme3.math.Vector2f;
 import com.jme3.input.KeyInput;
 import com.jme3.input.MouseInput;
@@ -36,10 +39,23 @@ public class JMonkeyApp extends JmeToJFXApplication {
 	protected Geometry player;
 	private boolean isRunning = true;
 	private Material mat;
+	private ColorRGBA ColorMin = ColorRGBA.Magenta;
+	private ColorRGBA ColorMax = ColorRGBA.Blue;
+
+
+	private Vector2f Resolution;
+	private Matrix4f ZoomTransform = new Transform().IDENTITY.toTransformMatrix();
+	private Vector2f TranslatTransform = new Vector2f(0,0);
+
+	public JMonkeyApp(float Resx, float Resy) {
+		setResolution(new Vector2f(Resx, Resy));
+	}
 
 	// https://cis.temple.edu/~lakaemper/courses/cis4350_2014_SPRING/classNotes/JMonkeyNotes.pdf
 	@Override
 	public void simpleInitApp() {
+		setColorMin(ColorRGBA.Blue);
+		setColorMax(ColorRGBA.Magenta);
 		float w = this.getContext().getSettings().getWidth();
 		float h = this.getContext().getSettings().getHeight();
 		System.out.println("w: " + w + " h: " + h);
@@ -53,10 +69,13 @@ public class JMonkeyApp extends JmeToJFXApplication {
 		player = new Geometry("Player", b);
 
 		Material mat = new Material(assetManager, "/vue/initialMat.j3md");
+		mat.setTransparent(false);
 
-		mat.setColor("ColorMin", ColorRGBA.randomColor());
-		mat.setColor("ColorMax", ColorRGBA.randomColor());
+		mat.setColor("ColorMin", getColorMax());
+		mat.setColor("ColorMax", getColorMin());
 		mat.setVector2("Resolution", new Vector2f(w, h));
+		mat.setMatrix4("Zoom", getZoomTransform());
+		mat.setVector2("Translat", getTranslateTransform());
 		// pour désactiver le mouvement
 		flyCam.setEnabled(false);
 		player.setMaterial(mat);
@@ -166,10 +185,78 @@ public class JMonkeyApp extends JmeToJFXApplication {
 	public void refreshMaterial(File theFile) {
 		String thePath = ("/vue/" + theFile.getName());	
 		mat = new Material(assetManager, thePath);
-		mat.setColor("ColorMin", ColorRGBA.randomColor());
-		mat.setColor("ColorMax", ColorRGBA.randomColor());
+		setColorMinMat(getColorMin());
+		setColorMaxMat(getColorMax());
 		mat.setVector2("Resolution", new Vector2f(1920, 1080));
+		setZoomTransformMat(getZoomTransform());
+		setTranslateTransformMat(getTranslateTransform());
 		player.setMaterial(mat);
+	}
+	
+	
+	public boolean isMatNull() {
+		return mat == null;
+	}
+
+	public ColorRGBA getColorMin() {
+		return ColorMin;
+	}
+
+	private void setColorMin(ColorRGBA colorMin) {
+		ColorMin = colorMin;
+	}
+
+	public void setColorMinMat(ColorRGBA colorMin) {
+		ColorMin = colorMin;
+		System.out.println("mat" +mat);
+		mat.setColor("ColorMin", colorMin);
+	}
+
+	public ColorRGBA getColorMax() {
+		return ColorMax;
+	}
+
+	private void setColorMax(ColorRGBA colorMax) {
+		ColorMax = colorMax;
+	}
+
+	public void setColorMaxMat(ColorRGBA colorMax) {
+		ColorMax = colorMax;
+		mat.setColor("ColorMax", colorMax);
+	}
+
+	public Vector2f getResolution() {
+		return Resolution;
+	}
+
+	public void setResolution(Vector2f resolution) {
+		Resolution = resolution;
+	}
+
+	public Matrix4f getZoomTransform() {
+		return ZoomTransform;
+	}
+
+	private void setZoomTransform(Matrix4f zoomTransform) {
+		ZoomTransform = zoomTransform;
+	}
+
+	public void setZoomTransformMat(Matrix4f zoomTransform) {
+		setZoomTransform(zoomTransform);
+		mat.setMatrix4("Zoom", zoomTransform);
+	}
+
+	public Vector2f getTranslateTransform() {
+		return this.TranslatTransform;
+	}
+
+	private void setTranslateTransform(Vector2f translateTransform) {
+		this.TranslatTransform = translateTransform;
+	}
+
+	public void setTranslateTransformMat(Vector2f translateTransform) {
+		setTranslateTransform(translateTransform);
+		mat.setVector2("Translat", translateTransform);
 	}
 
 }

@@ -46,7 +46,7 @@ public class MaterialHandler {
 
 	}
 
-	public void writeMat(File shaderUpdated) {
+	private void writeMat(File shaderUpdated) {
 		try {
 
 			File newMat = File.createTempFile("tempMatDef", ".j3md", getMatdefBase().getParentFile());
@@ -74,7 +74,7 @@ public class MaterialHandler {
 		}
 	}
 
-	public void writeMatDef(ArrayList<String> data, File file) {
+	private void writeMatDef(ArrayList<String> data, File file) {
 		try {
 			PrintWriter out = new PrintWriter(getMatdefBaseUpdated());
 
@@ -90,7 +90,7 @@ public class MaterialHandler {
 
 	}
 
-	public ArrayList<String> OpenFile(File file) {
+	private ArrayList<String> OpenFile(File file) {
 		ArrayList<String> out = new ArrayList<>();
 		String ligne;
 		try {
@@ -110,17 +110,11 @@ public class MaterialHandler {
 
 	}
 
-	public void updateMetric() {
-	}
-
-	public void updateFormula() {
-	}
-
 	public ArrayList<String> getDataMatDef() {
 		return dataMatDef;
 	}
 
-	public void setDataMatDef(ArrayList<String> dataMatDef) {
+	private void setDataMatDef(ArrayList<String> dataMatDef) {
 		this.dataMatDef = dataMatDef;
 	}
 
@@ -128,7 +122,7 @@ public class MaterialHandler {
 		return matdefBaseUpdated;
 	}
 
-	public void setMatdefBaseUpdated(File matdefBaseUpdated) {
+	private void setMatdefBaseUpdated(File matdefBaseUpdated) {
 		if (matdefBaseUpdated.exists() && matdefBaseUpdated.canRead() && matdefBaseUpdated.isFile()) {
 			this.matdefBaseUpdated = matdefBaseUpdated;
 		}
