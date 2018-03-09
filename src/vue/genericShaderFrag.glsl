@@ -33,7 +33,7 @@ float cnorm(in vec2 c) {
 
 int mandelbrot(vec2 c) {
 	vec2 z = c;
-	for (int i = 0; i < 1000; i++) {
+	for (int i = 0; i < 400; i++) {
 		// dot(z, z) > 4.0 is the same as length(z) > 2.0, but perhaps faster.
 		// (x+yi)^2 = (x+yi) * (x+yi) = x^2 + (yi)^2 + 2xyi = x^2 - y^2 + 2xyi
 		if (dot(z, z) > 4.0)
@@ -55,13 +55,14 @@ vec4 Image(vec2 f) {
 	vec4 c = vec4(uv.x,uv.y,0,0);
 
 	vec4 transInit = vec4(2.,1.5,0,0);
+	//vec4 transInit = vec4(0,0,0,0);
 	vec2 translation = (m_Translat*2.0 - m_Resolution) *2.0 /m_Resolution.x;
 	vec4 t = vec4(translation.x,translation.y,0,0);
 	vec4 transtot = transInit + t;
 
 	c -= transtot;
 	c *= m_Zoom;
-	c+= transtot;
+	c += transtot;
 
 	float ret = float(mandelbrot(c.xy));
 
@@ -80,5 +81,8 @@ vec4 Image(vec2 f) {
 
 void main() {
 	vec4 col = Image(gl_FragCoord.xy);
+	if(modf(gl_FragCoord.x, 5.0f) == 1){
+		col = vec4(1,1,1,1);
+	}
 	color = col;
 }
