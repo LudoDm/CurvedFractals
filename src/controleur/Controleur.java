@@ -1,6 +1,7 @@
 package controleur;
 
 import java.io.File;
+import java.io.IOException;
 import java.net.URISyntaxException;
 
 import com.jme3.material.Material;

@@ -41,11 +41,11 @@ public class ControlleurVue {
 	private String m11, m12, m21, m22, function, zoomVal;
 	private ObservableSet<Node> visibleSet;
 	private JMonkeyApp application;
-
 	private Color c1, c2;
 	private Transform zoomTrans = new Transform();
 	private float xInitLocation, yInitLocation;
 	private Vector2f vecTranslation = new Vector2f(0, 0);
+	private boolean changed = false;
 
 	@FXML
 	private ImageView theImageView;
@@ -201,6 +201,8 @@ public class ControlleurVue {
 	@FXML
 	void gererZoom(ScrollEvent event) {
 
+		changerEquationInitilialisation();
+
 		// TODO ça tout seul ca chie.
 		float ds = (float) event.getTextDeltaY();
 		ds /= 10;
@@ -351,9 +353,7 @@ public class ControlleurVue {
 		return zoomTrans.toTransformMatrix();
 	}
 
-	// TODO à ajouter dans le fxml
 	public void changerEquation(String eq) throws IOException {
-
 		getControleurPrincipal().writeFormula(eq);
 		application.refreshMaterial(getControleurPrincipal().getMatUpdated());
 	}
@@ -366,13 +366,34 @@ public class ControlleurVue {
 		return this.controleurPrincipal;
 	}
 
+	// TODO faire mieux ?
+	/***
+	 * Methode hacky pour changer faire marcher le zoom lors d'ouverture de
+	 * l'application
+	 */
+	private void changerEquationInitilialisation() {
+
+		if (changed == false) {
+
+			try {
+				changerEquation(tFunction.getText());
+				// on reset le zoom sur le changement d'équation pour pas avoir de zoom trop
+				// brusque au premier scroll
+				application.setZoomTransformMat(Transform.IDENTITY.toTransformMatrix());
+				this.zoomTrans = Transform.IDENTITY;
+				changed = true;
+			} catch (IOException e) {
+				// TODO Bloc catch généré automatiquement
+				e.printStackTrace();
+			}
+		}
+	}
+
 	// TODO Enlever l'annotation @notnull ?
 	private static @NotNull JMonkeyApp makeJmeApplication() {
 
-		// Ici c'est la magie du plugin Jme-jfx en oeuvre DONT TOUCH
-
 		AppSettings settings = JmeToJFXIntegrator.prepareSettings(new AppSettings(true), 60);
-		settings.setResolution(1920, 1080);
+		settings.setResolution(1920, 1020);
 
 		final JMonkeyApp application = new JMonkeyApp(1920, 1080);
 		application.setSettings(settings);
