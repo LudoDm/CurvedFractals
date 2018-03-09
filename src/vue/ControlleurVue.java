@@ -1,29 +1,17 @@
 package vue;
 
 import java.awt.MouseInfo;
-import java.io.File;
 import java.io.IOException;
-import java.net.URISyntaxException;
-import java.nio.file.Files;
 import java.util.ArrayList;
-
 import java.util.List;
-
 import org.jetbrains.annotations.NotNull;
-
 import com.jme3.material.Material;
 import com.jme3.math.ColorRGBA;
 import com.jme3.math.Matrix4f;
 import com.jme3.math.Transform;
 import com.jme3.math.Vector2f;
-import com.jme3.math.Vector4f;
-import com.jme3.opencl.Platform;
 import com.jme3.system.AppSettings;
-import com.jme3.system.JmeContext.Type;
-import com.jme3x.jfx.injfx.JmeToJFXApplication;
 import com.jme3x.jfx.injfx.JmeToJFXIntegrator;
-import com.sun.javafx.geom.Path2D;
-
 import controleur.Controleur;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableSet;
@@ -45,8 +33,6 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
-import modele.MaterialHandler;
-import prototypes.hey;
 
 public class ControlleurVue {
 
@@ -57,7 +43,6 @@ public class ControlleurVue {
 	private JMonkeyApp application;
 
 	private Color c1, c2;
-	private MaterialHandler matHandler;
 	private Transform zoomTrans = new Transform();
 	private float xInitLocation, yInitLocation;
 	private Vector2f vecTranslation = new Vector2f(0, 0);
@@ -88,8 +73,9 @@ public class ControlleurVue {
 	@FXML
 	private ColorPicker colpic1, colpic2;
 
-	public ControlleurVue() {
+	public ControlleurVue(Controleur ctrl) {
 		try {
+			setControleurPrincipal(ctrl);
 
 			// Création du loader.
 			FXMLLoader fxmlLoader = new FXMLLoader(this.getClass().getResource("/vue/FxmlVue.fxml"));
@@ -106,9 +92,6 @@ public class ControlleurVue {
 			// attacher la feuille de style
 
 			scene.getStylesheets().add(getClass().getResource("/vue/curved_fractals.css").toString());
-
-			// Création du material handler
-			initializeMaterialHandler();
 
 			// Création de l'application JMonkey
 			application = makeJmeApplication();
@@ -155,20 +138,20 @@ public class ControlleurVue {
 	@FXML
 	void closeFunctionBox(ActionEvent event) {
 
-			functionbox.setVisible(false);
-			visibleSet.remove(functionbox);
-			bFunction.setStyle("-fx-background-radius: 15");
+		functionbox.setVisible(false);
+		visibleSet.remove(functionbox);
+		bFunction.setStyle("-fx-background-radius: 15");
 
-			try {
-				changerEquation(tFunction.getText());
-				// on reset le zoom sur le changement d'équation pour pas avoir de zoom trop
-				// brusque au premier scroll
-				application.setZoomTransformMat(Transform.IDENTITY.toTransformMatrix());
-				this.zoomTrans = Transform.IDENTITY;
-			} catch (IOException e) {
-				// TODO Bloc catch généré automatiquement
-				e.printStackTrace();
-			}
+		try {
+			changerEquation(tFunction.getText());
+			// on reset le zoom sur le changement d'équation pour pas avoir de zoom trop
+			// brusque au premier scroll
+			application.setZoomTransformMat(Transform.IDENTITY.toTransformMatrix());
+			this.zoomTrans = Transform.IDENTITY;
+		} catch (IOException e) {
+			// TODO Bloc catch généré automatiquement
+			e.printStackTrace();
+		}
 	}
 
 	@FXML
@@ -368,27 +351,19 @@ public class ControlleurVue {
 		return zoomTrans.toTransformMatrix();
 	}
 
-	private void initializeMaterialHandler() throws URISyntaxException {
-		File shadFrag = new File(this.getClass().getResource("/vue/genericShaderFrag.glsl").toURI());
-		File matBase = new File(this.getClass().getResource("/vue/genericMat.j3md").toURI());
-		matHandler = new MaterialHandler(shadFrag, matBase);
-
-	}
-
-	// TODO Enlever ?
-	public void refreshMaterial(Material mat) {
-
-	}
-
 	// TODO à ajouter dans le fxml
 	public void changerEquation(String eq) throws IOException {
 
-		matHandler.writeFormula(eq);
-		application.refreshMaterial(matHandler.getMatdefBaseUpdated());
+		getControleurPrincipal().writeFormula(eq);
+		application.refreshMaterial(getControleurPrincipal().getMatUpdated());
 	}
 
-	public void setControleurPrincipal(Controleur controleurPrincipal) {
+	private void setControleurPrincipal(Controleur controleurPrincipal) {
 		this.controleurPrincipal = controleurPrincipal;
+	}
+
+	private Controleur getControleurPrincipal() {
+		return this.controleurPrincipal;
 	}
 
 	// TODO Enlever l'annotation @notnull ?
@@ -402,6 +377,7 @@ public class ControlleurVue {
 		final JMonkeyApp application = new JMonkeyApp(1920, 1080);
 		application.setSettings(settings);
 		application.setShowSettings(false);
+		application.setDisplayFps(true);
 		return application;
 	}
 
