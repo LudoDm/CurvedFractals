@@ -1,29 +1,17 @@
 package vue;
 
 import java.awt.MouseInfo;
-import java.io.File;
 import java.io.IOException;
-import java.net.URISyntaxException;
-import java.nio.file.Files;
 import java.util.ArrayList;
-
 import java.util.List;
-
 import org.jetbrains.annotations.NotNull;
-
 import com.jme3.material.Material;
 import com.jme3.math.ColorRGBA;
 import com.jme3.math.Matrix4f;
 import com.jme3.math.Transform;
 import com.jme3.math.Vector2f;
-import com.jme3.math.Vector4f;
-import com.jme3.opencl.Platform;
 import com.jme3.system.AppSettings;
-import com.jme3.system.JmeContext.Type;
-import com.jme3x.jfx.injfx.JmeToJFXApplication;
 import com.jme3x.jfx.injfx.JmeToJFXIntegrator;
-import com.sun.javafx.geom.Path2D;
-
 import controleur.Controleur;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableSet;
@@ -38,6 +26,7 @@ import javafx.scene.control.ColorPicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.BorderPane;
@@ -45,8 +34,6 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
-import modele.MaterialHandler;
-import prototypes.hey;
 
 public class ControlleurVue {
 
@@ -55,12 +42,11 @@ public class ControlleurVue {
 	private String m11, m12, m21, m22, function, zoomVal;
 	private ObservableSet<Node> visibleSet;
 	private JMonkeyApp application;
-
 	private Color c1, c2;
-	private MaterialHandler matHandler;
 	private Transform zoomTrans = new Transform();
 	private float xInitLocation, yInitLocation;
 	private Vector2f vecTranslation = new Vector2f(0, 0);
+	private boolean changed = false;
 
 	@FXML
 	private ImageView theImageView;
@@ -88,8 +74,9 @@ public class ControlleurVue {
 	@FXML
 	private ColorPicker colpic1, colpic2;
 
-	public ControlleurVue() {
+	public ControlleurVue(Controleur ctrl) {
 		try {
+			setControleurPrincipal(ctrl);
 
 			// Création du loader.
 			FXMLLoader fxmlLoader = new FXMLLoader(this.getClass().getResource("/vue/FxmlVue.fxml"));
@@ -106,9 +93,6 @@ public class ControlleurVue {
 			// attacher la feuille de style
 
 			scene.getStylesheets().add(getClass().getResource("/vue/curved_fractals.css").toString());
-
-			// Création du material handler
-			initializeMaterialHandler();
 
 			// Création de l'application JMonkey
 			application = makeJmeApplication();
@@ -127,6 +111,7 @@ public class ControlleurVue {
 
 		} catch (Exception ex) {
 			System.out.println("Exception lors du chargement des ressources dans controlleur vue");
+			ex.printStackTrace();
 		}
 
 	}
@@ -154,20 +139,20 @@ public class ControlleurVue {
 	@FXML
 	void closeFunctionBox(ActionEvent event) {
 
-			functionbox.setVisible(false);
-			visibleSet.remove(functionbox);
-			bFunction.setStyle("-fx-background-radius: 15");
+		functionbox.setVisible(false);
+		visibleSet.remove(functionbox);
+		bFunction.setStyle("-fx-background-radius: 15");
 
-			try {
-				changerEquation(tFunction.getText());
-				// on reset le zoom sur le changement d'équation pour pas avoir de zoom trop
-				// brusque au premier scroll
-				application.setZoomTransformMat(Transform.IDENTITY.toTransformMatrix());
-				this.zoomTrans = Transform.IDENTITY;
-			} catch (IOException e) {
-				// TODO Bloc catch généré automatiquement
-				e.printStackTrace();
-			}
+		try {
+			changerEquation(tFunction.getText());
+			// on reset le zoom sur le changement d'équation pour pas avoir de zoom trop
+			// brusque au premier scroll
+			application.setZoomTransformMat(Transform.IDENTITY.toTransformMatrix());
+			this.zoomTrans = Transform.IDENTITY;
+		} catch (IOException e) {
+			// TODO Bloc catch généré automatiquement
+			e.printStackTrace();
+		}
 	}
 
 	@FXML
@@ -216,6 +201,8 @@ public class ControlleurVue {
 
 	@FXML
 	void gererZoom(ScrollEvent event) {
+
+		changerEquationInitilialisation();
 
 		// TODO ça tout seul ca chie.
 		float ds = (float) event.getTextDeltaY();
@@ -278,20 +265,35 @@ public class ControlleurVue {
 	@FXML
 	void showSideMenu(MouseEvent event) {
 
-		if (!sidemenu.isVisible()) {
-			sidemenu.setVisible(true);
-			visibleSet.add(sidemenu);
+		if (event.getButton().equals(MouseButton.SECONDARY)) {
+			System.out.println("yo bitch");
+			gererRightClick();
+		} else if (event.getButton().equals(MouseButton.PRIMARY)) {
+			if (!sidemenu.isVisible()) {
+				sidemenu.setVisible(true);
+				visibleSet.add(sidemenu);
 
-			for (Node n : visibleSet) {
-				n.setVisible(true);
-			}
+				for (Node n : visibleSet) {
+					n.setVisible(true);
+				}
 
-		} else {
-			closeSideMenu();
-			for (Node n : visibleSet) {
-				n.setVisible(false);
+			} else {
+				closeSideMenu();
+				for (Node n : visibleSet) {
+					n.setVisible(false);
+				}
 			}
 		}
+
+	}
+
+	private void gererRightClick() {
+
+		Button b = new Button("allo");
+		VBox promptBox = new VBox();
+		promptBox.getChildren().add(b);
+
+		stackpane.getChildren().add(promptBox);
 
 	}
 
@@ -330,9 +332,7 @@ public class ControlleurVue {
 			application.setTranslateTransformMat(vecTranslation);
 			// System.out.println(zoomTrans.toTransformMatrix());
 			// application.setZoomTransformMat(zoomTrans.toTransformMatrix());
-
 		}
-
 	}
 
 	public Scene getScene() {
@@ -367,40 +367,50 @@ public class ControlleurVue {
 		return zoomTrans.toTransformMatrix();
 	}
 
-	private void initializeMaterialHandler() throws URISyntaxException {
-		File shadFrag = new File(this.getClass().getResource("/vue/genericShaderFrag.glsl").toURI());
-		File matBase = new File(this.getClass().getResource("/vue/genericMat.j3md").toURI());
-		matHandler = new MaterialHandler(shadFrag, matBase);
-
-	}
-
-	// TODO Enlever ?
-	public void refreshMaterial(Material mat) {
-
-	}
-
-	// TODO à ajouter dans le fxml
 	public void changerEquation(String eq) throws IOException {
-
-		matHandler.writeFormula(eq);
-		application.refreshMaterial(matHandler.getMatdefBaseUpdated());
+		getControleurPrincipal().writeFormula(eq);
+		application.refreshMaterial(getControleurPrincipal().getMatUpdated());
 	}
 
-	public void setControleurPrincipal(Controleur controleurPrincipal) {
+	private void setControleurPrincipal(Controleur controleurPrincipal) {
 		this.controleurPrincipal = controleurPrincipal;
+	}
+
+	private Controleur getControleurPrincipal() {
+		return this.controleurPrincipal;
+	}
+
+	// TODO faire mieux ?
+	/***
+	 * Methode hacky pour changer faire marcher le zoom lors d'ouverture de
+	 * l'application
+	 */
+	private void changerEquationInitilialisation() {
+		if (changed == false) {
+
+			try {
+				changerEquation(tFunction.getText());
+				// on reset le zoom sur le changement d'équation pour pas avoir de zoom trop
+				// brusque au premier scroll
+				application.setZoomTransformMat(Transform.IDENTITY.toTransformMatrix());
+				this.zoomTrans = Transform.IDENTITY;
+				changed = true;
+			} catch (IOException e) {
+				System.out.println("Exception lance dans la methode hacky pour regler le zoom au lancement de l'app");
+				e.printStackTrace();
+			}
+		}
 	}
 
 	// TODO Enlever l'annotation @notnull ?
 	private static @NotNull JMonkeyApp makeJmeApplication() {
 
-		// Ici c'est la magie du plugin Jme-jfx en oeuvre DONT TOUCH
-
 		AppSettings settings = JmeToJFXIntegrator.prepareSettings(new AppSettings(true), 60);
-		settings.setResolution(1920, 1080);
 
-		final JMonkeyApp application = new JMonkeyApp(1920, 1080);
+		final JMonkeyApp application = new JMonkeyApp(1920, 1280);
 		application.setSettings(settings);
 		application.setShowSettings(false);
+		application.setDisplayFps(true);
 		return application;
 	}
 

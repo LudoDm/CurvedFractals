@@ -42,10 +42,9 @@ public class JMonkeyApp extends JmeToJFXApplication {
 	private ColorRGBA ColorMin = ColorRGBA.Magenta;
 	private ColorRGBA ColorMax = ColorRGBA.Blue;
 
-
 	private Vector2f Resolution;
 	private Matrix4f ZoomTransform = new Transform().IDENTITY.toTransformMatrix();
-	private Vector2f TranslatTransform = new Vector2f(0,0);
+	private Vector2f TranslatTransform = new Vector2f(0, 0);
 
 	public JMonkeyApp(float Resx, float Resy) {
 		setResolution(new Vector2f(Resx, Resy));
@@ -183,7 +182,7 @@ public class JMonkeyApp extends JmeToJFXApplication {
 	}
 
 	public void refreshMaterial(File theFile) {
-		String thePath = ("/vue/" + theFile.getName());	
+		String thePath = ("/vue/" + theFile.getName());
 		mat = new Material(assetManager, thePath);
 		setColorMinMat(getColorMin());
 		setColorMaxMat(getColorMax());
@@ -192,8 +191,7 @@ public class JMonkeyApp extends JmeToJFXApplication {
 		setTranslateTransformMat(getTranslateTransform());
 		player.setMaterial(mat);
 	}
-	
-	
+
 	public boolean isMatNull() {
 		return mat == null;
 	}
@@ -208,7 +206,7 @@ public class JMonkeyApp extends JmeToJFXApplication {
 
 	public void setColorMinMat(ColorRGBA colorMin) {
 		ColorMin = colorMin;
-		System.out.println("mat" +mat);
+		System.out.println("mat" + mat);
 		mat.setColor("ColorMin", colorMin);
 	}
 
