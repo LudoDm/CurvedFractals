@@ -45,5 +45,6 @@
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
+	<classpathentry kind="lib" path="libraries/exp4j/exp4j-0.4.8.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
