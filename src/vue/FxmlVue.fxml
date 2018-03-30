@@ -17,14 +17,13 @@
 <?import javafx.scene.text.Font?>
 
 
-
-<BorderPane fx:id="borderpane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1280.0" stylesheets="@NewFile.css" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<BorderPane fx:id="borderpane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onKeyPressed="#resetZoom" prefHeight="720.0" prefWidth="1280.0" stylesheets="@NewFile.css" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1">
 
    <center>
       <StackPane fx:id="stackpane" onMouseClicked="#showSideMenu" prefHeight="150.0" prefWidth="200.0" BorderPane.alignment="CENTER">
          <children>
             <ImageView fx:id="theImageView" fitHeight="720.0" fitWidth="1280.0" onMouseDragged="#mouseDrag" onMousePressed="#positionInit" onScroll="#gererZoom" pickOnBounds="true" preserveRatio="true" />
-            <VBox fx:id="sidemenu" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="351.0" prefWidth="94.0" spacing="10.0" translateX="575.0">
+            <VBox fx:id="sidemenu" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="435.0" prefWidth="94.0" spacing="10.0" translateX="575.0">
                <children>
                   <Button fx:id="bFunction" mnemonicParsing="false" onAction="#showFunctionBox" prefHeight="75.0" prefWidth="75.0">
                      <VBox.margin>
@@ -78,6 +77,18 @@
                               <Glow />
                            </effect></ImageView>
                      </graphic></Button>
+                  <Button fx:id="bMap" mnemonicParsing="false" onAction="#showMapBox" prefHeight="75.0" prefWidth="75.0">
+                     <graphic>
+                        <ImageView fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
+                           <effect>
+                              <Glow />
+                           </effect>
+                           <image>
+                              <Image url="@../../res/images/map-8.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                  </Button>
                </children>
                <padding>
                   <Insets left="10.0" top="10.0" />
@@ -130,7 +141,7 @@
                   <Insets left="10.0" />
                </padding>
             </VBox>
-            <HBox fx:id="functionbox" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="75.0" prefWidth="275.0" spacing="10.0" translateX="400.0" translateY="-127.0">
+            <HBox fx:id="functionbox" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="75.0" prefWidth="275.0" spacing="10.0" translateX="400.0" translateY="-170.0">
                <children>
                   <Label fx:id="lFunction" text="fc(z) = ">
                      <font>
@@ -141,7 +152,7 @@
                   <Button fx:id="bFunctionEnter" maxHeight="-Infinity" maxWidth="-Infinity" mnemonicParsing="false" onAction="#closeFunctionBox" prefHeight="25.0" prefWidth="30.0" text="✓" textFill="#39ff14" />
                </children>
             </HBox>
-            <HBox fx:id="matrixbox" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="75.0" prefWidth="275.0" translateX="400.0" translateY="-43.0">
+            <HBox fx:id="matrixbox" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="75.0" prefWidth="275.0" translateX="400.0" translateY="-86.0">
                <children>
                   <FlowPane alignment="CENTER" hgap="5.0" prefHeight="72.0" prefWidth="76.0" vgap="5.0">
                      <children>
@@ -161,7 +172,7 @@
                   <Insets left="10.0" right="10.0" />
                </padding>
             </HBox>
-            <HBox fx:id="colorbox" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="76.0" prefWidth="275.0" spacing="10.0" translateX="400.0" translateY="43.0">
+            <HBox fx:id="colorbox" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="75.0" prefWidth="275.0" spacing="10.0" translateX="400.0" translateY="-1.0">
                <children>
                   <ColorPicker fx:id="colpic1" style="-fx-color-label-visible: false;" />
                   <Label fx:id="lArrow" text="→">
@@ -173,7 +184,7 @@
                   <Button fx:id="bColorEnter" maxHeight="-Infinity" maxWidth="-Infinity" mnemonicParsing="false" onAction="#closeColorBox" prefHeight="25.0" prefWidth="30.0" text="✓" textFill="#39ff14" />
                </children>
             </HBox>
-            <HBox fx:id="zoombox" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="75.0" prefWidth="275.0" spacing="10.0" translateX="400.0" translateY="128.0">
+            <HBox fx:id="zoombox" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="75.0" prefWidth="275.0" spacing="10.0" translateX="400.0" translateY="85.0">
                <children>
                   <Label fx:id="lZoom" prefHeight="14.0" prefWidth="61.0" text="nb zoom :">
                      <font>
@@ -182,6 +193,38 @@
                   </Label>
                   <TextField fx:id="tZoom" prefHeight="25.0" prefWidth="131.0" />
                   <Button fx:id="bZoomEnter" maxHeight="-Infinity" maxWidth="-Infinity" mnemonicParsing="false" onAction="#closeZoomBox" prefHeight="25.0" prefWidth="30.0" text="✓" textFill="#39ff14" />
+               </children>
+            </HBox>
+            <HBox fx:id="mapbox" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="75.0" prefWidth="300.0" spacing="2.0" translateX="387.0" translateY="171.0">
+               <children>
+                  <Label fx:id="lMap" text="x(u,v) = (">
+                     <font>
+                        <Font name="Consolas" size="12.0" />
+                     </font>
+                  </Label>
+                  <TextField fx:id="tMap1" prefHeight="25.0" prefWidth="48.0" />
+                  <Label fx:id="lComma1" text="," textFill="#39ff14">
+                     <font>
+                        <Font name="Consolas" size="12.0" />
+                     </font>
+                  </Label>
+                  <TextField fx:id="tMap2" prefHeight="25.0" prefWidth="48.0" />
+                  <Label fx:id="lComma2" prefHeight="14.0" prefWidth="4.0" text="," textFill="#39ff14">
+                     <font>
+                        <Font name="Consolas" size="12.0" />
+                     </font>
+                  </Label>
+                  <TextField fx:id="tMap3" prefHeight="25.0" prefWidth="48.0" />
+                  <Label fx:id="lParanthese" text=")" textFill="#39ff14">
+                     <font>
+                        <Font name="Consolas" size="12.0" />
+                     </font>
+                  </Label>
+                  <Button fx:id="bMapEnter" maxHeight="-Infinity" maxWidth="-Infinity" mnemonicParsing="false" onAction="#closeMapBox" prefHeight="25.0" prefWidth="30.0" text="✓" textFill="#39ff14">
+                     <HBox.margin>
+                        <Insets left="8.0" />
+                     </HBox.margin>
+                  </Button>
                </children>
             </HBox>
          </children>

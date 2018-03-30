@@ -26,6 +26,8 @@ import javafx.scene.control.ColorPicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.ScrollEvent;
@@ -39,7 +41,7 @@ public class ControlleurVue {
 
 	private Scene scene;
 	private Controleur controleurPrincipal;
-	private String m11, m12, m21, m22, function, zoomVal;
+	private String m11, m12, m21, m22, function, zoomVal, map1, map2, map3;
 	private ObservableSet<Node> visibleSet;
 	private JMonkeyApp application;
 	private Color c1, c2;
@@ -47,6 +49,7 @@ public class ControlleurVue {
 	private float xInitLocation, yInitLocation;
 	private Vector2f vecTranslation = new Vector2f(0, 0);
 	private boolean changed = false;
+	private int nbrZoom;
 
 	@FXML
 	private ImageView theImageView;
@@ -61,16 +64,18 @@ public class ControlleurVue {
 	private VBox sidemenu, infobox;
 
 	@FXML
-	private Button bFunction, bMatrix, bColor, bZoom, bFunctionEnter, bZoomEnter, bMatrixEnter, bColorEnter;
+	private Button bFunction, bMatrix, bColor, bZoom, bMap, bFunctionEnter, bZoomEnter, bMatrixEnter, bColorEnter,
+			bMapEnter;
 
 	@FXML
-	private Label lX, lXValue, lY, lYValue, lFunction, lZoom, lArrow;
+	private Label lX, lXValue, lY, lYValue, lFunction, lZoom, lArrow, lMap;
 
 	@FXML
-	private HBox functionbox, zoombox, matrixbox, colorbox;
+	private HBox functionbox, zoombox, matrixbox, colorbox, mapbox;
 
 	@FXML
-	private TextField tFunction, tZoom, tMatrix1, tMatrix2, tMatrix3, tMatrix4;
+	private TextField tFunction, tZoom, tMatrix1, tMatrix2, tMatrix3, tMatrix4, tMap1, tMap2, tMap3;
+
 	@FXML
 	private ColorPicker colpic1, colpic2;
 
@@ -106,6 +111,7 @@ public class ControlleurVue {
 			colorbox.setVisible(false);
 			matrixbox.setVisible(false);
 			zoombox.setVisible(false);
+			mapbox.setVisible(false);
 
 			visibleSet = FXCollections.observableSet();
 
@@ -185,10 +191,28 @@ public class ControlleurVue {
 	void closeZoomBox(ActionEvent event) {
 
 		zoomVal = tZoom.getText();
+		nbrZoom = Integer.parseInt(zoomVal);
+		
+		Thread t = new ZoomThread();
+		t.setDaemon(true);
+		t.run();
 
 		zoombox.setVisible(false);
 		visibleSet.remove(zoombox);
 		bZoom.setStyle("-fx-background-radius: 15");
+
+	}
+
+	@FXML
+	void closeMapBox(ActionEvent event) {
+
+		map1 = tMap1.getText();
+		map2 = tMap2.getText();
+		map3 = tMap3.getText();
+
+		mapbox.setVisible(false);
+		visibleSet.remove(mapbox);
+		bMap.setStyle("-fx-background-radius: 15");
 
 	}
 
@@ -263,6 +287,18 @@ public class ControlleurVue {
 	}
 
 	@FXML
+	void showMapBox(ActionEvent event) {
+		if (!mapbox.isVisible()) {
+			mapbox.setVisible(true);
+			visibleSet.add(mapbox);
+			bMap.setStyle("-fx-background-radius: 0 50 30 0;");
+
+		} else {
+			closeMapBox(event);
+		}
+	}
+
+	@FXML
 	void showSideMenu(MouseEvent event) {
 
 		if (event.getButton().equals(MouseButton.SECONDARY)) {
@@ -332,6 +368,13 @@ public class ControlleurVue {
 			application.setTranslateTransformMat(vecTranslation);
 			// System.out.println(zoomTrans.toTransformMatrix());
 			// application.setZoomTransformMat(zoomTrans.toTransformMatrix());
+		}
+	}
+
+	@FXML
+	void resetZoom(KeyEvent e) {
+		if (e.getCode() == KeyCode.R) {
+			System.out.println("reset");
 		}
 	}
 
@@ -412,6 +455,21 @@ public class ControlleurVue {
 		application.setShowSettings(false);
 		application.setDisplayFps(true);
 		return application;
+	}
+
+	public class ZoomThread extends Thread {
+		public void run() {
+
+			for (int i = 0; i < nbrZoom; i++) {
+				System.out.println("Zoom: " + i);
+				try {
+					Thread.sleep(1000);
+				} catch (Exception e) {
+					System.out.println(e);
+				}
+			}
+		}
+
 	}
 
 }
