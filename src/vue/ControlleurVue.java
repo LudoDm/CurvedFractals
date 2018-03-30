@@ -26,6 +26,8 @@ import javafx.scene.control.ColorPicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.ScrollEvent;
@@ -44,7 +46,7 @@ public class ControlleurVue {
 	private JMonkeyApp application;
 	private Color c1, c2;
 	private Transform zoomTrans = new Transform();
-	private float xInitLocation, yInitLocation;
+	private float xInitLocation, yInitLocation, X, U, V;
 	private Vector2f vecTranslation = new Vector2f(0, 0);
 	private boolean changed = false;
 
@@ -199,6 +201,12 @@ public class ControlleurVue {
 	@FXML
 	void closeR2toR3Box(ActionEvent event) {
 
+		// TODO : Ajouter un valideur pour pas que ça crash (TextField vide)
+
+		// X = Float.parseFloat(tX.getText());
+		// U = Float.parseFloat(tU.getText());
+		// V = Float.parseFloat(tV.getText());
+
 		r2tor3box.setVisible(false);
 		visibleSet.remove(r2tor3box);
 		bR2toR3.setStyle("-fx-background-radius: 15");
@@ -214,17 +222,14 @@ public class ControlleurVue {
 	@FXML
 	void gererZoom(ScrollEvent event) {
 
-		zoomFix = (event.getDeltaY() / 40f == 1f) ? zoomFix + 1f : zoomFix - 1f;
-
-		System.out.println(event.getTextDeltaY());
-
-		System.out.println(zoomFix);
+		// zoomFix = (event.getDeltaY() / 40f == 1f) ? zoomFix + 1f : zoomFix - 1f;
 
 		changerEquationInitilialisation();
 
 		// TODO ça tout seul ca chie.
 		float ds = (float) event.getTextDeltaY();
 		ds /= 10;
+
 		System.out.println(ds);
 		if (ds < 0 && Math.abs(ds) != 1) {
 			ds = 1.0f / -ds;
@@ -362,6 +367,15 @@ public class ControlleurVue {
 			// System.out.println(zoomTrans.toTransformMatrix());
 			// application.setZoomTransformMat(zoomTrans.toTransformMatrix());
 		}
+	}
+
+	@FXML
+	void gererReset(KeyEvent event) {
+
+		if (event.getCode() == KeyCode.ESCAPE) {
+			System.out.println("reset GROS");
+		}
+
 	}
 
 	public Scene getScene() {
