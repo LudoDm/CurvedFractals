@@ -48,6 +48,8 @@ public class ControlleurVue {
 	private Vector2f vecTranslation = new Vector2f(0, 0);
 	private boolean changed = false;
 
+	private float zoomFix = 0f;
+
 	@FXML
 	private ImageView theImageView;
 
@@ -58,19 +60,20 @@ public class ControlleurVue {
 	private StackPane stackpane;
 
 	@FXML
-	private VBox sidemenu, infobox;
+	private VBox sidemenu;
 
 	@FXML
-	private Button bFunction, bMatrix, bColor, bZoom, bFunctionEnter, bZoomEnter, bMatrixEnter, bColorEnter;
+	private Button bFunction, bMatrix, bColor, bZoom, bFunctionEnter, bZoomEnter, bMatrixEnter, bColorEnter, bR2toR3,
+			bR2toR3Enter;
 
 	@FXML
 	private Label lX, lXValue, lY, lYValue, lFunction, lZoom, lArrow;
 
 	@FXML
-	private HBox functionbox, zoombox, matrixbox, colorbox;
+	private HBox functionbox, zoombox, matrixbox, colorbox, r2tor3box;
 
 	@FXML
-	private TextField tFunction, tZoom, tMatrix1, tMatrix2, tMatrix3, tMatrix4;
+	private TextField tFunction, tZoom, tMatrix1, tMatrix2, tMatrix3, tMatrix4, tX, tU, tV;
 	@FXML
 	private ColorPicker colpic1, colpic2;
 
@@ -106,6 +109,7 @@ public class ControlleurVue {
 			colorbox.setVisible(false);
 			matrixbox.setVisible(false);
 			zoombox.setVisible(false);
+			r2tor3box.setVisible(false);
 
 			visibleSet = FXCollections.observableSet();
 
@@ -192,6 +196,14 @@ public class ControlleurVue {
 
 	}
 
+	@FXML
+	void closeR2toR3Box(ActionEvent event) {
+
+		r2tor3box.setVisible(false);
+		visibleSet.remove(r2tor3box);
+		bR2toR3.setStyle("-fx-background-radius: 15");
+	}
+
 	void closeSideMenu() {
 
 		sidemenu.setVisible(false);
@@ -201,6 +213,12 @@ public class ControlleurVue {
 
 	@FXML
 	void gererZoom(ScrollEvent event) {
+
+		zoomFix = (event.getDeltaY() / 40f == 1f) ? zoomFix + 1f : zoomFix - 1f;
+
+		System.out.println(event.getTextDeltaY());
+
+		System.out.println(zoomFix);
 
 		changerEquationInitilialisation();
 
@@ -284,7 +302,6 @@ public class ControlleurVue {
 				}
 			}
 		}
-
 	}
 
 	private void gererRightClick() {
@@ -306,6 +323,18 @@ public class ControlleurVue {
 
 		} else {
 			closeZoomBox(event);
+		}
+	}
+
+	@FXML
+	void showR2toR3Box(ActionEvent event) {
+		if (!r2tor3box.isVisible()) {
+			r2tor3box.setVisible(true);
+			visibleSet.add(r2tor3box);
+			bR2toR3.setStyle("-fx-background-radius: 0 50 30 0;");
+
+		} else {
+			closeR2toR3Box(event);
 		}
 	}
 

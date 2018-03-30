@@ -5,7 +5,6 @@
 <?import javafx.scene.control.ColorPicker?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextField?>
-<?import javafx.scene.effect.DropShadow?>
 <?import javafx.scene.effect.Glow?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
@@ -16,15 +15,13 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-
-
 <BorderPane fx:id="borderpane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1280.0" stylesheets="@NewFile.css" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1">
 
    <center>
       <StackPane fx:id="stackpane" onMouseClicked="#showSideMenu" prefHeight="150.0" prefWidth="200.0" BorderPane.alignment="CENTER">
          <children>
             <ImageView fx:id="theImageView" fitHeight="720.0" fitWidth="1280.0" onMouseDragged="#mouseDrag" onMousePressed="#positionInit" onScroll="#gererZoom" pickOnBounds="true" preserveRatio="true" />
-            <VBox fx:id="sidemenu" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="351.0" prefWidth="94.0" spacing="10.0" translateX="575.0">
+            <VBox fx:id="sidemenu" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="437.0" prefWidth="94.0" spacing="10.0" translateX="575.0">
                <children>
                   <Button fx:id="bFunction" mnemonicParsing="false" onAction="#showFunctionBox" prefHeight="75.0" prefWidth="75.0">
                      <VBox.margin>
@@ -78,6 +75,18 @@
                               <Glow />
                            </effect></ImageView>
                      </graphic></Button>
+                  <Button fx:id="bR2toR3" mnemonicParsing="false" onAction="#showR2toR3Box" prefHeight="75.0" prefWidth="75.0">
+                     <graphic>
+                        <ImageView fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../../res/images/map.png" />
+                           </image>
+                           <effect>
+                              <Glow />
+                           </effect>
+                        </ImageView>
+                     </graphic>
+                  </Button>
                </children>
                <padding>
                   <Insets left="10.0" top="10.0" />
@@ -86,51 +95,7 @@
                   <Insets />
                </opaqueInsets>
             </VBox>
-            <VBox fx:id="infobox" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="37.0" prefWidth="332.0" translateX="-470.0" translateY="330.0">
-               <children>
-                  <HBox prefHeight="0.0" prefWidth="322.0">
-                     <children>
-                        <Label fx:id="lX" text="x : ">
-                           <font>
-                              <Font name="Consolas" size="14.0" />
-                           </font>
-                        </Label>
-                        <Label fx:id="lXValue" prefHeight="28.0" prefWidth="264.0" text="0000">
-                           <font>
-                              <Font name="Consolas" size="14.0" />
-                           </font>
-                           <effect>
-                              <DropShadow color="#39ff14" />
-                           </effect>
-                        </Label>
-                     </children>
-                  </HBox>
-                  <HBox prefHeight="0.0" prefWidth="322.0">
-                     <children>
-                        <Label fx:id="lY" text="y : ">
-                           <font>
-                              <Font name="Consolas" size="14.0" />
-                           </font>
-                        </Label>
-                        <Label fx:id="lYValue" prefHeight="28.0" prefWidth="264.0" text="0000">
-                           <font>
-                              <Font name="Consolas" size="14.0" />
-                           </font>
-                           <effect>
-                              <DropShadow color="#39ff14" />
-                           </effect>
-                        </Label>
-                     </children>
-                  </HBox>
-               </children>
-               <opaqueInsets>
-                  <Insets />
-               </opaqueInsets>
-               <padding>
-                  <Insets left="10.0" />
-               </padding>
-            </VBox>
-            <HBox fx:id="functionbox" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="75.0" prefWidth="275.0" spacing="10.0" translateX="400.0" translateY="-127.0">
+            <HBox fx:id="functionbox" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="75.0" prefWidth="275.0" spacing="10.0" translateX="400.0" translateY="-170.0">
                <children>
                   <Label fx:id="lFunction" text="fc(z) = ">
                      <font>
@@ -141,7 +106,7 @@
                   <Button fx:id="bFunctionEnter" maxHeight="-Infinity" maxWidth="-Infinity" mnemonicParsing="false" onAction="#closeFunctionBox" prefHeight="25.0" prefWidth="30.0" text="✓" textFill="#39ff14" />
                </children>
             </HBox>
-            <HBox fx:id="matrixbox" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="75.0" prefWidth="275.0" translateX="400.0" translateY="-43.0">
+            <HBox fx:id="matrixbox" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="75.0" prefWidth="275.0" translateX="400.0" translateY="-85.0">
                <children>
                   <FlowPane alignment="CENTER" hgap="5.0" prefHeight="72.0" prefWidth="76.0" vgap="5.0">
                      <children>
@@ -161,7 +126,7 @@
                   <Insets left="10.0" right="10.0" />
                </padding>
             </HBox>
-            <HBox fx:id="colorbox" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="76.0" prefWidth="275.0" spacing="10.0" translateX="400.0" translateY="43.0">
+            <HBox fx:id="colorbox" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="76.0" prefWidth="275.0" spacing="10.0" translateX="400.0">
                <children>
                   <ColorPicker fx:id="colpic1" style="-fx-color-label-visible: false;" />
                   <Label fx:id="lArrow" text="→">
@@ -173,7 +138,7 @@
                   <Button fx:id="bColorEnter" maxHeight="-Infinity" maxWidth="-Infinity" mnemonicParsing="false" onAction="#closeColorBox" prefHeight="25.0" prefWidth="30.0" text="✓" textFill="#39ff14" />
                </children>
             </HBox>
-            <HBox fx:id="zoombox" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="75.0" prefWidth="275.0" spacing="10.0" translateX="400.0" translateY="128.0">
+            <HBox fx:id="zoombox" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="75.0" prefWidth="275.0" spacing="10.0" translateX="400.0" translateY="85.0">
                <children>
                   <Label fx:id="lZoom" prefHeight="14.0" prefWidth="61.0" text="nb zoom :">
                      <font>
@@ -182,6 +147,19 @@
                   </Label>
                   <TextField fx:id="tZoom" prefHeight="25.0" prefWidth="131.0" />
                   <Button fx:id="bZoomEnter" maxHeight="-Infinity" maxWidth="-Infinity" mnemonicParsing="false" onAction="#closeZoomBox" prefHeight="25.0" prefWidth="30.0" text="✓" textFill="#39ff14" />
+               </children>
+            </HBox>
+            <HBox fx:id="r2tor3box" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="75.0" prefWidth="275.0" spacing="10.0" translateX="400.0" translateY="170.0">
+               <children>
+                  <Label fx:id="lR2toR3" prefHeight="14.0" prefWidth="53.0" text="x(u,v) =">
+                     <font>
+                        <Font name="Consolas" size="12.0" />
+                     </font>
+                  </Label>
+                  <TextField fx:id="tX" prefHeight="27.0" prefWidth="40.0" />
+                  <TextField fx:id="tU" prefHeight="27.0" prefWidth="40.0" />
+                  <TextField fx:id="tV" prefHeight="27.0" prefWidth="40.0" />
+                  <Button fx:id="bR2toR3Enter" maxHeight="-Infinity" maxWidth="-Infinity" mnemonicParsing="false" onAction="#closeR2toR3Box" prefHeight="25.0" prefWidth="30.0" text="✓" textFill="#39ff14" />
                </children>
             </HBox>
          </children>
