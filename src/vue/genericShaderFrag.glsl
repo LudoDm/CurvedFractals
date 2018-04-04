@@ -31,6 +31,98 @@ float cnorm(in vec2 c) {
 	return sqrt(c.x * c.x + c.y * c.y);
 }
 
+//le tenseur metrique qui s'evalue a chaque point de la surface sur laquelle se trouve la fractale
+//chaque composante de la matrice doit etre une fonction qui, soit ne depend de rien (genre un nombre, ex g11(x,y) = 1), mais avec
+
+mat2 metricTensor(in vec2 p){
+	float x = p.x;
+	float y = p.y;
+	float g11 = 1.0;
+	float g21 = 0.0;
+	float g12 = 0.0;
+	float g22 = 1.0;
+	mat2 g = mat2(g11, g21, g12, g22);
+	//on doit ecrire "\tg11 = " + "FONCTION g11 qui depend de x et/ou y ou ne depend de rien" + ";"
+	//OUTPUT_METRIC_G11_NEXT_LINE
+
+	if(!isinf(g11) && !isnan(g11)){
+		g[0][0] = g11;
+	}
+
+
+	//on doit ecrire "\tg21 = " + "FONCTION g21 qui depend de x et/ou y ou ne depend de rien" + ";"
+	//OUTPUT_METRIC_G21_NEXT_LINE
+
+	if(!isinf(g21) && !isnan(g21)){
+		g[1][0] = g21;
+	}
+
+
+
+	//on doit ecrire "\tg12 = " + "FONCTION g12 qui depend de x et/ou y ou ne depend de rien" + ";"
+	//OUTPUT_METRIC_G12_NEXT_LINE
+
+	if(!isinf(g12) && !isnan(g12)){
+		g[0][1] = g12;
+	}
+
+
+
+	//on doit ecrire "\tg22 = " + "FONCTION g22 qui depend de x et/ou y ou ne depend de rien" + ";"
+	//OUTPUT_METRIC_G22_NEXT_LINE
+
+	if(!isinf(g22) && !isnan(g22)){
+		g[1][1] = g22;
+	}
+
+
+
+	return g;
+}
+
+//la parametrisation (fonction de M -> R3, M etant la surface sur laquelle la fractale est definie et R3 l'espace selon lequel on observe la fractale) (on a que M est une sous variete de R3, l'hyper surface de M)
+//la fonction x(u,v) prend des parametres u et v reel entre -2 et 2 inclu et doit etre definit partout sur cet interval (chacune des 3 fonctions de composantes doit l'etre)
+//on doit donc le specifier a lutilisateur quil doit rentrer des fonctions de ce type.
+vec3 chart(in vec2 pM){
+	float u = pM.x;
+	float v = pM.y;
+
+	float a = u;
+	float b = v;
+	float c = 1;
+
+	vec3 pR3 = vec3 (u, v, 1);
+
+	//on doit ecrire "\ta = " + "FONCTION 1 de x(u,v) (le premier textField) qui depend soit de rien (genre un nombre), de u et/ou de v" + ";"
+	//OUTPUT_CHART_FUNCTION_1_NEXT_LINE
+
+	if(!isinf(a) && !isnan(a)){
+		pR3.x = a;
+	}
+
+
+	//on doit ecrire "\tb = " + "FONCTION 2 de x(u,v) (le deuxieme textField) qui depend soit de rien (genre un nombre), de u et/ou de v" + ";"
+	//OUTPUT_CHART_FUNCTION_2_NEXT_LINE
+
+	if(!isinf(b) && !isnan(b)){
+		pR3.y = b;
+	}
+
+
+	//on doit ecrire "\tc = " + "FONCTION 3 de x(u,v) (le troisieme textField) qui depend soit de rien (genre un nombre), de u et/ou de v" + ";"
+	//OUTPUT_CHART_FUNCTION_3_NEXT_LINE
+
+	if(!isinf(c) && !isnan(c)){
+		pR3.z = c;
+	}
+
+	return pR3;
+}
+
+
+
+
+
 int mandelbrot(vec2 c) {
 	vec2 z = c;
 	for (int i = 0; i < 1000; i++) {

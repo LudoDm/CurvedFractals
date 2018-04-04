@@ -39,7 +39,7 @@ public class MetricTensorHandler {
 			if (!(m11 == null || m21 == null || m12 == null || m22 == null)) {
 
 				double g11 = m11.setVariable(VARX, x).setVariable(VARY, y).evaluate();
-				if (!(Double.isNaN(g11) || Double.isInfinite(g11))) {
+				if (!Double.isNaN(g11) || !Double.isInfinite(g11)) {
 					worked = true;
 					out[0] = g11;
 				}
