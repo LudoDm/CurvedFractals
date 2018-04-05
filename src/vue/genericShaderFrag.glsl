@@ -50,8 +50,17 @@ float innerProdAt(vec2 p, vec2 a, vec2 b){
 	return g[0][0]*a.x*b.x + g[1][0]*a.y*b.x + g[0][1]*a.x*b.y + g[1][1]*a.y*b.y;
 }
 
+float inverseinnerProdAt(vec2 p, vec2 a, vec2 b){
+	mat2 g = inverseMetric(p);
+	return g[0][0]*a.x*b.x + g[1][0]*a.y*b.x + g[0][1]*a.x*b.y + g[1][1]*a.y*b.y;
+}
+
 float inducedInnerProdAt(vec2 p, MxR3 a, MxR3 b){
 	return innerProdAt(p, projection(a), projection(b));
+}
+
+float inverseinducedInnerProdAt(vec2 p, MxR3 a, MxR3 b){
+	return inverseinnerProdAt(p, projection(a), projection(b));
 }
 
 MxR3 gNormalize( MxR3 a){
@@ -72,6 +81,10 @@ MxR3 normal(vec2 p) {
 }
 
 float Gamma(vec2 p, int i, int j, int k){
+	float resTemp = 0.;
+	for(int i = 0; i < 3; i++){
+
+	}
 
 	return 0.;
 }
@@ -211,12 +224,13 @@ int mandelbrot(vec2 c) {
 
 
 vec4 Image(vec2 f) {
-	// Screen coordinate, roughly -2 to +2
-	vec2 uv = (2.0 * f.xy - m_Resolution) / max(m_Resolution.x,m_Resolution.y);
+	//coord entre -1 et 1
+	vec2 uv = (2.0 * f.xy - m_Resolution) / m_Resolution.x;
+	//vec2 uv = (2.0 * f.xy - m_Resolution) / max(m_Resolution.x,m_Resolution.y);
 	vec4 c = vec4(uv.x,uv.y,0,0);
 
 	vec4 transInit = vec4(0.,0.0,0,0);
-	vec2 translation = (m_Translat*1.0 - m_Resolution) *1.0 /m_Resolution.x;
+	vec2 translation = (m_Translat*2.0 - m_Resolution) /m_Resolution.x;
 	vec4 t = vec4(translation.x,translation.y,0,0);
 	vec4 transtot = transInit + t;
 
@@ -224,26 +238,29 @@ vec4 Image(vec2 f) {
 	c *= m_Zoom;
 	c+= transtot;
 
-	float ret = float(mandelbrot(c.xy));
+	float ret = mandelbrot(0.4*chart2(1.*c.xy + vec2(-0.,-0.)).xy  + 1.*normal(c.xy).pR3.xy );
+
 
 	// Turn the iteration count into a color.
 	//Pour une raison inconnue (triste Jmonkey...), la couleur change avec le Alpha, et n'est plus aucunement la couleur voulue.
 	//Donc le alpha doit toujours rester 1!!
 	vec4 couleurfinale;
+	vec4 couleurfinaletest;
 	if (ret == 0.0) {
 		couleurfinale = vec4(0.0,0.0,0.0,1.0);
 	} else {
-		couleurfinale = mix(sin(vec4(0.1,0.2,0.5,1.0)), mix(m_ColorMin, m_ColorMax, ret), ret/400);
+	//	couleurfinale = mix(sin(vec4(0.1,0.2,0.5,1.0)), mix(m_ColorMin, m_ColorMax, ret), ret/400);
+		couleurfinale = mix(m_ColorMin, m_ColorMax, sin(ret));
 		//couleurfinale = sin(mix(m_ColorMin, m_ColorMax, ret/30));
 	}
-	return couleurfinale;
+		couleurfinaletest = mix(couleurfinale, vec4(normal(c.xy).pR3.xy,1.*normal(c.xy).pR3.z, 1.0), 2.9 );
+	if((uv.x>-0.001 && uv.x < 0.001) || (uv.y > -0.001 && uv.y < 0.001) || (c.x > -1.01 && c.x < -0.99)|| (c.y > -1.01 && c.y < -0.99) || (c.x < 1.01 && c.x > 0.99)|| (c.y < 1.01 && c.y > 0.99)){
+		return vec4(1.,0.,1.,1.);
+	}
+	return couleurfinaletest;
 }
 
 void main() {
 	vec4 col = Image(gl_FragCoord.xy);
-	if(gl_FragCoord.x > -2. && gl_FragCoord.x < 2.) {
-		color = vec4(0.,0.,0.,1.);
-	} else {
-		color = col;
-	}
+	color = col;
 }
