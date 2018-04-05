@@ -7,8 +7,8 @@ MaterialDef Test Material 123{
 	    Vector2 Translat
 	}
 	Technique {
-   		VertexShader GLSL140 : /vue/shaderVert.glsl
-	    FragmentShader GLSL140 :/vue/
+   		VertexShader GLSL150 : /vue/shaderVert.glsl
+	    FragmentShader GLSL150 :/vue/
     	WorldParameters {
     		WorldViewProjectionMatrix
         }

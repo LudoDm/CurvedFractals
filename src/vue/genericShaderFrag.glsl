@@ -8,6 +8,75 @@ uniform vec2 m_Translat;
 
 out vec4 color;
 
+struct MxR3 {
+	vec2 pM;
+	vec3 pR3;
+};
+
+
+
+vec3 chart2(vec2 p) {
+	vec3 a = vec3(-2.0*p.x / (p.x*p.x + p.y*p.y -1.),-2.0*p.y / (p.x*p.x + p.y*p.y -1.),1.0*(1. + (p.x*p.x + p.y*p.y))/(1. - (p.x*p.x + p.y*p.y)));
+	return a;
+}
+
+MxR3 section(vec2 p){
+	vec3 r3 = chart2(p);
+	MxR3 tangent = MxR3(p, r3);
+	return tangent;
+}
+
+vec2 projection(MxR3 tm){
+	return tm.pM;
+}
+
+mat2 metric(vec2 p) {
+	float g11 = 4./pow(p.x*p.x + p.y*p.y -1.0,2.);
+	//float g11 = 1.0;
+	float g21 = 0.;
+	float g12 = 0.;
+	//float g22 = -1.0/sin(p.x+ time);
+	float g22 = 4./pow(p.x*p.x + p.y*p.y -1.,2.);
+	mat2 g = mat2(g11,g21,g12,g22);
+	return g;
+}
+
+mat2 inverseMetric(vec2 p){
+	return inverse(metric(p));
+}
+
+float innerProdAt(vec2 p, vec2 a, vec2 b){
+	mat2 g = metric(p);
+	return g[0][0]*a.x*b.x + g[1][0]*a.y*b.x + g[0][1]*a.x*b.y + g[1][1]*a.y*b.y;
+}
+
+float inducedInnerProdAt(vec2 p, MxR3 a, MxR3 b){
+	return innerProdAt(p, projection(a), projection(b));
+}
+
+MxR3 gNormalize( MxR3 a){
+	a.pR3 /= sqrt(inducedInnerProdAt(projection(a),a,a));
+	return a;
+}
+
+MxR3 normal(vec2 p) {
+	MxR3 n;
+	vec3 n1in = (chart2(vec2(p.x+0.01, p.y)) - chart2(p));
+	MxR3 n1 = MxR3(p,n1in);
+	vec3 n2in = chart2(vec2(p.x, p.y+0.01)) - chart2(p);
+	MxR3 n2 = MxR3(p,n2in);
+	n = MxR3(p,cross(n1.pR3,n2.pR3));
+	n.pR3 = normalize(n.pR3);
+	//n.pR3 = gNormalize(n).pR3;
+	return n;
+}
+
+float Gamma(vec2 p, int i, int j, int k){
+
+	return 0.;
+}
+
+
 vec2 ccjg(in vec2 c) {
 	return vec2(c.x, -c.y);
 }
@@ -143,11 +212,11 @@ int mandelbrot(vec2 c) {
 
 vec4 Image(vec2 f) {
 	// Screen coordinate, roughly -2 to +2
-	vec2 uv = (f.xy * 2.0 - m_Resolution.xy) * 2.0 / m_Resolution.x;
+	vec2 uv = (2.0 * f.xy - m_Resolution) / max(m_Resolution.x,m_Resolution.y);
 	vec4 c = vec4(uv.x,uv.y,0,0);
 
-	vec4 transInit = vec4(2.,1.5,0,0);
-	vec2 translation = (m_Translat*2.0 - m_Resolution) *2.0 /m_Resolution.x;
+	vec4 transInit = vec4(0.,0.0,0,0);
+	vec2 translation = (m_Translat*1.0 - m_Resolution) *1.0 /m_Resolution.x;
 	vec4 t = vec4(translation.x,translation.y,0,0);
 	vec4 transtot = transInit + t;
 
@@ -172,5 +241,9 @@ vec4 Image(vec2 f) {
 
 void main() {
 	vec4 col = Image(gl_FragCoord.xy);
-	color = col;
+	if(gl_FragCoord.x > -2. && gl_FragCoord.x < 2.) {
+		color = vec4(0.,0.,0.,1.);
+	} else {
+		color = col;
+	}
 }

@@ -5,8 +5,8 @@ MaterialDef Test Material 123{
 		Vector2 Resolution
 	}
 	Technique {
-    VertexShader GLSL140 : /prototypes/vert.glsl
-    FragmentShader GLSL140 :/prototypes/frag.glsl
+    VertexShader GLSL150 : /prototypes/vert.glsl
+    FragmentShader GLSL150 :/prototypes/frag.glsl
    	WorldParameters {
    	WorldViewProjectionMatrix
     }
