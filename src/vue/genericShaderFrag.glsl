@@ -236,9 +236,9 @@ vec4 Image(vec2 f) {
 
 	c -= transtot;
 	c *= m_Zoom;
-	c+= transtot;
+	c += transtot;
 
-	float ret = mandelbrot(0.4*chart2(1.*c.xy + vec2(-0.,-0.)).xy  + 1.*normal(c.xy).pR3.xy );
+	float ret = mandelbrot(0.49*chart2(0.8*c.xy + vec2(-0.,-0.)).xy  + 1.*normal(c.xy).pR3.xy );
 
 
 	// Turn the iteration count into a color.
