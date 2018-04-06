@@ -55,7 +55,7 @@ public class JMonkeyApp extends JmeToJFXApplication {
 	public void simpleInitApp() {
 		setColorMin(ColorRGBA.Blue);
 		setColorMax(ColorRGBA.Magenta);
-		float w = this.getContext().getSettings().getWidth();
+		float w = 1920f;
 		float h = this.getContext().getSettings().getHeight();
 		System.out.println("w: " + w + " h: " + h);
 		cam.setLocation(Vector3f.ZERO.add(new Vector3f(0.0f, 0.0f, 10f)));
