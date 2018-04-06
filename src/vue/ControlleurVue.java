@@ -15,6 +15,7 @@ import com.jme3x.jfx.injfx.JmeToJFXIntegrator;
 import controleur.Controleur;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableSet;
+import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -78,6 +79,7 @@ public class ControlleurVue {
 	private TextField tFunction, tZoom, tMatrix1, tMatrix2, tMatrix3, tMatrix4, tX, tU, tV;
 	@FXML
 	private ColorPicker colpic1, colpic2;
+	private int nbrZoom;
 
 	public ControlleurVue(Controleur ctrl) {
 		try {
@@ -189,8 +191,32 @@ public class ControlleurVue {
 
 	@FXML
 	void closeZoomBox(ActionEvent event) {
+		this.zoomVal = tZoom.getText();
 
-		zoomVal = tZoom.getText();
+		if (zoomVal != "" && zoomVal != null) {
+			this.nbrZoom = Integer.parseInt(zoomVal);
+		}
+
+		Task task = new Task<Void>() {
+			@Override
+			protected Void call() throws Exception {
+				for (int i = 0; i < nbrZoom; i++) {
+					System.out.println("Zoom: " + i);
+					zoom((float) 0.9);
+				    try {
+		                Thread.sleep(1000);
+		            } catch (InterruptedException interrupted) {
+		                if (isCancelled()) {
+		                    updateMessage("Cancelled");
+		                    break;
+		                }
+		            }
+				}
+				return null;
+			}
+		};
+		
+		new Thread(task).start();
 
 		zoombox.setVisible(false);
 		visibleSet.remove(zoombox);
@@ -455,6 +481,23 @@ public class ControlleurVue {
 		application.setShowSettings(false);
 		application.setDisplayFps(true);
 		return application;
+	}
+	
+	public void zoom(float x) {
+		if (x < 0 && Math.abs(x) != 1) {
+			x = 1.0f / -x;
+		} else if (x == 0) {
+			x = 1;
+		}
+		float out = zoomTrans.getScale().x;
+		zoomTrans = zoomTrans.setScale(out * x);
+
+		if (!application.isMatNull()) {
+			application.setZoomTransformMat(getZoomMat());
+		} else {
+			System.out.println("FUUUUUUUUUUUUUUUUUUCCCCCCCCCCCCCCCCCCCLLLLLLLLLLLLLLLLLL");
+		}
+		System.out.println(getZoomMat());
 	}
 
 }
