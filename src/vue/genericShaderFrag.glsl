@@ -77,6 +77,7 @@ MxR3 normal(vec2 p) {
 	n = MxR3(p,cross(n1.pR3,n2.pR3));
 	//n.pR3 = normalize(n.pR3);
 	n.pR3 = gNormalize(n).pR3;
+	//200em COMMIT
 	return n;
 }
 
