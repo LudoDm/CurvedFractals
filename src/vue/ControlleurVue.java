@@ -15,6 +15,7 @@ import com.jme3x.jfx.injfx.JmeToJFXIntegrator;
 import controleur.Controleur;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableSet;
+import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -190,12 +191,32 @@ public class ControlleurVue {
 	@FXML
 	void closeZoomBox(ActionEvent event) {
 
-		zoomVal = tZoom.getText();
-		nbrZoom = Integer.parseInt(zoomVal);
+		this.zoomVal = tZoom.getText();
+
+		if (zoomVal != "" && zoomVal != null) {
+			this.nbrZoom = Integer.parseInt(zoomVal);
+		}
+
+		Task task = new Task<Void>() {
+			@Override
+			protected Void call() throws Exception {
+				for (int i = 0; i < nbrZoom; i++) {
+					System.out.println("Zoom: " + i);
+					zoom((float) 0.9);
+				    try {
+		                Thread.sleep(1000);
+		            } catch (InterruptedException interrupted) {
+		                if (isCancelled()) {
+		                    updateMessage("Cancelled");
+		                    break;
+		                }
+		            }
+				}
+				return null;
+			}
+		};
 		
-		Thread t = new ZoomThread();
-		t.setDaemon(true);
-		t.run();
+		new Thread(task).start();
 
 		zoombox.setVisible(false);
 		visibleSet.remove(zoombox);
@@ -232,20 +253,8 @@ public class ControlleurVue {
 		float ds = (float) event.getTextDeltaY();
 		ds /= 10;
 		System.out.println(ds);
-		if (ds < 0 && Math.abs(ds) != 1) {
-			ds = 1.0f / -ds;
-		} else if (ds == 0) {
-			ds = 1;
-		}
-		float out = zoomTrans.getScale().x;
-		zoomTrans = zoomTrans.setScale(out * ds);
+		zoom(ds);
 
-		if (!application.isMatNull()) {
-			application.setZoomTransformMat(getZoomMat());
-		} else {
-			System.out.println("FUUUUUUUUUUUUUUUUUUCCCCCCCCCCCCCCCCCCCLLLLLLLLLLLLLLLLLL");
-		}
-		System.out.println(getZoomMat());
 	}
 
 	@FXML
@@ -375,6 +384,8 @@ public class ControlleurVue {
 	void resetZoom(KeyEvent e) {
 		if (e.getCode() == KeyCode.R) {
 			System.out.println("reset");
+			application.setZoomTransformMat(Transform.IDENTITY.toTransformMatrix());
+			this.zoomTrans = Transform.IDENTITY;
 		}
 	}
 
@@ -457,19 +468,22 @@ public class ControlleurVue {
 		return application;
 	}
 
-	public class ZoomThread extends Thread {
-		public void run() {
-
-			for (int i = 0; i < nbrZoom; i++) {
-				System.out.println("Zoom: " + i);
-				try {
-					Thread.sleep(1000);
-				} catch (Exception e) {
-					System.out.println(e);
-				}
-			}
+	public void zoom(float x) {
+		if (x < 0 && Math.abs(x) != 1) {
+			x = 1.0f / -x;
+		} else if (x == 0) {
+			x = 1;
 		}
+		float out = zoomTrans.getScale().x;
+		zoomTrans = zoomTrans.setScale(out * x);
 
+		if (!application.isMatNull()) {
+			application.setZoomTransformMat(getZoomMat());
+		} else {
+			System.out.println("FUUUUUUUUUUUUUUUUUUCCCCCCCCCCCCCCCCCCCLLLLLLLLLLLLLLLLLL");
+		}
+		System.out.println(getZoomMat());
 	}
+
 
 }
