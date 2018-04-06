@@ -75,19 +75,19 @@ MxR3 normal(vec2 p) {
 	vec3 n2in = chart2(vec2(p.x, p.y+0.01)) - chart2(p);
 	MxR3 n2 = MxR3(p,n2in);
 	n = MxR3(p,cross(n1.pR3,n2.pR3));
-	n.pR3 = normalize(n.pR3);
-	//n.pR3 = gNormalize(n).pR3;
+	//n.pR3 = normalize(n.pR3);
+	n.pR3 = gNormalize(n).pR3;
 	return n;
 }
 
-float Gamma(vec2 p, int i, int j, int k){
-	float resTemp = 0.;
-	for(int i = 0; i < 3; i++){
+//float Gamma(vec2 p, int i, int j, int k){
+//	float resTemp = 0.;
+//	for(int i = 0; i < 3; i++){
 
-	}
+//	}
 
-	return 0.;
-}
+//	return 0.;
+//}
 
 
 vec2 ccjg(in vec2 c) {
@@ -253,7 +253,7 @@ vec4 Image(vec2 f) {
 		couleurfinale = mix(m_ColorMin, m_ColorMax, sin(ret));
 		//couleurfinale = sin(mix(m_ColorMin, m_ColorMax, ret/30));
 	}
-		couleurfinaletest = mix(couleurfinale, vec4(normal(c.xy).pR3.xy,1.*normal(c.xy).pR3.z, 1.0), 2.9 );
+		couleurfinaletest = mix(couleurfinale, vec4(normal(c.xy).pR3.xy,1.*normal(c.xy).pR3.z, 1.0), 0.5 );
 	if((uv.x>-0.001 && uv.x < 0.001) || (uv.y > -0.001 && uv.y < 0.001) || (c.x > -1.01 && c.x < -0.99)|| (c.y > -1.01 && c.y < -0.99) || (c.x < 1.01 && c.x > 0.99)|| (c.y < 1.01 && c.y > 0.99)){
 		return vec4(1.,0.,1.,1.);
 	}

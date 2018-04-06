@@ -311,11 +311,11 @@ public class ControlleurVue {
 
 	private void gererRightClick() {
 
-		Button b = new Button("allo");
-		VBox promptBox = new VBox();
-		promptBox.getChildren().add(b);
-
-		stackpane.getChildren().add(promptBox);
+//		Button b = new Button("allo");
+//		VBox promptBox = new VBox();
+//		promptBox.getChildren().add(b);
+//
+//		stackpane.getChildren().add(promptBox);
 
 	}
 
