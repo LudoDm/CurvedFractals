@@ -26,6 +26,8 @@ import javafx.scene.control.ColorPicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.ScrollEvent;
@@ -44,9 +46,11 @@ public class ControlleurVue {
 	private JMonkeyApp application;
 	private Color c1, c2;
 	private Transform zoomTrans = new Transform();
-	private float xInitLocation, yInitLocation;
+	private float xInitLocation, yInitLocation, X, U, V;
 	private Vector2f vecTranslation = new Vector2f(0, 0);
 	private boolean changed = false;
+
+	private float zoomFix = 0f;
 
 	@FXML
 	private ImageView theImageView;
@@ -58,19 +62,20 @@ public class ControlleurVue {
 	private StackPane stackpane;
 
 	@FXML
-	private VBox sidemenu, infobox;
+	private VBox sidemenu;
 
 	@FXML
-	private Button bFunction, bMatrix, bColor, bZoom, bFunctionEnter, bZoomEnter, bMatrixEnter, bColorEnter;
+	private Button bFunction, bMatrix, bColor, bZoom, bFunctionEnter, bZoomEnter, bMatrixEnter, bColorEnter, bR2toR3,
+			bR2toR3Enter;
 
 	@FXML
 	private Label lX, lXValue, lY, lYValue, lFunction, lZoom, lArrow;
 
 	@FXML
-	private HBox functionbox, zoombox, matrixbox, colorbox;
+	private HBox functionbox, zoombox, matrixbox, colorbox, r2tor3box;
 
 	@FXML
-	private TextField tFunction, tZoom, tMatrix1, tMatrix2, tMatrix3, tMatrix4;
+	private TextField tFunction, tZoom, tMatrix1, tMatrix2, tMatrix3, tMatrix4, tX, tU, tV;
 	@FXML
 	private ColorPicker colpic1, colpic2;
 
@@ -106,6 +111,7 @@ public class ControlleurVue {
 			colorbox.setVisible(false);
 			matrixbox.setVisible(false);
 			zoombox.setVisible(false);
+			r2tor3box.setVisible(false);
 
 			visibleSet = FXCollections.observableSet();
 
@@ -192,6 +198,20 @@ public class ControlleurVue {
 
 	}
 
+	@FXML
+	void closeR2toR3Box(ActionEvent event) {
+
+		// TODO : Ajouter un valideur pour pas que ça crash (TextField vide)
+
+		// X = Float.parseFloat(tX.getText());
+		// U = Float.parseFloat(tU.getText());
+		// V = Float.parseFloat(tV.getText());
+
+		r2tor3box.setVisible(false);
+		visibleSet.remove(r2tor3box);
+		bR2toR3.setStyle("-fx-background-radius: 15");
+	}
+
 	void closeSideMenu() {
 
 		sidemenu.setVisible(false);
@@ -202,11 +222,14 @@ public class ControlleurVue {
 	@FXML
 	void gererZoom(ScrollEvent event) {
 
+		// zoomFix = (event.getDeltaY() / 40f == 1f) ? zoomFix + 1f : zoomFix - 1f;
+
 		changerEquationInitilialisation();
 
 		// TODO ça tout seul ca chie.
 		float ds = (float) event.getTextDeltaY();
 		ds /= 10;
+
 		System.out.println(ds);
 		if (ds < 0 && Math.abs(ds) != 1) {
 			ds = 1.0f / -ds;
@@ -284,7 +307,6 @@ public class ControlleurVue {
 				}
 			}
 		}
-
 	}
 
 	private void gererRightClick() {
@@ -306,6 +328,18 @@ public class ControlleurVue {
 
 		} else {
 			closeZoomBox(event);
+		}
+	}
+
+	@FXML
+	void showR2toR3Box(ActionEvent event) {
+		if (!r2tor3box.isVisible()) {
+			r2tor3box.setVisible(true);
+			visibleSet.add(r2tor3box);
+			bR2toR3.setStyle("-fx-background-radius: 0 50 30 0;");
+
+		} else {
+			closeR2toR3Box(event);
 		}
 	}
 
@@ -333,6 +367,15 @@ public class ControlleurVue {
 			// System.out.println(zoomTrans.toTransformMatrix());
 			// application.setZoomTransformMat(zoomTrans.toTransformMatrix());
 		}
+	}
+
+	@FXML
+	void gererReset(KeyEvent event) {
+
+		if (event.getCode() == KeyCode.ESCAPE) {
+			System.out.println("reset GROS");
+		}
+
 	}
 
 	public Scene getScene() {
