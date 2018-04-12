@@ -320,7 +320,6 @@ public class ControlleurVue {
 
 		if (event.getButton().equals(MouseButton.SECONDARY)) {
 			System.out.println("yo bitch");
-			gererRightClick();
 		} else if (event.getButton().equals(MouseButton.PRIMARY)) {
 			if (!sidemenu.isVisible()) {
 				sidemenu.setVisible(true);
@@ -339,15 +338,6 @@ public class ControlleurVue {
 		}
 	}
 
-	private void gererRightClick() {
-
-//		Button b = new Button("allo");
-//		VBox promptBox = new VBox();
-//		promptBox.getChildren().add(b);
-//
-//		stackpane.getChildren().add(promptBox);
-
-	}
 
 	@FXML
 	void showZoomBox(ActionEvent event) {
