@@ -14,7 +14,7 @@ import net.objecthunter.exp4j.tokenizer.UnknownFunctionOrVariableException;
 public class ChartHandler {
 
 	public final static String VARX = "x";
-	public final static String VARU = "y";
+	public final static String VARU = "u";
 	public final static String VARV = "v";
 
 	private File shaderBase;
@@ -86,7 +86,7 @@ public class ChartHandler {
 			return false;
 
 		try {
-			new ExpressionBuilder(pFormula).variables(VARX, VARU, VARV).build();
+			new ExpressionBuilder(pFormula).variables(VARU, VARV).build();
 			out = true;
 		} catch (UnknownFunctionOrVariableException e) {
 		}
@@ -135,9 +135,8 @@ public class ChartHandler {
 				setShaderBaseData(data);
 				System.out.println("ecriture du fichier");
 				writeFile(getShaderBaseData(), getShaderUpdatedBase());
+				out = true;
 			}
-
-			out = true;
 
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
