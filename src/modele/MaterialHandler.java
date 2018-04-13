@@ -47,8 +47,16 @@ public class MaterialHandler {
 	}
 
 	public void writeMetric(String string1, String string2, String string3, String string4) {
-		if (string1 != null && string2 != null && string3 != null && string4 != null) {
-			String[] listeDeString = { string1, string2, string3, string4 };
+		boolean entreesValides = true;
+		String[] listeDeString = { string1, string2, string3, string4 };
+
+		for (String i : listeDeString) {
+			if (i == null || i.length() == 0)
+				entreesValides = false;
+		}
+
+		if (entreesValides) {
+
 			if (metricHandler.WriteFormula(listeDeString)) {
 				writeMat(metricHandler.getShaderUpdatedBase());
 			}
@@ -56,8 +64,15 @@ public class MaterialHandler {
 	}
 
 	public void writeChart(String string1, String string2, String string3) {
-		if (string1 != null && string2 != null && string3 != null) {
-			String[] listeDeString = { string1, string2, string3 };
+		boolean entreesValides = true;
+		String[] listeDeString = { string1, string2, string3 };
+
+		for (String i : listeDeString) {
+			if (i == null || i.length() == 0)
+				entreesValides = false;
+		}
+
+		if (entreesValides) {
 			if (chartHandler.WriteFormula(listeDeString)) {
 				writeMat(chartHandler.getShaderUpdatedBase());
 			}
