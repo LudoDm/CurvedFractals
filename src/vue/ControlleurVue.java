@@ -19,6 +19,7 @@ import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.control.Tooltip;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -117,11 +118,41 @@ public class ControlleurVue {
 
 			visibleSet = FXCollections.observableSet();
 
+			initHoverInfos();
+
 		} catch (Exception ex) {
 			System.out.println("Exception lors du chargement des ressources dans controlleur vue");
 			ex.printStackTrace();
 		}
 
+	}
+
+	private void initHoverInfos() {
+
+		tFunction.setTooltip(new Tooltip("Équation de la fractale" + "\n" + "c : Position" + "\n" + "z : Itération"));
+
+		tMatrix1.setTooltip(new Tooltip("x ∈ [-1,1]" + "\n" + "y ∈ [-1,1]"));
+		tMatrix2.setTooltip(new Tooltip("x ∈ [-1,1]" + "\n" + "y ∈ [-1,1]"));
+		tMatrix3.setTooltip(new Tooltip("x ∈ [-1,1]" + "\n" + "y ∈ [-1,1]"));
+		tMatrix4.setTooltip(new Tooltip("x ∈ [-1,1]" + "\n" + "y ∈ [-1,1]"));
+
+		colpic1.setTooltip(new Tooltip("Couleur de départ"));
+		colpic2.setTooltip(new Tooltip("Couleur de fin"));
+
+		tZoom.setTooltip(new Tooltip("Nombre de zooms à effectuer"));
+
+		tX.setTooltip(new Tooltip("u ∈ [-1,1]" + "\n" + "v ∈ [-1,1]"));
+		tU.setTooltip(new Tooltip("u ∈ [-1,1]" + "\n" + "v ∈ [-1,1]"));
+		tV.setTooltip(new Tooltip("u ∈ [-1,1]" + "\n" + "v ∈ [-1,1]"));
+
+		bFunction.setTooltip(new Tooltip("Équation"));
+		bMatrix.setTooltip(new Tooltip("Tenseur métrique"));
+		bColor.setTooltip(new Tooltip("Couleur"));
+		bZoom.setTooltip(new Tooltip("Zoom"));
+		bR2toR3.setTooltip(new Tooltip("Paramétrisation de M vers R3"));
+		
+		
+		
 	}
 
 	@FXML
@@ -341,11 +372,11 @@ public class ControlleurVue {
 
 	private void gererRightClick() {
 
-//		Button b = new Button("allo");
-//		VBox promptBox = new VBox();
-//		promptBox.getChildren().add(b);
-//
-//		stackpane.getChildren().add(promptBox);
+		// Button b = new Button("allo");
+		// VBox promptBox = new VBox();
+		// promptBox.getChildren().add(b);
+		//
+		// stackpane.getChildren().add(promptBox);
 
 	}
 
