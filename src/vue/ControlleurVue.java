@@ -51,6 +51,7 @@ public class ControlleurVue {
 	private float xInitLocation, yInitLocation, X, U, V;
 	private Vector2f vecTranslation = new Vector2f(0, 0);
 	private boolean changed = false;
+	private Task currenttask;
 
 	private float zoomFix = 0f;
 
@@ -239,27 +240,13 @@ public class ControlleurVue {
 
 			}
 		}
+		
+		if(currenttask == null) {
+			creerTask();
+		}else if(!currenttask.isRunning()) {
+			creerTask();
+		}
 
-		Task task = new Task<Void>() {
-			@Override
-			protected Void call() throws Exception {
-				for (int i = 0; i < nbrZoom; i++) {
-					System.out.println("Zoom: " + i);
-					zoom((float) 0.9);
-					try {
-						Thread.sleep(1000);
-					} catch (InterruptedException interrupted) {
-						if (isCancelled()) {
-							updateMessage("Cancelled");
-							break;
-						}
-					}
-				}
-				return null;
-			}
-		};
-
-		new Thread(task).start();
 
 		zoombox.setVisible(false);
 		visibleSet.remove(zoombox);
@@ -562,6 +549,30 @@ public class ControlleurVue {
 			System.out.println("FUUUUUUUUUUUUUUUUUUCCCCCCCCCCCCCCCCCCCkkkkkkkkkkkkkkkkkkkk");
 		}
 		System.out.println(getZoomMat());
+	}
+	
+	public void creerTask() {
+
+		currenttask = new Task<Void>() {
+			@Override
+			protected Void call() throws Exception {
+				for (int i = 0; i < nbrZoom; i++) {
+					System.out.println("Zoom: " + i);
+					zoom((float) 0.9);
+					try {
+						Thread.sleep(1000);
+					} catch (InterruptedException interrupted) {
+						if (isCancelled()) {
+							updateMessage("Cancelled");
+							break;
+						}
+					}
+				}
+				return null;
+			}
+		};
+
+		new Thread(currenttask).start();
 	}
 
 }
