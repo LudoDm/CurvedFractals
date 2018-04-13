@@ -51,6 +51,7 @@ public class ControlleurVue {
 	private float xInitLocation, yInitLocation, X, U, V;
 	private Vector2f vecTranslation = new Vector2f(0, 0);
 	private boolean changed = false;
+	private Task currenttask;
 
 	private float zoomFix = 0f;
 
@@ -195,6 +196,8 @@ public class ControlleurVue {
 	@FXML
 	void closeMatrixBox(ActionEvent event) {
 
+		// TODO enlever ce gros try n catch et filtrer comme il faut les données
+
 		List<String> matrix = new ArrayList<String>();
 
 		try {
@@ -208,13 +211,19 @@ public class ControlleurVue {
 			matrix.add(m21);
 			matrix.add(m22);
 
+			matrixbox.setVisible(false);
+			visibleSet.remove(matrixbox);
+			bMatrix.setStyle("-fx-background-radius: 15");
+
+			changerMetric(matrix.get(0), matrix.get(1), matrix.get(2), matrix.get(3));
+			// on reset le zoom sur le changement d'équation pour pas avoir de zoom trop
+			// brusque au premier scroll
+			application.setZoomTransformMat(Transform.IDENTITY.toTransformMatrix());
+			this.zoomTrans = Transform.IDENTITY;
+
 		} catch (Exception e) {
-
+			System.out.println("Le input de la matrice a explosé");
 		}
-
-		matrixbox.setVisible(false);
-		visibleSet.remove(matrixbox);
-		bMatrix.setStyle("-fx-background-radius: 15");
 
 	}
 
@@ -229,27 +238,13 @@ public class ControlleurVue {
 
 			}
 		}
+		
+		if(currenttask == null) {
+			creerTask();
+		}else if(!currenttask.isRunning()) {
+			creerTask();
+		}
 
-		Task task = new Task<Void>() {
-			@Override
-			protected Void call() throws Exception {
-				for (int i = 0; i < nbrZoom; i++) {
-					System.out.println("Zoom: " + i);
-					zoom((float) 0.9);
-					try {
-						Thread.sleep(1000);
-					} catch (InterruptedException interrupted) {
-						if (isCancelled()) {
-							updateMessage("Cancelled");
-							break;
-						}
-					}
-				}
-				return null;
-			}
-		};
-
-		new Thread(task).start();
 
 		zoombox.setVisible(false);
 		visibleSet.remove(zoombox);
@@ -260,15 +255,24 @@ public class ControlleurVue {
 	@FXML
 	void closeR2toR3Box(ActionEvent event) {
 
-		// TODO : Ajouter un valideur pour pas que ça crash (TextField vide)
+		// TODO : enlever ce gros try n catch
 
-		// X = Float.parseFloat(tX.getText());
-		// U = Float.parseFloat(tU.getText());
-		// V = Float.parseFloat(tV.getText());
+		try {
+			r2tor3box.setVisible(false);
+			visibleSet.remove(r2tor3box);
+			bR2toR3.setStyle("-fx-background-radius: 15");
 
-		r2tor3box.setVisible(false);
-		visibleSet.remove(r2tor3box);
-		bR2toR3.setStyle("-fx-background-radius: 15");
+			changerChart(tX.getText(), tU.getText(), tV.getText());
+			// on reset le zoom sur le changement d'équation pour pas avoir de zoom trop
+			// brusque au premier scroll
+			application.setZoomTransformMat(Transform.IDENTITY.toTransformMatrix());
+			this.zoomTrans = Transform.IDENTITY;
+
+		} catch (Exception e) {
+			System.out.println("Le input de la parametrisation à explosé ");
+			e.printStackTrace();
+		}
+
 	}
 
 	void closeSideMenu() {
@@ -483,6 +487,16 @@ public class ControlleurVue {
 		application.refreshMaterial(getControleurPrincipal().getMatUpdated());
 	}
 
+	public void changerMetric(String string1, String string2, String string3, String string4) {
+		getControleurPrincipal().writeMetric(string1, string2, string3, string4);
+		application.refreshMaterial(getControleurPrincipal().getMatUpdated());
+	}
+
+	public void changerChart(String string1, String string2, String string3) {
+		getControleurPrincipal().writeChart(string1, string2, string3);
+		application.refreshMaterial(getControleurPrincipal().getMatUpdated());
+	}
+
 	private void setControleurPrincipal(Controleur controleurPrincipal) {
 		this.controleurPrincipal = controleurPrincipal;
 	}
@@ -540,6 +554,30 @@ public class ControlleurVue {
 			System.out.println("FUUUUUUUUUUUUUUUUUUCCCCCCCCCCCCCCCCCCCkkkkkkkkkkkkkkkkkkkk");
 		}
 		System.out.println(getZoomMat());
+	}
+	
+	public void creerTask() {
+
+		currenttask = new Task<Void>() {
+			@Override
+			protected Void call() throws Exception {
+				for (int i = 0; i < nbrZoom; i++) {
+					System.out.println("Zoom: " + i);
+					zoom((float) 0.9);
+					try {
+						Thread.sleep(1000);
+					} catch (InterruptedException interrupted) {
+						if (isCancelled()) {
+							updateMessage("Cancelled");
+							break;
+						}
+					}
+				}
+				return null;
+			}
+		};
+
+		new Thread(currenttask).start();
 	}
 
 }
