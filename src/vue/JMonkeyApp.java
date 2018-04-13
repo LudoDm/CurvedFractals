@@ -43,7 +43,7 @@ public class JMonkeyApp extends JmeToJFXApplication {
 	private ColorRGBA ColorMax = ColorRGBA.Blue;
 
 	private Vector2f Resolution;
-	private Matrix4f ZoomTransform = new Transform().IDENTITY.toTransformMatrix();
+	private Matrix4f ZoomTransform = Transform.IDENTITY.toTransformMatrix();
 	private Vector2f TranslatTransform = new Vector2f(0, 0);
 
 	public JMonkeyApp(float Resx, float Resy) {
@@ -236,7 +236,7 @@ public class JMonkeyApp extends JmeToJFXApplication {
 	}
 
 	private void setZoomTransform(Matrix4f zoomTransform) {
-		ZoomTransform = zoomTransform;
+		this.ZoomTransform = zoomTransform;
 	}
 
 	public void setZoomTransformMat(Matrix4f zoomTransform) {
