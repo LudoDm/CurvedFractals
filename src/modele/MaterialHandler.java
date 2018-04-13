@@ -15,10 +15,13 @@ public class MaterialHandler {
 	private ArrayList<String> dataMatDef;
 	private File matdefBaseUpdated;
 	private ShaderHandler shaderHandler;
-	private MetricTensorHandler metricHandler;
+	private MetricHandler metricHandler;
+	private ChartHandler chartHandler;
 
 	public MaterialHandler(File shaderBase, File matDefBase) {
 		shaderHandler = new ShaderHandler(shaderBase);
+		metricHandler = new MetricHandler(shaderBase);
+		chartHandler = new ChartHandler(shaderBase);
 		setMatdefBase(matDefBase);
 	}
 
@@ -37,16 +40,31 @@ public class MaterialHandler {
 
 	public void writeFormula(String formula) {
 		if (formula != null) {
-
 			if (shaderHandler.WriteFormula(formula)) {
 				writeMat(shaderHandler.getShaderUpdatedBase());
 			}
-
 		}
-
 	}
 
-	private void writeMat(File shaderUpdated) {
+	public void writeMetric(String string1, String string2, String string3, String string4) {
+		if (string1 != null && string2 != null && string3 != null && string4 != null) {
+			String[] listeDeString = { string1, string2, string3, string4 };
+			if (metricHandler.WriteFormula(listeDeString)) {
+				writeMat(metricHandler.getShaderUpdatedBase());
+			}
+		}
+	}
+
+	public void writeChart(String string1, String string2, String string3) {
+		if (string1 != null && string2 != null && string3 != null) {
+			String[] listeDeString = { string1, string2, string3 };
+			if (chartHandler.WriteFormula(listeDeString)) {
+				writeMat(chartHandler.getShaderUpdatedBase());
+			}
+		}
+	}
+
+	public void writeMat(File shaderUpdated) {
 		try {
 
 			File newMat = File.createTempFile("tempMatDef", ".j3md", getMatdefBase().getParentFile());
@@ -58,8 +76,6 @@ public class MaterialHandler {
 			boolean done = false;
 			for (int i = 0; i < data.size() && !done; i++) {
 				if (data.get(i).contains("FragmentShader")) {
-					
-					System.out.println(shaderUpdated.getName() + "fonctionne");
 					data.set(i, data.get(i) + shaderUpdated.getName());
 					done = true;
 				}
@@ -74,7 +90,7 @@ public class MaterialHandler {
 		}
 	}
 
-	private void writeMatDef(ArrayList<String> data, File file) {
+	public void writeMatDef(ArrayList<String> data, File file) {
 		try {
 			PrintWriter out = new PrintWriter(getMatdefBaseUpdated());
 
@@ -90,7 +106,7 @@ public class MaterialHandler {
 
 	}
 
-	private ArrayList<String> OpenFile(File file) {
+	public ArrayList<String> OpenFile(File file) {
 		ArrayList<String> out = new ArrayList<>();
 		String ligne;
 		try {
@@ -110,11 +126,17 @@ public class MaterialHandler {
 
 	}
 
+	public void updateMetric() {
+	}
+
+	public void updateFormula() {
+	}
+
 	public ArrayList<String> getDataMatDef() {
 		return dataMatDef;
 	}
 
-	private void setDataMatDef(ArrayList<String> dataMatDef) {
+	public void setDataMatDef(ArrayList<String> dataMatDef) {
 		this.dataMatDef = dataMatDef;
 	}
 
@@ -122,7 +144,7 @@ public class MaterialHandler {
 		return matdefBaseUpdated;
 	}
 
-	private void setMatdefBaseUpdated(File matdefBaseUpdated) {
+	public void setMatdefBaseUpdated(File matdefBaseUpdated) {
 		if (matdefBaseUpdated.exists() && matdefBaseUpdated.canRead() && matdefBaseUpdated.isFile()) {
 			this.matdefBaseUpdated = matdefBaseUpdated;
 		}

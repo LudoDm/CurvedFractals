@@ -20,22 +20,14 @@ public class MetricTensorHandler {
 	public final static String VARX = "x";
 	public final static String VARY = "y";
 
-	private int Resx;
-	private int Resy;
+	public MetricTensorHandler() {
 
-	private Texture3D texture;
-
-	public MetricTensorHandler(int resx, int resy) {
-		if (resx * resy > 0 && resx > 0) {
-			this.Resx = resx;
-			this.Resy = resy;
-		}
 	}
 
 	public double[] evaluateAt(int x, int y) {
 		double[] out = null;
 		boolean worked = false;
-		if (x >= 0 && x <= Resx && y >= 0 && y <= Resy) {
+		if (x >= 0 && y >= 0) {
 			if (!(m11 == null || m21 == null || m12 == null || m22 == null)) {
 
 				double g11 = m11.setVariable(VARX, x).setVariable(VARY, y).evaluate();
@@ -82,14 +74,6 @@ public class MetricTensorHandler {
 		} catch (UnknownFunctionOrVariableException e) {
 		}
 		return out;
-	}
-
-	public Texture3D getTexture() {
-		return texture;
-	}
-
-	public void setTexture(Texture3D texture) {
-		this.texture = texture;
 	}
 
 	public String getMetricTensor11() {

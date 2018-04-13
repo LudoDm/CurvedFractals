@@ -187,6 +187,12 @@ public class ControlleurVue {
 		visibleSet.remove(matrixbox);
 		bMatrix.setStyle("-fx-background-radius: 15");
 
+		changerMetric(matrix.get(0), matrix.get(1), matrix.get(2), matrix.get(3));
+		// on reset le zoom sur le changement d'équation pour pas avoir de zoom trop
+		// brusque au premier scroll
+		application.setZoomTransformMat(Transform.IDENTITY.toTransformMatrix());
+		this.zoomTrans = Transform.IDENTITY;
+
 	}
 
 	@FXML
@@ -233,13 +239,16 @@ public class ControlleurVue {
 
 		// TODO : Ajouter un valideur pour pas que ça crash (TextField vide)
 
-		// X = Float.parseFloat(tX.getText());
-		// U = Float.parseFloat(tU.getText());
-		// V = Float.parseFloat(tV.getText());
-
 		r2tor3box.setVisible(false);
 		visibleSet.remove(r2tor3box);
 		bR2toR3.setStyle("-fx-background-radius: 15");
+
+		changerChart(tX.getText(), tU.getText(), tV.getText());
+		// on reset le zoom sur le changement d'équation pour pas avoir de zoom trop
+		// brusque au premier scroll
+		application.setZoomTransformMat(Transform.IDENTITY.toTransformMatrix());
+		this.zoomTrans = Transform.IDENTITY;
+
 	}
 
 	void closeSideMenu() {
@@ -341,11 +350,11 @@ public class ControlleurVue {
 
 	private void gererRightClick() {
 
-//		Button b = new Button("allo");
-//		VBox promptBox = new VBox();
-//		promptBox.getChildren().add(b);
-//
-//		stackpane.getChildren().add(promptBox);
+		// Button b = new Button("allo");
+		// VBox promptBox = new VBox();
+		// promptBox.getChildren().add(b);
+		//
+		// stackpane.getChildren().add(promptBox);
 
 	}
 
@@ -444,6 +453,16 @@ public class ControlleurVue {
 
 	public void changerEquation(String eq) throws IOException {
 		getControleurPrincipal().writeFormula(eq);
+		application.refreshMaterial(getControleurPrincipal().getMatUpdated());
+	}
+
+	public void changerMetric(String string1, String string2, String string3, String string4) {
+		getControleurPrincipal().writeMetric(string1, string2, string3, string4);
+		application.refreshMaterial(getControleurPrincipal().getMatUpdated());
+	}
+
+	public void changerChart(String string1, String string2, String string3) {
+		getControleurPrincipal().writeChart(string1, string2, string3);
 		application.refreshMaterial(getControleurPrincipal().getMatUpdated());
 	}
 
