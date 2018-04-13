@@ -47,7 +47,7 @@ public class ControlleurVue {
 	private ObservableSet<Node> visibleSet;
 	private JMonkeyApp application;
 	private Color c1, c2;
-	private Transform zoomTrans = new Transform();
+	private Transform zoomMat = new Transform();
 	private float xInitLocation, yInitLocation, X, U, V;
 	private Vector2f vecTranslation = new Vector2f(0, 0);
 	private boolean changed = false;
@@ -150,9 +150,7 @@ public class ControlleurVue {
 		bColor.setTooltip(new Tooltip("Couleur"));
 		bZoom.setTooltip(new Tooltip("Zoom"));
 		bR2toR3.setTooltip(new Tooltip("Paramétrisation de M vers R3"));
-		
-		
-		
+
 	}
 
 	@FXML
@@ -187,7 +185,7 @@ public class ControlleurVue {
 			// on reset le zoom sur le changement d'équation pour pas avoir de zoom trop
 			// brusque au premier scroll
 			application.setZoomTransformMat(Transform.IDENTITY.toTransformMatrix());
-			this.zoomTrans = Transform.IDENTITY;
+			this.zoomMat = Transform.IDENTITY;
 		} catch (IOException e) {
 			// TODO Bloc catch généré automatiquement
 			e.printStackTrace();
@@ -297,8 +295,8 @@ public class ControlleurVue {
 		} else if (ds == 0) {
 			ds = 1;
 		}
-		float out = zoomTrans.getScale().x;
-		zoomTrans = zoomTrans.setScale(out * ds);
+		float out = zoomMat.getScale().x;
+		zoomMat = zoomMat.setScale(out * ds);
 
 		if (!application.isMatNull()) {
 			application.setZoomTransformMat(getZoomMat());
@@ -433,9 +431,12 @@ public class ControlleurVue {
 	@FXML
 	void gererReset(KeyEvent event) {
 
-		if (event.getCode() == KeyCode.R) {
+		if (event.getCode() == KeyCode.R && !application.isMatNull()) {
+			
+			// TODO : MARCHE PAS. Le code se perd dans JMonkeyApp.......
+			
 			application.setZoomTransformMat(Transform.IDENTITY.toTransformMatrix());
-			this.zoomTrans = Transform.IDENTITY;
+			setZoomMat(Transform.IDENTITY);
 			System.out.println("reset GROS");
 		}
 
@@ -470,7 +471,11 @@ public class ControlleurVue {
 	}
 
 	public Matrix4f getZoomMat() {
-		return zoomTrans.toTransformMatrix();
+		return zoomMat.toTransformMatrix();
+	}
+
+	private void setZoomMat(Transform mat) {
+		this.zoomMat = mat;
 	}
 
 	public void changerEquation(String eq) throws IOException {
@@ -499,7 +504,7 @@ public class ControlleurVue {
 				// on reset le zoom sur le changement d'équation pour pas avoir de zoom trop
 				// brusque au premier scroll
 				application.setZoomTransformMat(Transform.IDENTITY.toTransformMatrix());
-				this.zoomTrans = Transform.IDENTITY;
+				setZoomMat(Transform.IDENTITY);
 				changed = true;
 			} catch (IOException e) {
 				System.out.println("Exception lance dans la methode hacky pour regler le zoom au lancement de l'app");
@@ -526,8 +531,8 @@ public class ControlleurVue {
 		} else if (x == 0) {
 			x = 1;
 		}
-		float out = zoomTrans.getScale().x;
-		zoomTrans = zoomTrans.setScale(out * x);
+		float out = zoomMat.getScale().x;
+		zoomMat = zoomMat.setScale(out * x);
 
 		if (!application.isMatNull()) {
 			application.setZoomTransformMat(getZoomMat());
