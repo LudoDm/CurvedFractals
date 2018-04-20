@@ -14,14 +14,13 @@ public class MaterialHandler {
 	private File matdefBase;
 	private ArrayList<String> dataMatDef;
 	private File matdefBaseUpdated;
-	private ShaderHandler shaderHandler;
-	private MetricHandler metricHandler;
-	private ChartHandler chartHandler;
+	// private ShaderHandler shaderHandler;
+	// private MetricHandler metricHandler;
+	// private ChartHandler chartHandler;
+	private FormulasHandler formHandler;
 
 	public MaterialHandler(File shaderBase, File matDefBase) {
-		shaderHandler = new ShaderHandler(shaderBase);
-		metricHandler = new MetricHandler(shaderBase);
-		chartHandler = new ChartHandler(shaderBase);
+		formHandler = new FormulasHandler(shaderBase);
 		setMatdefBase(matDefBase);
 	}
 
@@ -40,8 +39,9 @@ public class MaterialHandler {
 
 	public void writeFormula(String formula) {
 		if (formula != null) {
-			if (shaderHandler.WriteFormula(formula)) {
-				writeMat(shaderHandler.getShaderUpdatedBase());
+			String[] tempForm = { formula };
+			if (formHandler.WriteFormula(tempForm)) {
+				writeMat(formHandler.getShaderUpdatedBase());
 			}
 		}
 	}
@@ -57,8 +57,8 @@ public class MaterialHandler {
 
 		if (entreesValides) {
 
-			if (metricHandler.WriteFormula(listeDeString)) {
-				writeMat(metricHandler.getShaderUpdatedBase());
+			if (formHandler.WriteFormula(listeDeString)) {
+				writeMat(formHandler.getShaderUpdatedBase());
 			}
 		}
 	}
@@ -73,8 +73,8 @@ public class MaterialHandler {
 		}
 
 		if (entreesValides) {
-			if (chartHandler.WriteFormula(listeDeString)) {
-				writeMat(chartHandler.getShaderUpdatedBase());
+			if (formHandler.WriteFormula(listeDeString)) {
+				writeMat(formHandler.getShaderUpdatedBase());
 			}
 		}
 	}
@@ -167,9 +167,5 @@ public class MaterialHandler {
 
 	public File getMatdefBase() {
 		return matdefBase;
-	}
-
-	public ShaderHandler getShaderHandler() {
-		return shaderHandler;
 	}
 }

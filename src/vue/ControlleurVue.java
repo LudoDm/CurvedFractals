@@ -159,7 +159,7 @@ public class ControlleurVue {
 			this.zoomTrans = Transform.IDENTITY;
 		} catch (IOException e) {
 			// TODO Bloc catch généré automatiquement
-			e.printStackTrace();
+			// e.printStackTrace();
 		}
 	}
 
