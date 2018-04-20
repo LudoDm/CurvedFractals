@@ -19,6 +19,7 @@ import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.control.Tooltip;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -46,10 +47,11 @@ public class ControlleurVue {
 	private ObservableSet<Node> visibleSet;
 	private JMonkeyApp application;
 	private Color c1, c2;
-	private Transform zoomTrans = new Transform();
+	private Transform zoomMat = new Transform();
 	private float xInitLocation, yInitLocation, X, U, V;
 	private Vector2f vecTranslation = new Vector2f(0, 0);
 	private boolean changed = false;
+	private Task currenttask;
 
 	private float zoomFix = 0f;
 
@@ -117,10 +119,38 @@ public class ControlleurVue {
 
 			visibleSet = FXCollections.observableSet();
 
+			initHoverInfos();
+
 		} catch (Exception ex) {
 			System.out.println("Exception lors du chargement des ressources dans controlleur vue");
 			ex.printStackTrace();
 		}
+
+	}
+
+	private void initHoverInfos() {
+
+		tFunction.setTooltip(new Tooltip("Équation de la fractale" + "\n" + "c : Position" + "\n" + "z : Itération"));
+
+		tMatrix1.setTooltip(new Tooltip("x ∈ [-1,1]" + "\n" + "y ∈ [-1,1]"));
+		tMatrix2.setTooltip(new Tooltip("x ∈ [-1,1]" + "\n" + "y ∈ [-1,1]"));
+		tMatrix3.setTooltip(new Tooltip("x ∈ [-1,1]" + "\n" + "y ∈ [-1,1]"));
+		tMatrix4.setTooltip(new Tooltip("x ∈ [-1,1]" + "\n" + "y ∈ [-1,1]"));
+
+		colpic1.setTooltip(new Tooltip("Couleur de départ"));
+		colpic2.setTooltip(new Tooltip("Couleur de fin"));
+
+		tZoom.setTooltip(new Tooltip("Nombre de zooms à effectuer"));
+
+		tX.setTooltip(new Tooltip("u ∈ [-1,1]" + "\n" + "v ∈ [-1,1]"));
+		tU.setTooltip(new Tooltip("u ∈ [-1,1]" + "\n" + "v ∈ [-1,1]"));
+		tV.setTooltip(new Tooltip("u ∈ [-1,1]" + "\n" + "v ∈ [-1,1]"));
+
+		bFunction.setTooltip(new Tooltip("Équation"));
+		bMatrix.setTooltip(new Tooltip("Tenseur métrique"));
+		bColor.setTooltip(new Tooltip("Couleur"));
+		bZoom.setTooltip(new Tooltip("Zoom"));
+		bR2toR3.setTooltip(new Tooltip("Paramétrisation de M vers R3"));
 
 	}
 
@@ -156,7 +186,7 @@ public class ControlleurVue {
 			// on reset le zoom sur le changement d'équation pour pas avoir de zoom trop
 			// brusque au premier scroll
 			application.setZoomTransformMat(Transform.IDENTITY.toTransformMatrix());
-			this.zoomTrans = Transform.IDENTITY;
+			this.zoomMat = Transform.IDENTITY;
 		} catch (IOException e) {
 			// TODO Bloc catch généré automatiquement
 			// e.printStackTrace();
@@ -208,27 +238,13 @@ public class ControlleurVue {
 
 			}
 		}
+		
+		if(currenttask == null) {
+			creerTask();
+		}else if(!currenttask.isRunning()) {
+			creerTask();
+		}
 
-		Task task = new Task<Void>() {
-			@Override
-			protected Void call() throws Exception {
-				for (int i = 0; i < nbrZoom; i++) {
-					System.out.println("Zoom: " + i);
-					zoom((float) 0.9);
-					try {
-						Thread.sleep(1000);
-					} catch (InterruptedException interrupted) {
-						if (isCancelled()) {
-							updateMessage("Cancelled");
-							break;
-						}
-					}
-				}
-				return null;
-			}
-		};
-
-		new Thread(task).start();
 
 		zoombox.setVisible(false);
 		visibleSet.remove(zoombox);
@@ -283,8 +299,8 @@ public class ControlleurVue {
 		} else if (ds == 0) {
 			ds = 1;
 		}
-		float out = zoomTrans.getScale().x;
-		zoomTrans = zoomTrans.setScale(out * ds);
+		float out = zoomMat.getScale().x;
+		zoomMat = zoomMat.setScale(out * ds);
 
 		if (!application.isMatNull()) {
 			application.setZoomTransformMat(getZoomMat());
@@ -419,9 +435,12 @@ public class ControlleurVue {
 	@FXML
 	void gererReset(KeyEvent event) {
 
-		if (event.getCode() == KeyCode.R) {
+		if (event.getCode() == KeyCode.R && !application.isMatNull()) {
+			
+			// TODO : MARCHE PAS. Le code se perd dans JMonkeyApp.......
+			
 			application.setZoomTransformMat(Transform.IDENTITY.toTransformMatrix());
-			this.zoomTrans = Transform.IDENTITY;
+			setZoomMat(Transform.IDENTITY);
 			System.out.println("reset GROS");
 		}
 
@@ -456,7 +475,11 @@ public class ControlleurVue {
 	}
 
 	public Matrix4f getZoomMat() {
-		return zoomTrans.toTransformMatrix();
+		return zoomMat.toTransformMatrix();
+	}
+
+	private void setZoomMat(Transform mat) {
+		this.zoomMat = mat;
 	}
 
 	public void changerEquation(String eq) throws IOException {
@@ -495,7 +518,7 @@ public class ControlleurVue {
 				// on reset le zoom sur le changement d'équation pour pas avoir de zoom trop
 				// brusque au premier scroll
 				application.setZoomTransformMat(Transform.IDENTITY.toTransformMatrix());
-				this.zoomTrans = Transform.IDENTITY;
+				setZoomMat(Transform.IDENTITY);
 				changed = true;
 			} catch (IOException e) {
 				System.out.println("Exception lance dans la methode hacky pour regler le zoom au lancement de l'app");
@@ -522,8 +545,8 @@ public class ControlleurVue {
 		} else if (x == 0) {
 			x = 1;
 		}
-		float out = zoomTrans.getScale().x;
-		zoomTrans = zoomTrans.setScale(out * x);
+		float out = zoomMat.getScale().x;
+		zoomMat = zoomMat.setScale(out * x);
 
 		if (!application.isMatNull()) {
 			application.setZoomTransformMat(getZoomMat());
@@ -531,6 +554,30 @@ public class ControlleurVue {
 			System.out.println("FUUUUUUUUUUUUUUUUUUCCCCCCCCCCCCCCCCCCCkkkkkkkkkkkkkkkkkkkk");
 		}
 		System.out.println(getZoomMat());
+	}
+	
+	public void creerTask() {
+
+		currenttask = new Task<Void>() {
+			@Override
+			protected Void call() throws Exception {
+				for (int i = 0; i < nbrZoom; i++) {
+					System.out.println("Zoom: " + i);
+					zoom((float) 0.9);
+					try {
+						Thread.sleep(1000);
+					} catch (InterruptedException interrupted) {
+						if (isCancelled()) {
+							updateMessage("Cancelled");
+							break;
+						}
+					}
+				}
+				return null;
+			}
+		};
+
+		new Thread(currenttask).start();
 	}
 
 }
