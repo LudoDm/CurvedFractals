@@ -225,7 +225,7 @@ public class ControlleurVue {
 			this.zoomMat = Transform.IDENTITY;
 		} catch (IOException e) {
 			// TODO Bloc catch généré automatiquement
-			e.printStackTrace();
+			// e.printStackTrace();
 		}
 	}
 
