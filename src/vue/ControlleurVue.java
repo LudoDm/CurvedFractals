@@ -263,7 +263,7 @@ public class ControlleurVue {
 			// on reset le zoom sur le changement d'équation pour pas avoir de zoom trop
 			// brusque au premier scroll
 			application.setZoomTransformMat(Transform.IDENTITY.toTransformMatrix());
-			this.zoomTrans = Transform.IDENTITY;
+			this.zoomMat = Transform.IDENTITY;
 
 		} catch (Exception e) {
 			System.out.println("Le input de la matrice a explosé");
@@ -323,7 +323,7 @@ public class ControlleurVue {
 			// on reset le zoom sur le changement d'équation pour pas avoir de zoom trop
 			// brusque au premier scroll
 			application.setZoomTransformMat(Transform.IDENTITY.toTransformMatrix());
-			this.zoomTrans = Transform.IDENTITY;
+			this.zoomMat = Transform.IDENTITY;
 
 		} catch (Exception e) {
 			System.out.println("Le input de la parametrisation à explosé ");
