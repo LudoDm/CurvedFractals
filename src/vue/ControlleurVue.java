@@ -29,6 +29,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ColorPicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
@@ -126,12 +127,25 @@ public class ControlleurVue {
 			visibleSet = FXCollections.observableSet();
 
 			initHoverInfos();
+			// initButton();
 
 		} catch (Exception ex) {
 			System.out.println("Exception lors du chargement des ressources dans controlleur vue");
 			ex.printStackTrace();
 		}
 
+	}
+
+	private void initButton() {
+		// Image imageTemp = new
+		// Image(getClass().getResourceAsStream("/images/zoom-in.png"));
+		// ImageView imageViewTemp = new ImageView((imageTemp));
+
+		// imageViewTemp.setFitWidth(50);
+		// imageViewTemp.setFitHeight(50);
+
+		bZoom.setGraphic(null);
+		bZoom.setText("allo");
 	}
 
 	/**
@@ -400,9 +414,6 @@ public class ControlleurVue {
 	void showSideMenu(MouseEvent event) {
 
 		if (event.getButton().equals(MouseButton.SECONDARY)) {
-			System.out.println("yo bitch");
-			gererRightClick();
-		} else if (event.getButton().equals(MouseButton.PRIMARY)) {
 			if (!sidemenu.isVisible()) {
 				sidemenu.setVisible(true);
 				visibleSet.add(sidemenu);
@@ -418,16 +429,6 @@ public class ControlleurVue {
 				}
 			}
 		}
-	}
-
-	private void gererRightClick() {
-
-		// Button b = new Button("allo");
-		// VBox promptBox = new VBox();
-		// promptBox.getChildren().add(b);
-		//
-		// stackpane.getChildren().add(promptBox);
-
 	}
 
 	@FXML
@@ -470,7 +471,6 @@ public class ControlleurVue {
 	void positionInit() {
 		xInitLocation = (float) MouseInfo.getPointerInfo().getLocation().getX();
 		yInitLocation = (float) MouseInfo.getPointerInfo().getLocation().getY();
-		System.out.println(xInitLocation + " " + yInitLocation);
 	}
 
 	@FXML
@@ -616,21 +616,27 @@ public class ControlleurVue {
 		if (!application.isMatNull()) {
 			application.setZoomTransformMat(getZoomMat());
 		} else {
-			System.out.println("FUUUUUUUUUUUUUUUUUUCCCCCCCCCCCCCCCCCCCkkkkkkkkkkkkkkkkkkkk");
 		}
 		System.out.println(getZoomMat());
 	}
 
 	public void creerTask() {
 
+		bZoom.setGraphic(null);
+
+		bZoom.setText("");
+
 		currenttask = new Task<Void>() {
 			@Override
 			protected Void call() throws Exception {
+				String zoom = "";
+
 				for (int i = 0; i < nbrZoom; i++) {
-					System.out.println("Zoom: " + i);
 					zoom((float) 0.9);
+					zoom = Integer.toString(i);
 					try {
 						Thread.sleep(1000);
+
 					} catch (InterruptedException interrupted) {
 						if (isCancelled()) {
 							updateMessage("Cancelled");
@@ -644,6 +650,5 @@ public class ControlleurVue {
 
 		new Thread(currenttask).start();
 	}
-
 
 }
