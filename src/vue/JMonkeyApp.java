@@ -10,6 +10,7 @@ import com.jme3.material.MaterialDef;
 import com.jme3.math.Vector3f;
 import com.jme3.scene.Geometry;
 import com.jme3.scene.Node;
+import com.jme3.scene.Spatial;
 import com.jme3.scene.Spatial.CullHint;
 import com.jme3.scene.debug.Arrow;
 import com.jme3.scene.debug.Grid;
@@ -190,6 +191,28 @@ public class JMonkeyApp extends JmeToJFXApplication {
 		setZoomTransformMat(getZoomTransform());
 		setTranslateTransformMat(getTranslateTransform());
 		player.setMaterial(mat);
+	}
+
+	public boolean checkIfMaterialCompile(File theFile) {
+		boolean toReturn = true;
+
+		try {
+			String thePath = ("/vue/" + theFile.getName());
+			Material temp = new Material(assetManager, thePath);
+			setColorMinMat(getColorMin());
+			setColorMaxMat(getColorMax());
+			temp.setVector2("Resolution", new Vector2f(1920, 1080));
+			setZoomTransformMat(getZoomTransform());
+			setTranslateTransformMat(getTranslateTransform());
+
+			Geometry g1 = new Geometry("hey");
+			g1.setMaterial(temp);
+			getRenderManager().preloadScene(g1);
+		} catch (Exception e) {
+			toReturn = false;
+		}
+
+		return toReturn;
 	}
 
 	public boolean isMatNull() {
