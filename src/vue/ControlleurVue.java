@@ -14,6 +14,8 @@ import com.jme3.math.Vector2f;
 import com.jme3.system.AppSettings;
 import com.jme3x.jfx.injfx.JmeToJFXIntegrator;
 import controleur.Controleur;
+import javafx.application.Platform;
+import javafx.beans.property.SimpleIntegerProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableSet;
 import javafx.concurrent.Task;
@@ -271,8 +273,8 @@ public class ControlleurVue {
 
 	@FXML
 	/**
-	 * Cette méthode est appelée lorsque le boutton bZoomEnter est appuyé ou lorsque
-	 * le boutton bZoom est appuyé si le sous-menu était déja ouvert.
+	 * Cette méthode est appelée lorsque le boutton bZoomEnter est appuyé ou
+	 * lorsque le boutton bZoom est appuyé si le sous-menu était déja ouvert.
 	 * 
 	 * @param event
 	 */
@@ -291,6 +293,8 @@ public class ControlleurVue {
 			creerTask();
 		} else if (!currenttask.isRunning()) {
 			creerTask();
+		} else if (currenttask.isRunning()) {
+			currenttask.cancel();
 		}
 
 		zoombox.setVisible(false);
@@ -370,8 +374,8 @@ public class ControlleurVue {
 
 	@FXML
 	/**
-	 * Cette méthode est appelée lorsque le boutton bFunction est appuyé et que le
-	 * sous-menu n'était pas ouvert.
+	 * Cette méthode est appelée lorsque le boutton bFunction est appuyé et que
+	 * le sous-menu n'était pas ouvert.
 	 * 
 	 * @param event
 	 */
@@ -443,6 +447,15 @@ public class ControlleurVue {
 			zoombox.setVisible(true);
 			visibleSet.add(zoombox);
 			bZoom.setStyle("-fx-background-radius: 0 50 30 0;");
+			if (currenttask.isRunning()) {
+				currenttask.cancel();
+				Image imageTemp = new Image(getClass().getResourceAsStream("/images/zoom-in.png"));
+				ImageView imageViewTemp = new ImageView((imageTemp));
+
+				imageViewTemp.setFitWidth(50);
+				imageViewTemp.setFitHeight(50);
+				bZoom.setGraphic(imageViewTemp);
+			}
 
 		} else {
 			closeZoomBox(event);
@@ -622,18 +635,21 @@ public class ControlleurVue {
 
 	public void creerTask() {
 
-		bZoom.setGraphic(null);
+		Image imageTemp = new Image(getClass().getResourceAsStream("/images/Stop.png"));
+		ImageView imageViewTemp = new ImageView((imageTemp));
 
-		bZoom.setText("");
+		imageViewTemp.setFitWidth(50);
+		imageViewTemp.setFitHeight(50);
+
+		bZoom.setGraphic(imageViewTemp);
 
 		currenttask = new Task<Void>() {
 			@Override
 			protected Void call() throws Exception {
-				String zoom = "";
 
 				for (int i = 0; i < nbrZoom; i++) {
 					zoom((float) 0.9);
-					zoom = Integer.toString(i);
+
 					try {
 						Thread.sleep(1000);
 
