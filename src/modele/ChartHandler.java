@@ -102,7 +102,7 @@ public class ChartHandler {
 			if (pFormulas.length == 3) {
 				for (int z = 0; z < this.getFormulas().length; z++) {
 					if (setFormula(pFormulas[z], z) == false)
-						formulesValides = false;fj
+						formulesValides = false;
 				}
 			}
 

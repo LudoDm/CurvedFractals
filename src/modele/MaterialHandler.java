@@ -14,7 +14,7 @@ public class MaterialHandler {
 	private File matdefBase;
 	private ArrayList<String> dataMatDef;
 	private File matdefBaseUpdated;
-	// private ShaderHandler shaderHandler;
+	private ShaderHandler shaderHandler;
 	// private MetricHandler metricHandler;
 	// private ChartHandler chartHandler;
 	private FormulasHandler formHandler;
@@ -167,5 +167,10 @@ public class MaterialHandler {
 
 	public File getMatdefBase() {
 		return matdefBase;
+	}
+
+	public ShaderHandler getShaderHandler() {
+
+		return shaderHandler;
 	}
 }

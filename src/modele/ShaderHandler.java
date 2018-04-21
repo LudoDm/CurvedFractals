@@ -145,7 +145,7 @@ public class ShaderHandler {
 
 	}
 
-	private ArrayList<String> OpenFile(File file) {
+	public ArrayList<String> OpenFile(File file) {
 		ArrayList<String> out = new ArrayList<>();
 		String ligne;
 		try {
