@@ -7,16 +7,20 @@ import java.util.List;
 import org.jetbrains.annotations.NotNull;
 import com.jme3.material.Material;
 import com.jme3.math.ColorRGBA;
+import com.jme3.math.Matrix3f;
 import com.jme3.math.Matrix4f;
 import com.jme3.math.Transform;
 import com.jme3.math.Vector2f;
 import com.jme3.system.AppSettings;
 import com.jme3x.jfx.injfx.JmeToJFXIntegrator;
 import controleur.Controleur;
+import javafx.application.Platform;
+import javafx.beans.property.SimpleIntegerProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableSet;
 import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Tooltip;
@@ -27,6 +31,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ColorPicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
@@ -52,6 +57,8 @@ public class ControlleurVue {
 	private Vector2f vecTranslation = new Vector2f(0, 0);
 	private boolean changed = false;
 	private Task currenttask;
+
+	private boolean dragging = true;
 
 	private float zoomFix = 0f;
 
@@ -82,6 +89,8 @@ public class ControlleurVue {
 	@FXML
 	private ColorPicker colpic1, colpic2;
 	private int nbrZoom;
+
+	private Transform zoomTrans = new Transform();
 
 	public ControlleurVue(Controleur ctrl) {
 		try {
@@ -120,6 +129,7 @@ public class ControlleurVue {
 			visibleSet = FXCollections.observableSet();
 
 			initHoverInfos();
+			// initButton();
 
 		} catch (Exception ex) {
 			System.out.println("Exception lors du chargement des ressources dans controlleur vue");
@@ -128,6 +138,22 @@ public class ControlleurVue {
 
 	}
 
+	private void initButton() {
+		// Image imageTemp = new
+		// Image(getClass().getResourceAsStream("/images/zoom-in.png"));
+		// ImageView imageViewTemp = new ImageView((imageTemp));
+
+		// imageViewTemp.setFitWidth(50);
+		// imageViewTemp.setFitHeight(50);
+
+		bZoom.setGraphic(null);
+		bZoom.setText("allo");
+	}
+
+	/**
+	 * Cette méthode est appelée lors du lancement de l'application. Elle met le
+	 * texte dans les tooltips de l'interface.
+	 */
 	private void initHoverInfos() {
 
 		tFunction.setTooltip(new Tooltip("Équation de la fractale" + "\n" + "c : Position" + "\n" + "z : Itération"));
@@ -155,6 +181,12 @@ public class ControlleurVue {
 	}
 
 	@FXML
+	/**
+	 * Cette méthode est appelée lorsque le boutton bColorEnter est appuyé ou
+	 * lorsque le boutton bColor est appuyé si le sous-menu était déja ouvert.
+	 * 
+	 * @param event
+	 */
 	void closeColorBox(ActionEvent event) {
 
 		c1 = colpic1.getValue();
@@ -175,6 +207,12 @@ public class ControlleurVue {
 	}
 
 	@FXML
+	/**
+	 * Cette méthode est appelée lorsque le boutton bFunctionEnter est appuyé ou
+	 * lorsque le boutton bFunction est appuyé si le sous-menu était déja ouvert.
+	 * 
+	 * @param event
+	 */
 	void closeFunctionBox(ActionEvent event) {
 
 		functionbox.setVisible(false);
@@ -194,6 +232,12 @@ public class ControlleurVue {
 	}
 
 	@FXML
+	/**
+	 * Cette méthode est appelée lorsque le boutton bFunctionEnter est appuyé ou
+	 * lorsque le boutton bFunction est appuyé si le sous-menu était déja ouvert.
+	 * 
+	 * @param event
+	 */
 	void closeMatrixBox(ActionEvent event) {
 
 		// TODO enlever ce gros try n catch et filtrer comme il faut les données
@@ -228,6 +272,12 @@ public class ControlleurVue {
 	}
 
 	@FXML
+	/**
+	 * Cette méthode est appelée lorsque le boutton bZoomEnter est appuyé ou
+	 * lorsque le boutton bZoom est appuyé si le sous-menu était déja ouvert.
+	 * 
+	 * @param event
+	 */
 	void closeZoomBox(ActionEvent event) {
 		this.zoomVal = tZoom.getText();
 
@@ -238,13 +288,14 @@ public class ControlleurVue {
 
 			}
 		}
-		
-		if(currenttask == null) {
-			creerTask();
-		}else if(!currenttask.isRunning()) {
-			creerTask();
-		}
 
+		if (currenttask == null) {
+			creerTask();
+		} else if (!currenttask.isRunning()) {
+			creerTask();
+		} else if (currenttask.isRunning()) {
+			currenttask.cancel();
+		}
 
 		zoombox.setVisible(false);
 		visibleSet.remove(zoombox);
@@ -253,6 +304,12 @@ public class ControlleurVue {
 	}
 
 	@FXML
+	/**
+	 * Cette méthode est appelée lorsque le boutton bR2toR3Enter est appuyé ou
+	 * lorsque le boutton bR2toR3 est appuyé si le sous-menu était déja ouvert.
+	 * 
+	 * @param event
+	 */
 	void closeR2toR3Box(ActionEvent event) {
 
 		// TODO : enlever ce gros try n catch
@@ -289,28 +346,20 @@ public class ControlleurVue {
 
 		changerEquationInitilialisation();
 
-		// TODO ça tout seul ca chie.
 		float ds = (float) event.getTextDeltaY();
 		ds /= 10;
 
-		System.out.println(ds);
-		if (ds < 0 && Math.abs(ds) != 1) {
-			ds = 1.0f / -ds;
-		} else if (ds == 0) {
-			ds = 1;
-		}
-		float out = zoomMat.getScale().x;
-		zoomMat = zoomMat.setScale(out * ds);
+		zoom(ds);
 
-		if (!application.isMatNull()) {
-			application.setZoomTransformMat(getZoomMat());
-		} else {
-			System.out.println("FUUUUUUUUUUUUUUUUUUCCCCCCCCCCCCCCCCCCCLLLLLLLLLLLLLLLLLL");
-		}
-		System.out.println(getZoomMat());
 	}
 
 	@FXML
+	/**
+	 * Cette méthode est appelée lorsque le boutton bColor est appuyé et que le
+	 * sous-menu n'était pas ouvert.
+	 * 
+	 * @param event
+	 */
 	void showColorBox(ActionEvent event) {
 		if (!colorbox.isVisible()) {
 			colorbox.setVisible(true);
@@ -324,6 +373,12 @@ public class ControlleurVue {
 	}
 
 	@FXML
+	/**
+	 * Cette méthode est appelée lorsque le boutton bFunction est appuyé et que
+	 * le sous-menu n'était pas ouvert.
+	 * 
+	 * @param event
+	 */
 	void showFunctionBox(ActionEvent event) {
 		if (!functionbox.isVisible()) {
 			functionbox.setVisible(true);
@@ -337,6 +392,12 @@ public class ControlleurVue {
 	}
 
 	@FXML
+	/**
+	 * Cette méthode est appelée lorsque le boutton bMatrix est appuyé et que le
+	 * sous-menu n'était pas ouvert.
+	 * 
+	 * @param event
+	 */
 	void showMatrixBox(ActionEvent event) {
 		if (!matrixbox.isVisible()) {
 			matrixbox.setVisible(true);
@@ -349,12 +410,14 @@ public class ControlleurVue {
 	}
 
 	@FXML
+	/**
+	 * Cette méthode est appelée lorsque le clic gauche de la souris est cliqué
+	 * 
+	 * @param event
+	 */
 	void showSideMenu(MouseEvent event) {
 
 		if (event.getButton().equals(MouseButton.SECONDARY)) {
-			System.out.println("yo bitch");
-			gererRightClick();
-		} else if (event.getButton().equals(MouseButton.PRIMARY)) {
 			if (!sidemenu.isVisible()) {
 				sidemenu.setVisible(true);
 				visibleSet.add(sidemenu);
@@ -372,22 +435,27 @@ public class ControlleurVue {
 		}
 	}
 
-	private void gererRightClick() {
-
-		// Button b = new Button("allo");
-		// VBox promptBox = new VBox();
-		// promptBox.getChildren().add(b);
-		//
-		// stackpane.getChildren().add(promptBox);
-
-	}
-
 	@FXML
+	/**
+	 * Cette méthode est appelée lorsque le boutton bZoom est appuyé et que le
+	 * sous-menu n'était pas ouvert.
+	 * 
+	 * @param event
+	 */
 	void showZoomBox(ActionEvent event) {
 		if (!zoombox.isVisible()) {
 			zoombox.setVisible(true);
 			visibleSet.add(zoombox);
 			bZoom.setStyle("-fx-background-radius: 0 50 30 0;");
+			if (currenttask.isRunning()) {
+				currenttask.cancel();
+				Image imageTemp = new Image(getClass().getResourceAsStream("/images/zoom-in.png"));
+				ImageView imageViewTemp = new ImageView((imageTemp));
+
+				imageViewTemp.setFitWidth(50);
+				imageViewTemp.setFitHeight(50);
+				bZoom.setGraphic(imageViewTemp);
+			}
 
 		} else {
 			closeZoomBox(event);
@@ -395,6 +463,12 @@ public class ControlleurVue {
 	}
 
 	@FXML
+	/**
+	 * Cette méthode est appelée lorsque le boutton bR2toR3 est appuyé et que le
+	 * sous-menu n'était pas ouvert.
+	 * 
+	 * @param event
+	 */
 	void showR2toR3Box(ActionEvent event) {
 		if (!r2tor3box.isVisible()) {
 			r2tor3box.setVisible(true);
@@ -410,10 +484,14 @@ public class ControlleurVue {
 	void positionInit() {
 		xInitLocation = (float) MouseInfo.getPointerInfo().getLocation().getX();
 		yInitLocation = (float) MouseInfo.getPointerInfo().getLocation().getY();
-		System.out.println(xInitLocation + " " + yInitLocation);
 	}
 
 	@FXML
+	/**
+	 * Cette méthode est appelée lorsque le clic gauche de la souris est appuyé.
+	 * Elle permet de changer le vecteur de translation selon le déplacement de la
+	 * souris après le clic.
+	 */
 	void mouseDrag() {
 
 		Vector2f NvecTranslation = new Vector2f(
@@ -436,9 +514,9 @@ public class ControlleurVue {
 	void gererReset(KeyEvent event) {
 
 		if (event.getCode() == KeyCode.R && !application.isMatNull()) {
-			
+
 			// TODO : MARCHE PAS. Le code se perd dans JMonkeyApp.......
-			
+
 			application.setZoomTransformMat(Transform.IDENTITY.toTransformMatrix());
 			setZoomMat(Transform.IDENTITY);
 			System.out.println("reset GROS");
@@ -551,21 +629,30 @@ public class ControlleurVue {
 		if (!application.isMatNull()) {
 			application.setZoomTransformMat(getZoomMat());
 		} else {
-			System.out.println("FUUUUUUUUUUUUUUUUUUCCCCCCCCCCCCCCCCCCCkkkkkkkkkkkkkkkkkkkk");
 		}
 		System.out.println(getZoomMat());
 	}
-	
+
 	public void creerTask() {
+
+		Image imageTemp = new Image(getClass().getResourceAsStream("/images/Stop.png"));
+		ImageView imageViewTemp = new ImageView((imageTemp));
+
+		imageViewTemp.setFitWidth(50);
+		imageViewTemp.setFitHeight(50);
+
+		bZoom.setGraphic(imageViewTemp);
 
 		currenttask = new Task<Void>() {
 			@Override
 			protected Void call() throws Exception {
+
 				for (int i = 0; i < nbrZoom; i++) {
-					System.out.println("Zoom: " + i);
 					zoom((float) 0.9);
+
 					try {
 						Thread.sleep(1000);
+
 					} catch (InterruptedException interrupted) {
 						if (isCancelled()) {
 							updateMessage("Cancelled");
