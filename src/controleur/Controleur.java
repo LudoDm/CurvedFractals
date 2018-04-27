@@ -41,6 +41,14 @@ public class Controleur {
 		getMatHandler().writeFormula(formula);
 	}
 
+	public void writeMetric(String string1, String string2, String string3, String string4) {
+		getMatHandler().writeMetric(string1, string2, string3, string4);
+	}
+
+	public void writeChart(String string1, String string2, String string3) {
+		getMatHandler().writeChart(string1, string2, string3);
+	}
+
 	public File getMatBase() {
 		return getMatHandler().getMatdefBase();
 	}

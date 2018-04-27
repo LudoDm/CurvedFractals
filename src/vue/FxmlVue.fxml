@@ -15,7 +15,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane fx:id="borderpane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1080.0" prefWidth="1920.0" stylesheets="@NewFile.css" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<BorderPane fx:id="borderpane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1080.0" prefWidth="1920.0" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1">
 
    <center>
       <StackPane fx:id="stackpane" onKeyReleased="#gererReset" onMouseClicked="#showSideMenu" prefHeight="150.0" prefWidth="200.0" BorderPane.alignment="CENTER">
@@ -23,7 +23,7 @@
             <ImageView fx:id="theImageView" fitHeight="1080.0" fitWidth="1920.0" onMouseDragged="#mouseDrag" onMousePressed="#positionInit" onScroll="#gererZoom" pickOnBounds="true" preserveRatio="true" />
             <VBox fx:id="sidemenu" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="437.0" prefWidth="94.0" spacing="10.0" translateX="900.0">
                <children>
-                  <Button fx:id="bFunction" mnemonicParsing="false" onAction="#showFunctionBox" prefHeight="75.0" prefWidth="75.0">
+                  <Button fx:id="bFunction" mnemonicParsing="false" onAction="#showFunctionBox" prefHeight="75.0" prefWidth="75.0" styleClass="main-button">
                      <VBox.margin>
                         <Insets />
                      </VBox.margin>
@@ -37,7 +37,7 @@
                            </effect></ImageView>
                      </graphic>
                   </Button>
-                  <Button fx:id="bMatrix" mnemonicParsing="false" onAction="#showMatrixBox" prefHeight="75.0" prefWidth="75.0">
+                  <Button fx:id="bMatrix" mnemonicParsing="false" onAction="#showMatrixBox" prefHeight="75.0" prefWidth="75.0" styleClass="main-button">
                      <VBox.margin>
                         <Insets />
                      </VBox.margin>
@@ -51,7 +51,7 @@
                            </effect></ImageView>
                      </graphic>
                   </Button>
-                  <Button fx:id="bColor" mnemonicParsing="false" onAction="#showColorBox" prefHeight="75.0" prefWidth="75.0">
+                  <Button fx:id="bColor" mnemonicParsing="false" onAction="#showColorBox" prefHeight="75.0" prefWidth="75.0" styleClass="main-button">
                      <VBox.margin>
                         <Insets />
                      </VBox.margin>
@@ -65,7 +65,7 @@
                            </effect></ImageView>
                      </graphic>
                   </Button>
-                  <Button fx:id="bZoom" mnemonicParsing="false" onAction="#showZoomBox" prefHeight="75.0" prefWidth="75.0">
+                  <Button fx:id="bZoom" mnemonicParsing="false" onAction="#showZoomBox" prefHeight="75.0" prefWidth="75.0" styleClass="main-button">
                      <graphic>
                         <ImageView fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
                            <image>
@@ -75,7 +75,7 @@
                               <Glow />
                            </effect></ImageView>
                      </graphic></Button>
-                  <Button fx:id="bR2toR3" mnemonicParsing="false" onAction="#showR2toR3Box" prefHeight="75.0" prefWidth="75.0">
+                  <Button fx:id="bR2toR3" mnemonicParsing="false" onAction="#showR2toR3Box" prefHeight="75.0" prefWidth="75.0" styleClass="main-button">
                      <graphic>
                         <ImageView fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
                            <image>
@@ -95,7 +95,7 @@
                   <Insets />
                </opaqueInsets>
             </VBox>
-            <HBox fx:id="functionbox" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="75.0" prefWidth="275.0" spacing="10.0" translateX="725.0" translateY="-170.0">
+            <HBox fx:id="functionbox" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="75.0" prefWidth="275.0" spacing="10.0" styleClass="box" translateX="725.0" translateY="-170.0">
                <children>
                   <Label fx:id="lFunction" text="fc(z) = ">
                      <font>
@@ -103,11 +103,16 @@
                      </font>
                   </Label>
                   <TextField fx:id="tFunction" prefHeight="25.0" prefWidth="135.0" text="cpow(z,2) + c" />
-                  <Button fx:id="bFunctionEnter" maxHeight="-Infinity" maxWidth="-Infinity" mnemonicParsing="false" onAction="#closeFunctionBox" prefHeight="25.0" prefWidth="30.0" text="✓" textFill="#39ff14" />
+                  <Button fx:id="bFunctionEnter" maxHeight="-Infinity" maxWidth="-Infinity" mnemonicParsing="false" onAction="#closeFunctionBox" prefHeight="25.0" prefWidth="30.0" styleClass="confirm-button" text="✓" textFill="#39ff14" />
                </children>
             </HBox>
-            <HBox fx:id="matrixbox" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="75.0" prefWidth="275.0" translateX="725.0" translateY="-85.0">
+            <HBox fx:id="matrixbox" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="75.0" prefWidth="275.0" styleClass="box" translateX="725.0" translateY="-85.0">
                <children>
+                  <Label fx:id="lMatrix" prefHeight="14.0" prefWidth="68.0" text="g(x,y) =">
+                     <font>
+                        <Font name="Consolas" size="12.0" />
+                     </font>
+                  </Label>
                   <FlowPane alignment="CENTER" hgap="5.0" prefHeight="72.0" prefWidth="76.0" vgap="5.0">
                      <children>
                         <TextField fx:id="tMatrix1" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="30.0" prefWidth="30.0" />
@@ -116,7 +121,7 @@
                         <TextField fx:id="tMatrix4" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="30.0" prefWidth="30.0" />
                      </children>
                   </FlowPane>
-                  <Button fx:id="bMatrixEnter" maxHeight="-Infinity" maxWidth="-Infinity" mnemonicParsing="false" onAction="#closeMatrixBox" prefHeight="25.0" prefWidth="30.0" text="✓" textFill="#39ff14">
+                  <Button fx:id="bMatrixEnter" maxHeight="-Infinity" maxWidth="-Infinity" mnemonicParsing="false" onAction="#closeMatrixBox" prefHeight="25.0" prefWidth="30.0" styleClass="confirm-button" text="✓" textFill="#39ff14">
                      <HBox.margin>
                         <Insets left="10.0" />
                      </HBox.margin>
@@ -126,7 +131,7 @@
                   <Insets left="10.0" right="10.0" />
                </padding>
             </HBox>
-            <HBox fx:id="colorbox" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="76.0" prefWidth="275.0" spacing="10.0" translateX="725.0">
+            <HBox fx:id="colorbox" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="76.0" prefWidth="275.0" spacing="10.0" styleClass="box" translateX="725.0">
                <children>
                   <ColorPicker fx:id="colpic1" style="-fx-color-label-visible: false;" />
                   <Label fx:id="lArrow" text="→">
@@ -135,10 +140,10 @@
                      </font>
                   </Label>
                   <ColorPicker fx:id="colpic2" style="-fx-color-label-visible: false;" />
-                  <Button fx:id="bColorEnter" maxHeight="-Infinity" maxWidth="-Infinity" mnemonicParsing="false" onAction="#closeColorBox" prefHeight="25.0" prefWidth="30.0" text="✓" textFill="#39ff14" />
+                  <Button fx:id="bColorEnter" maxHeight="-Infinity" maxWidth="-Infinity" mnemonicParsing="false" onAction="#closeColorBox" prefHeight="25.0" prefWidth="30.0" styleClass="confirm-button" text="✓" textFill="#39ff14" />
                </children>
             </HBox>
-            <HBox fx:id="zoombox" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="75.0" prefWidth="275.0" spacing="10.0" translateX="725.0" translateY="85.0">
+            <HBox fx:id="zoombox" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="75.0" prefWidth="275.0" spacing="10.0" styleClass="box" translateX="725.0" translateY="85.0">
                <children>
                   <Label fx:id="lZoom" prefHeight="14.0" prefWidth="61.0" text="nb zoom :">
                      <font>
@@ -146,20 +151,24 @@
                      </font>
                   </Label>
                   <TextField fx:id="tZoom" prefHeight="25.0" prefWidth="131.0" />
-                  <Button fx:id="bZoomEnter" maxHeight="-Infinity" maxWidth="-Infinity" mnemonicParsing="false" onAction="#closeZoomBox" prefHeight="25.0" prefWidth="30.0" text="✓" textFill="#39ff14" />
+                  <Button fx:id="bZoomEnter" maxHeight="-Infinity" maxWidth="-Infinity" mnemonicParsing="false" onAction="#closeZoomBox" prefHeight="25.0" prefWidth="30.0" styleClass="confirm-button" text="✓" textFill="#39ff14" />
                </children>
             </HBox>
-            <HBox fx:id="r2tor3box" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="75.0" prefWidth="275.0" spacing="10.0" translateX="725.0" translateY="170.0">
+            <HBox fx:id="r2tor3box" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="75.0" prefWidth="275.0" spacing="5.0" styleClass="box" translateX="725.0" translateY="170.0">
                <children>
                   <Label fx:id="lR2toR3" prefHeight="14.0" prefWidth="53.0" text="x(u,v) =">
                      <font>
                         <Font name="Consolas" size="12.0" />
                      </font>
                   </Label>
+                  <Label prefHeight="17.0" prefWidth="0.0" text="(" />
                   <TextField fx:id="tX" prefHeight="27.0" prefWidth="40.0" />
+                  <Label prefHeight="17.0" prefWidth="0.0" text="," />
                   <TextField fx:id="tU" prefHeight="27.0" prefWidth="40.0" />
+                  <Label prefHeight="17.0" prefWidth="0.0" text="," />
                   <TextField fx:id="tV" prefHeight="27.0" prefWidth="40.0" />
-                  <Button fx:id="bR2toR3Enter" maxHeight="-Infinity" maxWidth="-Infinity" mnemonicParsing="false" onAction="#closeR2toR3Box" prefHeight="25.0" prefWidth="30.0" text="✓" textFill="#39ff14" />
+                  <Label text=")" />
+                  <Button fx:id="bR2toR3Enter" maxHeight="-Infinity" maxWidth="-Infinity" mnemonicParsing="false" onAction="#closeR2toR3Box" prefHeight="25.0" prefWidth="30.0" styleClass="confirm-button" text="✓" textFill="#39ff14" />
                </children>
             </HBox>
          </children>

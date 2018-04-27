@@ -1,204 +1,67 @@
-.button {
+.main-button {
 	-fx-background-color: #a9a9a9;
+	-fx-background-radius: 15.0;
 }
 
-#colorbox {
+.label  {
+	-fx-text-fill: #39FF14;
+	
+}
+
+.box	{
+	
 	-fx-alignement: center;
 	-fx-background-color: #333333;
-	-fx-background-radius: 30 0 0 50;
+	-fx-background-radius: 30.0 0.0 0.0 50.0;
+	
 }
 
-#functionbox {
-	-fx-alignement: center;
+.confirm-button	{
+	
 	-fx-background-color: #333333;
-	-fx-background-radius: 30 0 0 50;
-}
-
-#matrixbox {
-	-fx-alignement: center;
-	-fx-background-color: #333333;
-	-fx-background-radius: 30 0 0 50;
-}
-
-#zoombox {
-	-fx-alignement: center;
-	-fx-background-color: #333333;
-	-fx-background-radius: 30 0 0 50;
-}
-
-#r2tor3box {
-	-fx-alignement: center;
-	-fx-background-color: #333333;
-	-fx-background-radius: 30 0 0 50;
-}
-
-#lFunction {
-	-fx-text-fill: #39FF14;
-}
-
-#lZoom {
-	-fx-text-fill: #39FF14;
-}
-
-#lArrow {
-	-fx-text-fill: #39FF14;
-}
-
-#lArrow {
-	-fx-text-fill: #39FF14;
-}
-
-#lR2toR3 {
-	-fx-text-fill: #39FF14;
-}
-
-#bZoom {
-	-fx-background-radius: 15;
-}
-
-#bFunction {
-	-fx-background-radius: 15;
-}
-
-#bMatrix {
-	-fx-background-radius: 15;
-}
-
-#bColor {
-	-fx-background-radius: 15;
-}
-
-#bR2toR3 {
-	-fx-background-radius: 15;
-}
-
-#bFunctionEnter {
-	-fx-background-color: #333333;
-	-fx-border-radius: 5;
+	-fx-border-radius: 5.0;
 	-fx-border-color: #39FF14;
 	-fx-text-fill: #39FF14;
+	
 }
 
-#bFunctionEnter:hover {
-	-fx-background-color: #333333;
-	-fx-border-radius: 5;
-	-fx-border-color: #39FF14;
-	-fx-effect: dropshadow(three-pass-box, #39FF14, 10, 0.3, 0, 0);
-	-fx-text-fill: #39FF14;
+.confirm-button:hover	{
+
+	-fx-effect: dropshadow(three-pass-box, #39FF14, 10.0, 0.3, 0.0, 0.0);
+	
 }
 
-#bFunctionEnter:pressed {
+.confirm-button:pressed	{
+	
 	-fx-background-color: #8DFF8D;
-	-fx-border-radius: 5;
-	-fx-border-color: #39FF14;
+	
 }
 
 .color-picker {
 	-fx-background-color: #333333;
-	-fx-border-radius: 5;
+	-fx-border-radius: 5.0;
 	-fx-border-color: #39FF14;
 }
 
 .color-picker:hover {
-	-fx-effect: dropshadow(three-pass-box, #39FF14, 10, 0.3, 0, 0);
+	-fx-effect: dropshadow(three-pass-box, #39FF14, 10.0, 0.3, 0.0, 0.0);
 }
 
 .text-field {
 	-fx-background-color: #333333;
-	-fx-border-radius: 5;
+	-fx-border-radius: 5.0;
 	-fx-border-color: #39FF14;
 	-fx-text-fill: #39FF14;
-	-fx-border-radius: 5;
+	-fx-border-radius: 5.0;
 	-fx-border-color: #39FF14;
 }
 
 .text-field:hover {
-	-fx-effect: dropshadow(three-pass-box, #39FF14, 10, 0.3, 0, 0);
+	-fx-effect: dropshadow(three-pass-box, #39FF14, 10.0, 0.3, 0.0, 0.0);
 }
 
 .text-field:focused {
-	-fx-border-radius: 5;
+	-fx-border-radius: 5.0;
 	-fx-border-color: #39FF14;
 }
 
-#bZoomEnter {
-	-fx-background-color: #333333;
-	-fx-border-radius: 5;
-	-fx-border-color: #39FF14;
-}
-
-#bZoomEnter:hover {
-	-fx-background-color: #333333;
-	-fx-border-radius: 5;
-	-fx-border-color: #39FF14;
-	-fx-effect: dropshadow(three-pass-box, #39FF14, 10, 0.3, 0, 0);
-}
-
-#bZoomEnter:pressed {
-	-fx-background-color: #8DFF8D;
-	-fx-border-radius: 5;
-	-fx-border-color: #39FF14;
-}
-
-#bMatrixEnter {
-	-fx-background-color: #333333;
-	-fx-border-radius: 5;
-	-fx-border-color: #39FF14;
-	-fx-text-fill: #39FF14;
-}
-
-#bMatrixEnter:hover {
-	-fx-background-color: #333333;
-	-fx-border-radius: 5;
-	-fx-border-color: #39FF14;
-	-fx-effect: dropshadow(three-pass-box, #39FF14, 10, 0.3, 0, 0);
-	-fx-text-fill: #39FF14;
-}
-
-#bMatrixEnter:pressed {
-	-fx-background-color: #8DFF8D;
-	-fx-border-radius: 5;
-	-fx-border-color: #39FF14;
-}
-
-#bColorEnter {
-	-fx-background-color: #333333;
-	-fx-border-radius: 5;
-	-fx-border-color: #39FF14;
-	-fx-text-fill: #39FF14;
-}
-
-#bColorEnter:hover {
-	-fx-background-color: #333333;
-	-fx-border-radius: 5;
-	-fx-border-color: #39FF14;
-	-fx-effect: dropshadow(three-pass-box, #39FF14, 10, 0.3, 0, 0);
-	-fx-text-fill: #39FF14;
-}
-
-#bColorEnter:pressed {
-	-fx-background-color: #8DFF8D;
-	-fx-border-radius: 5;
-	-fx-border-color: #39FF14;
-}
-
-#bR2toR3Enter {
-	-fx-background-color: #333333;
-	-fx-border-radius: 5;
-	-fx-border-color: #39FF14;
-	-fx-text-fill: #39FF14;
-}
-
-#bR2toR3Enter:hover {
-	-fx-background-color: #333333;
-	-fx-border-radius: 5;
-	-fx-border-color: #39FF14;
-	-fx-effect: dropshadow(three-pass-box, #39FF14, 10, 0.3, 0, 0);
-	-fx-text-fill: #39FF14;
-}
-
-#bR2toR3Enter:pressed {
-	-fx-background-color: #8DFF8D;
-	-fx-border-radius: 5;
-	-fx-border-color: #39FF14;
-}

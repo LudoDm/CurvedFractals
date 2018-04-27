@@ -7,22 +7,25 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.StringTokenizer;
-import java.util.regex.Pattern;
 
-import com.jme3.shader.Shader;
+import net.objecthunter.exp4j.ExpressionBuilder;
+import net.objecthunter.exp4j.tokenizer.UnknownFunctionOrVariableException;
 
-public class ShaderHandler {
+public class ChartHandler {
+
+	public final static String VARX = "x";
+	public final static String VARU = "u";
+	public final static String VARV = "v";
 
 	private File shaderBase;
 	private File shaderUpdatedBase = null;
 	private ArrayList<String> shaderBaseData = null;
-	private String formula = "";
+	private String[] formula = new String[3];
 
-	public static final String VAR_ITT = "z";
-	public static final String VAR_POS = "c";
-	public static final String EQNEXTLINEINDICATOR = "//OUTPUT_EQ_NEXT_LINE";
+	public static final String EQNEXTLINEINDICATOR = "//OUTPUT_CHART_FUNCTION";
+	public static final String CONVERTTABLE[] = { "a", "b", "c" };
 
-	public ShaderHandler(File shaderBase) {
+	public ChartHandler(File shaderBase) {
 		setShaderBase(shaderBase);
 	}
 
@@ -51,54 +54,60 @@ public class ShaderHandler {
 		this.shaderBaseData = shaderBaseData;
 	}
 
-	public boolean setFormula(String formula) {
+	public boolean setFormula(String pFormula, int formulaNumber) {
 		boolean out = false;
-		if (validateFormula(formula)) {
-			this.formula = formula;
+		if (validateFormulaIndex(formulaNumber) && validateFormula(pFormula)) {
+			this.formula[formulaNumber] = pFormula;
 			out = true;
-			System.out.println("formula set: " + formula);
+			System.out.println("Chart shit " + formulaNumber + " set: " + pFormula.toString());
 		}
 		return out;
 	}
 
-	public String getFormula() {
-		return formula;
+	public String getFormula(int num) {
+		String toReturn = null;
+		if (validateFormulaIndex(num))
+			toReturn = this.formula[num];
+		return toReturn;
 	}
 
-	private static boolean validateFormula(String formula) {
+	public String[] getFormulas() {
+		return this.formula;
+	}
+
+	private boolean validateFormulaIndex(int num) {
+		return (num >= 0 && num < getFormulas().length);
+	}
+
+	private static boolean validateFormula(String pFormula) {
 		boolean out = false;
 
-		if (formula != null) {
+		if (pFormula.trim().length() <= 0)
+			return false;
 
-			StringTokenizer t = new StringTokenizer(formula);
-			boolean containZ = false;
-			boolean containC = false;
-			while (t.hasMoreTokens() && !out) {
-				String tok = t.nextToken();
-				System.out.println(tok);
-				if (tok.contains(VAR_ITT)) {
-					containZ = true;
-				}
+		try {
+			new ExpressionBuilder(pFormula).variables(VARU, VARV).build();
+			out = true;
+		} catch (UnknownFunctionOrVariableException e) {
+		}
+		return out;
+	}
 
-				if (tok.matches("(" + VAR_POS + "|" + VAR_POS + ".*|[+-]" + VAR_POS + ")")) {
-					containC = true;
-				}
+	public boolean WriteFormula(String[] pFormulas) {
+		boolean out = false;
+		boolean formulesValides = true;
 
-				if (containZ && containC) {
-					out = true;
+		try {
+
+			if (pFormulas.length == 3) {
+				for (int z = 0; z < this.getFormulas().length; z++) {
+					if (setFormula(pFormulas[z], z) == false)
+						formulesValides = false;
 				}
 			}
 
-		}
-		return out;
-	}
-
-	public boolean WriteFormula(String formula) {
-		boolean out = false;
-		
-		try {
-
-			if (setFormula(formula)) {
+			System.out.println(formulesValides);
+			if (formulesValides) {
 				File newShader;
 				newShader = File.createTempFile("tempShaderFrag", ".glsl", getShaderBase().getParentFile());
 				newShader.deleteOnExit();
@@ -108,24 +117,32 @@ public class ShaderHandler {
 
 				ArrayList<String> data = getShaderBaseData();
 				boolean done = false;
+
+				int indiceDeLaMatrice = 0;
+
 				for (int i = 0; i < data.size() && !done; i++) {
 					if (data.get(i).contains(EQNEXTLINEINDICATOR)) {
-						data.add(i + 1, "        z = " + getFormula() + ";");
-						done = true;
+
+						System.out.println("hey");
+						data.add(i + 1, "        " + CONVERTTABLE[indiceDeLaMatrice] + " = "
+								+ getFormula(indiceDeLaMatrice) + ";");
+						indiceDeLaMatrice++;
+
+						if (indiceDeLaMatrice == getFormulas().length)
+							done = true;
 					}
 				}
 				setShaderBaseData(data);
 				System.out.println("ecriture du fichier");
 				writeFile(getShaderBaseData(), getShaderUpdatedBase());
+				out = true;
 			}
 
-			out = true;
-			
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
+
 		return out;
 	}
 
@@ -168,11 +185,6 @@ public class ShaderHandler {
 
 	public File getShaderUpdatedBase() {
 		return shaderUpdatedBase;
-	}
-
-	// TODO
-	public void clear() {
-
 	}
 
 }
