@@ -13,7 +13,8 @@ struct MxR3 {
 	vec3 pR3;
 };
 
-float PI = 3.1415;
+#define M_PI 3.1415926535897932384626433832795
+bool grid = true;
 
 vec3 chart2bak(vec2 p) {
 	vec3 a = vec3(-2.0 * p.x / (p.x * p.x + p.y * p.y - 1.),
@@ -25,9 +26,9 @@ vec3 chart2bak(vec2 p) {
 
 vec3 chart2(vec2 p) {
 
-	return vec3(cos(PI * (1.0 + p.y)) * sin(0.5 * PI * (1.0 + p.x)),
-			sin(PI * (1.0 + p.y)) * sin(0.5 * PI * (1.0 + p.x)),
-			cos(PI * (1.0 + p.x)));
+	return vec3(cos(M_PI * (1.0 + p.y)) * sin(0.5 * M_PI * (1.0 + p.x)),
+			sin(M_PI * (1.0 + p.y)) * sin(0.5 * M_PI * (1.0 + p.x)),
+			cos(M_PI * (1.0 + p.x)));
 }
 
 MxR3 section(vec2 p) {
@@ -205,6 +206,9 @@ vec3 chart(in vec2 pM) {
 }
 
 int mandelbrot(vec2 c) {
+	c.x = -2 + 2.0*(c.x +1.0);
+	c.y = -2 + 2.0*(c.y +1.0);
+	c+= vec2(1.0,0.0);
 	vec2 z = c;
 	for (int i = 0; i < 800; i++) {
 		// dot(z, z) > 4.0 is the same as length(z) > 2.0, but perhaps faster.
@@ -221,7 +225,10 @@ int mandelbrot(vec2 c) {
 
 vec4 Image(vec2 f) {
 	//coord entre -1 et 1
-	vec2 uv = (2.0 * f.xy - m_Resolution) / m_Resolution.y;
+	vec2 uv;
+	uv.x = -1.0 + (2.0/m_Resolution.x)*f.x;
+	uv.y = -1.0 + (2.0/m_Resolution.y)*f.y;
+	//vec2 uv = (2.0 * f.xy - m_Resolution) / m_Resolution.y;
 	//vec2 uv = (2.0 * f.xy - m_Resolution) / max(m_Resolution.x,m_Resolution.y);
 	vec4 c = vec4(uv.x, uv.y, 0, 0);
 
@@ -246,12 +253,12 @@ vec4 Image(vec2 f) {
 	vec4 couleurfinale;
 	vec4 couleurfinaletest;
 
-	c = vec4(chart2bak(c.xy).xyz, 1.0);
-	if (fract(c.x / 0.1f) < 0.01f || fract(c.y / 0.1f) < 0.01f) {
+	vec4 p = vec4(chart2(c.xy).xyz, 1.0);
+	if ((fract(p.x / 0.1f) < 0.01f || fract(p.y / 0.1f) < 0.01f) && grid) {
 		couleurfinale = vec4(1.,0.,0.,1.);
 	} else {
 		// Turn the iteration count into a color.
-		float ret = mandelbrot(c.xy);
+		float ret = mandelbrot(p.xy);
 		//Pour une raison inconnue (triste Jmonkey...), la couleur change avec le Alpha, et n'est plus aucunement la couleur voulue.
 		//Donc le alpha doit toujours rester 1!!
 		if (ret == 0.0) {
