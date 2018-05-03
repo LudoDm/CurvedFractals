@@ -13,21 +13,14 @@ struct MxR3 {
 	vec3 pR3;
 };
 
-vec3 chart2bak(vec2 p) {
-	vec3 a = vec3(-2.0 * p.x / (p.x * p.x + p.y * p.y - 1.),
-			-2.0 * p.y / (p.x * p.x + p.y * p.y - 1.),
-			1.0 * (1. + (p.x * p.x + p.y * p.y))
-					/ (1. - (p.x * p.x + p.y * p.y)));
-	return a;
-}
+#define M_PI 3.1415926535897932384626433832795
+bool grid = true;
 
-vec3 chart2(vec2 p){
-	//p = (2.0 * p.xy - 2.0) /2.0;
-	float px = p.x;
-	p.x = acos(1.0/sqrt(p.x*p.x + p.y*p.y + 1.0));
-	p.y = atan(p.y/px);
-	//return vec3(pow(cos(p.x)*cos(p.y), 1.0), pow(cos(p.x)*sin(p.y),1.0), pow(sin(p.x),1.0));
-	return vec3(p,1.0);
+vec3 chart2(vec2 p) {
+
+	return vec3(cos(M_PI * (1.0 + p.y)) * sin(0.5 * M_PI * (1.0 + p.x)),
+			sin(M_PI * (1.0 + p.y)) * sin(0.5 * M_PI * (1.0 + p.x)),
+			cos(M_PI * (1.0 + p.x)));
 }
 
 MxR3 section(vec2 p) {
@@ -41,12 +34,12 @@ vec2 projection(MxR3 tm) {
 }
 
 mat2 metric(vec2 p) {
-	float g11 = 4. / pow(p.x * p.x + p.y * p.y - 1.0, 2.);
-	//float g11 = 1.0;
+	//float g11 = 4. / pow(p.x * p.x + p.y * p.y - 1.0, 2.);
+	float g11 = 1.0;
 	float g21 = 0.;
 	float g12 = 0.;
-	//float g22 = -1.0/sin(p.x+ time);
-	float g22 = 4. / pow(p.x * p.x + p.y * p.y - 1., 2.);
+	float g22 = 1.0;
+	//float g22 = 4. / pow(p.x * p.x + p.y * p.y - 1., 2.);
 	mat2 g = mat2(g11, g21, g12, g22);
 	return g;
 }
@@ -205,6 +198,9 @@ vec3 chart(in vec2 pM) {
 }
 
 int mandelbrot(vec2 c) {
+	c.x = -2 + 2.0*(c.x +1.0);
+	c.y = -2 + 2.0*(c.y +1.0);
+	c+= vec2(1.0,0.0);
 	vec2 z = c;
 	for (int i = 0; i < 800; i++) {
 		// dot(z, z) > 4.0 is the same as length(z) > 2.0, but perhaps faster.
@@ -221,7 +217,10 @@ int mandelbrot(vec2 c) {
 
 vec4 Image(vec2 f) {
 	//coord entre -1 et 1
-	vec2 uv = (2.0 * f.xy - m_Resolution) / m_Resolution.x;
+	vec2 uv;
+	uv.x = -1.0 + (2.0/m_Resolution.x)*f.x;
+	uv.y = -1.0 + (2.0/m_Resolution.y)*f.y;
+	//vec2 uv = (2.0 * f.xy - m_Resolution) / m_Resolution.y;
 	//vec2 uv = (2.0 * f.xy - m_Resolution) / max(m_Resolution.x,m_Resolution.y);
 	vec4 c = vec4(uv.x, uv.y, 0, 0);
 
@@ -238,30 +237,37 @@ vec4 Image(vec2 f) {
 		c += transtot;
 	}
 
-	float ret = mandelbrot(0.4 * chart2(0.5 *(1./3.14) *c.xy).xy + 0.1 * normal(c.xy).pR3.xy );
+	//float ret = mandelbrot(0.4 * chart2(0.5 *(1./3.14) *c.xy).xy + 0.1 * normal(c.xy).pR3.xy );
 //	float ret = mandelbrot(0.49 * chart2(0.8* c.xy + vec2(-0., -0.)).xy + 1. * normal(c.xy).pR3.xy);
 	//float ret = mandelbrot(2. * (c.xy +  normal(c.xy).pR3.xy));
+	//float ret = mandelbrot(chart2(0.5*c.xy  + vec2(0.2,0.)).xy);
 
-	// Turn the iteration count into a color.
-	//Pour une raison inconnue (triste Jmonkey...), la couleur change avec le Alpha, et n'est plus aucunement la couleur voulue.
-	//Donc le alpha doit toujours rester 1!!
 	vec4 couleurfinale;
 	vec4 couleurfinaletest;
-	if (ret == 0.0) {
-		couleurfinale = vec4(0.0, 0.0, 0.0, 1.0);
+
+	vec4 p = vec4(chart(c.xy).xyz, 1.0);
+	if ((fract(p.x / 0.1f) < 0.01f || fract(p.y / 0.1f) < 0.01f) && grid) {
+		couleurfinale = vec4(1.,0.,0.,1.);
 	} else {
-		//	couleurfinale = mix(sin(vec4(0.1,0.2,0.5,1.0)), mix(m_ColorMin, m_ColorMax, ret), ret/400);
-		couleurfinale = mix(m_ColorMin, m_ColorMax, sin(ret));
-		//couleurfinale = sin(mix(m_ColorMin, m_ColorMax, ret/30));
+		// Turn the iteration count into a color.
+		float ret = mandelbrot(p.xy);
+		//Pour une raison inconnue (triste Jmonkey...), la couleur change avec le Alpha, et n'est plus aucunement la couleur voulue.
+		//Donc le alpha doit toujours rester 1!!
+		if (ret == 0.0) {
+			couleurfinale = vec4(0.0, 0.0, 0.0, 1.0);
+		} else {
+			//	couleurfinale = mix(sin(vec4(0.1,0.2,0.5,1.0)), mix(m_ColorMin, m_ColorMax, ret), ret/400);
+			couleurfinale = mix(m_ColorMin, m_ColorMax, sin(ret));
+			//couleurfinale = sin(mix(m_ColorMin, m_ColorMax, ret/30));
+		}
+
+		couleurfinaletest = mix(couleurfinale,
+				vec4(normal(c.xy).pR3.xy, 1. * normal(c.xy).pR3.z, 1.0), 0.2);
 	}
 
-	couleurfinaletest = mix(couleurfinale,
-			vec4(normal(c.xy).pR3.xy, 1. * normal(c.xy).pR3.z, 1.0), 0.2);
-
-
-	if ((uv.x > -0.0001 && uv.x < 0.0001) || (uv.y > -0.0001 && uv.y < 0.0001)
-			|| (c.x > -1.001 && c.x < -0.999) || (c.y > -1.001 && c.y < -0.999)
-			|| (c.x < 1.001 && c.x > 0.999) || (c.y < 1.001 && c.y > 0.999)) {
+	if ((uv.x > -0.001 && uv.x < 0.001) || (uv.y > -0.001 && uv.y < 0.001)
+			|| (c.x > -1.01 && c.x < -0.99) || (c.y > -1.01 && c.y < -0.99)
+			|| (c.x < 1.01 && c.x > 0.99) || (c.y < 1.01 && c.y > 0.99)) {
 		return vec4(1., 1., 1., 1.);
 	}
 	return couleurfinaletest;
