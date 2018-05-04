@@ -173,4 +173,7 @@
          </children>
       </StackPane>
    </center>
+   <top>
+      <Button fx:id="debugButton" mnemonicParsing="false" onAction="#handleDebugButton" text="Debug" BorderPane.alignment="TOP_LEFT" />
+   </top>
 </BorderPane>
