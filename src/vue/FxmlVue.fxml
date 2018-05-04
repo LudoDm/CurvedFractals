@@ -15,11 +15,16 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane fx:id="borderpane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1080.0" prefWidth="1920.0" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<BorderPane fx:id="borderpane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1080.0" prefWidth="1920.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1">
 
    <center>
       <StackPane fx:id="stackpane" onKeyReleased="#gererReset" onMouseClicked="#showSideMenu" prefHeight="150.0" prefWidth="200.0" BorderPane.alignment="CENTER">
          <children>
+            <TextField id="loadingTextField" fx:id="loadingText" alignment="CENTER" focusTraversable="false" text="Loading... ">
+               <font>
+                  <Font size="72.0" />
+               </font>
+            </TextField>
             <ImageView fx:id="theImageView" fitHeight="1080.0" fitWidth="1920.0" onMouseDragged="#mouseDrag" onMousePressed="#positionInit" onScroll="#gererZoom" pickOnBounds="true" preserveRatio="true" />
             <VBox fx:id="sidemenu" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="437.0" prefWidth="94.0" spacing="10.0" translateX="900.0">
                <children>

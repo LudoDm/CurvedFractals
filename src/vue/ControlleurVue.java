@@ -4,6 +4,9 @@ import java.awt.MouseInfo;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ScheduledThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
+
 import org.jetbrains.annotations.NotNull;
 import com.jme3.material.Material;
 import com.jme3.math.ColorRGBA;
@@ -41,6 +44,8 @@ import javafx.scene.paint.Color;
 
 public class ControlleurVue {
 
+	public static final int DEFAULT_LOADING_TIME = 5;
+	
 	private Scene scene;
 	private Controleur controleurPrincipal;
 	private String m11, m12, m21, m22, function, zoomVal;
@@ -52,8 +57,10 @@ public class ControlleurVue {
 	private Vector2f vecTranslation = new Vector2f(0, 0);
 	private boolean changed = false;
 	private Task currenttask;
+	private boolean enabledButtons = false;
 
 	private float zoomFix = 0f;
+	int loadingTime;
 
 	@FXML
 	private ImageView theImageView;
@@ -81,6 +88,10 @@ public class ControlleurVue {
 	private TextField tFunction, tZoom, tMatrix1, tMatrix2, tMatrix3, tMatrix4, tX, tU, tV;
 	@FXML
 	private ColorPicker colpic1, colpic2;
+	
+	@FXML
+	private TextField loadingText;
+	
 	private int nbrZoom;
 
 	public ControlleurVue(Controleur ctrl) {
@@ -116,10 +127,14 @@ public class ControlleurVue {
 			matrixbox.setVisible(false);
 			zoombox.setVisible(false);
 			r2tor3box.setVisible(false);
+			loadingText.setVisible(true);
 
 			visibleSet = FXCollections.observableSet();
-
 			initHoverInfos();
+			
+			// Start de la fonction hacky pour afficher la première fractale	
+			loadingTime = DEFAULT_LOADING_TIME;
+			displayFirstFractal(loadingTime);
 
 		} catch (Exception ex) {
 			System.out.println("Exception lors du chargement des ressources dans controlleur vue");
@@ -238,13 +253,12 @@ public class ControlleurVue {
 
 			}
 		}
-		
-		if(currenttask == null) {
+
+		if (currenttask == null) {
 			creerTask();
-		}else if(!currenttask.isRunning()) {
+		} else if (!currenttask.isRunning()) {
 			creerTask();
 		}
-
 
 		zoombox.setVisible(false);
 		visibleSet.remove(zoombox);
@@ -436,9 +450,9 @@ public class ControlleurVue {
 	void gererReset(KeyEvent event) {
 
 		if (event.getCode() == KeyCode.R && !application.isMatNull()) {
-			
+
 			// TODO : MARCHE PAS. Le code se perd dans JMonkeyApp.......
-			
+
 			application.setZoomTransformMat(Transform.IDENTITY.toTransformMatrix());
 			setZoomMat(Transform.IDENTITY);
 			System.out.println("reset GROS");
@@ -504,13 +518,22 @@ public class ControlleurVue {
 	private Controleur getControleurPrincipal() {
 		return this.controleurPrincipal;
 	}
+	
+	private void displayFirstFractal(int time) {
+		// Quitte a être hacky, pourquoi ne pas aller jusqu'au bout !
+		final ScheduledThreadPoolExecutor executor = new ScheduledThreadPoolExecutor(0);
+		executor.schedule(() -> changerEquationInitilialisation(), time, TimeUnit.SECONDS);
+		loadingText.setVisible(false);
+	}
 
 	// TODO faire mieux ?
+	// Reponse: nan 
 	/***
 	 * Methode hacky pour changer faire marcher le zoom lors d'ouverture de
 	 * l'application
 	 */
 	private void changerEquationInitilialisation() {
+
 		if (changed == false) {
 
 			try {
@@ -525,6 +548,8 @@ public class ControlleurVue {
 				e.printStackTrace();
 			}
 		}
+		
+		
 	}
 
 	// TODO Enlever l'annotation @notnull ?
@@ -555,7 +580,7 @@ public class ControlleurVue {
 		}
 		System.out.println(getZoomMat());
 	}
-	
+
 	public void creerTask() {
 
 		currenttask = new Task<Void>() {
