@@ -520,15 +520,12 @@ public class ControlleurVue {
 	}
 
 	@FXML
-<<<<<<< HEAD
 	void handleDebugButton(ActionEvent event) {
 		debugMode = !debugMode;
 		application.setGridOnOrOff(debugMode);
 	}
 
 	@FXML
-=======
->>>>>>> parent of 0514593... Documentation
 	void gererReset(KeyEvent event) {
 
 		if (event.getCode() == KeyCode.R && !application.isMatNull()) {
