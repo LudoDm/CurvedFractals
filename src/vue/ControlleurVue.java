@@ -538,7 +538,12 @@ public class ControlleurVue {
 		}
 
 	}
-
+	/**
+	 * Méthode permettant de gerer les actions de la roulette de la souris afin de
+	 * zoomer
+	 * 
+	 * @param event
+	 */
 	private Vector2f scaleWrtZoom(Vector2f v) {
 		Vector2f out = v;
 		float zoom = getZoomMat().m00;
@@ -551,6 +556,11 @@ public class ControlleurVue {
 		return out;
 
 	}
+
+	/*
+	 * getters and setters
+	 * 
+	 */
 
 	public Scene getScene() {
 		return scene;
@@ -587,17 +597,45 @@ public class ControlleurVue {
 	private void setZoomMat(Transform mat) {
 		this.zoomMat = mat;
 	}
+	
+	/*
+	 * getters and setters END
+	 * 
+	 */
+
+	/**
+	 * Méthode qui change l'équation de la fractale
+	 * 
+	 * @param eq
+	 */	
 
 	public void changerEquation(String eq) throws IOException {
 		getControleurPrincipal().writeFormula(eq);
 		application.refreshMaterial(getControleurPrincipal().getMatUpdated());
 	}
 
+	/**
+	 * Méthode qui change la matrice de courbure selon les 4 strings recu en
+	 * paramètres
+	 * 
+	 * @param string1
+	 * @param string2
+	 * @param string3
+	 * @param string4
+	 */
 	public void changerMetric(String string1, String string2, String string3, String string4) {
 		getControleurPrincipal().writeMetric(string1, string2, string3, string4);
 		application.refreshMaterial(getControleurPrincipal().getMatUpdated());
 	}
 
+	/**
+	 * Méthode qui change le mapping de la fractale selon les Strings reçus en
+	 * paramètres
+	 * 
+	 * @param string1
+	 * @param string2
+	 * @param string3
+	 */
 	public void changerChart(String string1, String string2, String string3) {
 		getControleurPrincipal().writeChart(string1, string2, string3);
 		application.refreshMaterial(getControleurPrincipal().getMatUpdated());
@@ -718,7 +756,9 @@ public class ControlleurVue {
 				};
 			}
 		};
-
+		
+		// Lorsque le service commence, donc que le zoom automatique est commencé,
+		// l'image du bouton est changé à l'image Stop.png.
 		zoomService.setOnScheduled(event -> {
 			Image imageTemp = new Image(getClass().getResourceAsStream("/images/Stop.png"));
 			ImageView imageViewTemp = new ImageView((imageTemp));
@@ -729,6 +769,9 @@ public class ControlleurVue {
 			bZoom.setGraphic(imageViewTemp);
 		});
 
+		// Lorsque le service est arêtté par l'utilisateur, donc que le zoom automatique
+		// est arrêté,
+		// l'image du bouton est changé à l'image Zoom.png
 		zoomService.setOnCancelled(event -> {
 			Image imageTemp = new Image(getClass().getResourceAsStream("/images/zoom-in.png"));
 			ImageView imageViewTemp = new ImageView((imageTemp));
@@ -740,6 +783,9 @@ public class ControlleurVue {
 
 		});
 
+		// Lorsque le service est arêtté par l'utilisateur, donc que le zoom automatique
+		// est arrêté,
+		// l'image du bouton est changé à l'image Zoom.png
 		zoomService.setOnSucceeded(event -> {
 			Image imageTemp = new Image(getClass().getResourceAsStream("/images/zoom-in.png"));
 			ImageView imageViewTemp = new ImageView((imageTemp));
