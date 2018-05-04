@@ -111,7 +111,7 @@ public class MaterialHandler {
 
 			for (int i = 0; i < data.size(); i++) {
 				out.println(data.get(i));
-				System.out.println("ecriture ligne " + i);
+				System.out.println("L'ecriture des lignes de 0 à " + data.size() + " a été effectuée");
 			}
 			out.flush();
 			out.close();

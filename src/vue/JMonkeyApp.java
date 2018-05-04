@@ -191,7 +191,6 @@ public class JMonkeyApp extends JmeToJFXApplication {
 		mat = new Material(assetManager, thePath);
 		setColorMinMat(getColorMin());
 		setColorMaxMat(getColorMax());
-		setGridOnOrOff(true);
 		mat.setVector2("Resolution", new Vector2f(this.Resolution.x, this.Resolution.y));
 		setZoomTransformMat(getZoomTransform());
 		setTranslateTransformMat(getTranslateTransform());
@@ -278,6 +277,13 @@ public class JMonkeyApp extends JmeToJFXApplication {
 
 	public void setGridOnOrOff(boolean pBool) {
 		mat.setBoolean("grid", pBool);
+		
+		if (pBool == true)
+			try {
+				
+			}catch(Exception e) {
+			}
+		
 	}
 
 	private void setTranslateTransform(Vector2f translateTransform) {

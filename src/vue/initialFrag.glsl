@@ -14,7 +14,7 @@ struct MxR3 {
 };
 
 #define M_PI 3.1415926535897932384626433832795
-bool grid = true;
+bool grid = false;
 
 vec3 chart2(vec2 p) {
 
