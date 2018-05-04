@@ -275,6 +275,11 @@ public class ControlleurVue {
 		}
 
 	}
+	
+	@FXML
+	void gererReset() {
+		
+	}
 
 	@FXML
 	/**
