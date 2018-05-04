@@ -46,6 +46,7 @@ public class JMonkeyApp extends JmeToJFXApplication {
 	private Vector2f Resolution;
 	private Matrix4f ZoomTransform = Transform.IDENTITY.toTransformMatrix();
 	private Vector2f TranslatTransform = new Vector2f(0, 0);
+	private Node coord;
 
 	public JMonkeyApp(float Resx, float Resy) {
 		setResolution(new Vector2f(Resx, Resy));
@@ -79,7 +80,7 @@ public class JMonkeyApp extends JmeToJFXApplication {
 		mat.setVector2("Resolution", new Vector2f(w, h));
 		mat.setMatrix4("Zoom", getZoomTransform());
 		mat.setVector2("Translat", getTranslateTransform());
-		
+
 		// pour désactiver le mouvement
 		flyCam.setEnabled(false);
 		player.setMaterial(mat);
@@ -87,7 +88,7 @@ public class JMonkeyApp extends JmeToJFXApplication {
 		player.setLocalTranslation(-(width / 2), -(height / 2), 0);
 		rootNode.attachChild(player);
 
-		Node coord = createCoordinationNode(1, 1);
+		coord = createCoordinationNode(1, 1);
 		rootNode.attachChild(coord);
 
 	}
@@ -277,13 +278,7 @@ public class JMonkeyApp extends JmeToJFXApplication {
 
 	public void setGridOnOrOff(boolean pBool) {
 		mat.setBoolean("grid", pBool);
-		
-		if (pBool == true)
-			try {
-				
-			}catch(Exception e) {
-			}
-		
+
 	}
 
 	private void setTranslateTransform(Vector2f translateTransform) {

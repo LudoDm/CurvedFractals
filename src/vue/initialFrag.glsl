@@ -270,9 +270,9 @@ vec4 Image(vec2 f) {
 				vec4(normal(c.xy).pR3.xy, 1. * normal(c.xy).pR3.z, 1.0), 0.2);
 	}
 
-	if ((uv.x > -0.001 && uv.x < 0.001) || (uv.y > -0.001 && uv.y < 0.001)
+	if ((grid) && ((uv.x > -0.001 && uv.x < 0.001) || (uv.y > -0.001 && uv.y < 0.001)
 			|| (c.x > -1.01 && c.x < -0.99) || (c.y > -1.01 && c.y < -0.99)
-			|| (c.x < 1.01 && c.x > 0.99) || (c.y < 1.01 && c.y > 0.99)) {
+			|| (c.x < 1.01 && c.x > 0.99) || (c.y < 1.01 && c.y > 0.99))) {
 		return vec4(1., 1., 1., 1.);
 	}
 	return couleurfinaletest;
