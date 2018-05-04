@@ -23,6 +23,7 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Bounds;
 import javafx.scene.control.Tooltip;
 import javafx.scene.Node;
 import javafx.scene.Parent;
@@ -503,6 +504,8 @@ public class ControlleurVue {
 	 * souris après le clic.
 	 */
 	void mouseDrag(MouseEvent event) {
+		Bounds b = theImageView.boundsInLocalProperty().get();
+		System.out.println("bounds: " + b);
 
 		Vector2f NvecTranslation = new Vector2f(
 				(float) (xInitLocation - (float) event.getSceneX()) / 50.0f,
@@ -642,13 +645,14 @@ public class ControlleurVue {
 	}
 
 	public void zoom(float x) {
-		if (x < 0 && Math.abs(x) != 1) {
-			x = 1.0f / -x;
-		} else if (x == 0) {
-			x = 1;
-		}
+//		if (x < 0 && Math.abs(x) != 1) {
+//			x = 1.0f / -x;
+//		} else if (x == 0) {
+//			x = 1;
+//		}
+		float z = (float) Math.pow(1.1, -x);
 		float out = zoomMat.getScale().x;
-		zoomMat = zoomMat.setScale(out * x);
+		zoomMat = zoomMat.setScale(out * z);
 
 		if (!application.isMatNull()) {
 			application.setZoomTransformMat(getZoomMat());
