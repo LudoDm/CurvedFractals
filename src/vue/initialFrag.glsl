@@ -5,7 +5,6 @@ uniform vec4 m_ColorMax;
 uniform vec2 m_Resolution;
 uniform mat4 m_Zoom;
 uniform vec2 m_Translat;
-uniform bool m_grid;
 
 out vec4 color;
 
@@ -15,6 +14,7 @@ struct MxR3 {
 };
 
 #define M_PI 3.1415926535897932384626433832795
+bool grid = true;
 
 vec3 chart2(vec2 p) {
 
@@ -131,6 +131,7 @@ mat2 metricTensor(in vec2 p) {
 	mat2 g = mat2(g11, g21, g12, g22);
 	//on doit ecrire "\tg11 = " + "FONCTION g11 qui depend de x et/ou y ou ne depend de rien" + ";"
 	//OUTPUT_METRIC_G11_NEXT_LINE
+        g11 = 1;
 
 	if(!isinf(g11) && !isnan(g11)) {
 		g[0][0] = g11;
@@ -138,6 +139,7 @@ mat2 metricTensor(in vec2 p) {
 
 	//on doit ecrire "\tg21 = " + "FONCTION g21 qui depend de x et/ou y ou ne depend de rien" + ";"
 	//OUTPUT_METRIC_G21_NEXT_LINE
+        g21 = 0;
 
 	if(!isinf(g21) && !isnan(g21)) {
 		g[1][0] = g21;
@@ -145,6 +147,7 @@ mat2 metricTensor(in vec2 p) {
 
 	//on doit ecrire "\tg12 = " + "FONCTION g12 qui depend de x et/ou y ou ne depend de rien" + ";"
 	//OUTPUT_METRIC_G12_NEXT_LINE
+        g12 = 1;
 
 	if(!isinf(g12) && !isnan(g12)) {
 		g[0][1] = g12;
@@ -152,6 +155,7 @@ mat2 metricTensor(in vec2 p) {
 
 	//on doit ecrire "\tg22 = " + "FONCTION g22 qui depend de x et/ou y ou ne depend de rien" + ";"
 	//OUTPUT_METRIC_G22_NEXT_LINE
+        g22 = 0;
 
 	if(!isinf(g22) && !isnan(g22)) {
 		g[1][1] = g22;
@@ -175,6 +179,7 @@ vec3 chart(in vec2 pM) {
 
 	//on doit ecrire "\ta = " + "FONCTION 1 de x(u,v) (le premier textField) qui depend soit de rien (genre un nombre), de u et/ou de v" + ";"
 	//OUTPUT_CHART_FUNCTION_1_NEXT_LINE
+        a = u;
 
 	if(!isinf(a) && !isnan(a)) {
 		pR3.x = a;
@@ -182,6 +187,7 @@ vec3 chart(in vec2 pM) {
 
 	//on doit ecrire "\tb = " + "FONCTION 2 de x(u,v) (le deuxieme textField) qui depend soit de rien (genre un nombre), de u et/ou de v" + ";"
 	//OUTPUT_CHART_FUNCTION_2_NEXT_LINE
+        b = v;
 
 	if(!isinf(b) && !isnan(b)) {
 		pR3.y = b;
@@ -189,6 +195,7 @@ vec3 chart(in vec2 pM) {
 
 	//on doit ecrire "\tc = " + "FONCTION 3 de x(u,v) (le troisieme textField) qui depend soit de rien (genre un nombre), de u et/ou de v" + ";"
 	//OUTPUT_CHART_FUNCTION_3_NEXT_LINE
+        c = 1;
 
 	if(!isinf(c) && !isnan(c)) {
 		pR3.z = c;
@@ -210,6 +217,7 @@ int mandelbrot(vec2 c) {
 		//Equation (la ligne suivante sera celle qui sera overwrite par l'utilisateur
 		//Elle doit mettre en relation la variable d'it?ration(nombre complexe aka vecteur R2) et la condition initiale (le point a tester) (nb complexe aka vec R2)
 		//OUTPUT_EQ_NEXT_LINE
+        z = cpow(z,2) + c;
 
 	}
 	return 0;
@@ -243,7 +251,7 @@ vec4 Image(vec2 f) {
 	vec4 couleurfinaletest;
 
 	vec4 p = vec4(chart(c.xy).xyz, 1.0);
-	if ((fract(p.x / 0.1f) < 0.01f || fract(p.y / 0.1f) < 0.01f) && m_grid) {
+	if ((fract(p.x / 0.1f) < 0.01f || fract(p.y / 0.1f) < 0.01f) && grid) {
 		couleurfinale = vec4(1.,0.,0.,1.);
 	} else {
 		// Turn the iteration count into a color.
