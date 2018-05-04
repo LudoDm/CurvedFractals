@@ -296,6 +296,8 @@ public class ControlleurVue {
 
 	}
 
+	
+	//TODO remmettre les sysout si on veut tester
 	@FXML
 	void gererZoom(ScrollEvent event) {
 
@@ -307,7 +309,8 @@ public class ControlleurVue {
 		float ds = (float) event.getTextDeltaY();
 		ds /= 10;
 
-		System.out.println(ds);
+		//System.out.println(ds);
+		System.out.println("Zoom en cours");
 		if (ds < 0 && Math.abs(ds) != 1) {
 			ds = 1.0f / -ds;
 		} else if (ds == 0) {
@@ -321,7 +324,7 @@ public class ControlleurVue {
 		} else {
 			System.out.println("FUUUUUUUUUUUUUUUUUUCCCCCCCCCCCCCCCCCCCLLLLLLLLLLLLLLLLLL");
 		}
-		System.out.println(getZoomMat());
+		//System.out.println(getZoomMat());
 	}
 
 	@FXML
@@ -428,13 +431,15 @@ public class ControlleurVue {
 	}
 
 	@FXML
+	//TODO remettre les sysout pour tester
+	
 	void mouseDrag() {
 
 		Vector2f NvecTranslation = new Vector2f(
 				(float) (xInitLocation - MouseInfo.getPointerInfo().getLocation().getX()) / 100.0f,
 				(float) -(yInitLocation - MouseInfo.getPointerInfo().getLocation().getY()) / 100.0f);
-		System.out.println("[ " + NvecTranslation.x + " " + NvecTranslation.y + " ]");
-		System.out.println("                [ " + vecTranslation.x + " " + vecTranslation.y + " ]");
+		//System.out.println("[ " + NvecTranslation.x + " " + NvecTranslation.y + " ]");
+		//System.out.println("                [ " + vecTranslation.x + " " + vecTranslation.y + " ]");
 
 		System.out.println(xInitLocation + ", " + yInitLocation);
 
