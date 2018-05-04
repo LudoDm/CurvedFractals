@@ -50,8 +50,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 
 public class ControlleurVue {
-	
-	
+
 	public static final int DEFAULT_LOADING_TIME = 5;
 
 	private Scene scene;
@@ -144,10 +143,10 @@ public class ControlleurVue {
 			visibleSet = FXCollections.observableSet();
 			zoomThatShit();
 			initHoverInfos();
-			
-			// Start de la fonction hacky pour afficher la première fractale	
+
+			// Start de la fonction hacky pour afficher la première fractale
 			loadingTime = DEFAULT_LOADING_TIME;
-		    displayFirstFractal(loadingTime);
+			displayFirstFractal(loadingTime);
 
 		} catch (Exception ex) {
 			System.out.println("Exception lors du chargement des ressources dans controlleur vue");
@@ -155,7 +154,6 @@ public class ControlleurVue {
 		}
 
 	}
-
 
 	/**
 	 * Cette méthode est appelée lors du lancement de l'application. Elle met le
@@ -344,6 +342,12 @@ public class ControlleurVue {
 
 	}
 
+	/**
+	 * Méthode permettant de gerer les actions de la roulette de la souris afin de
+	 * zoomer
+	 * 
+	 * @param event
+	 */
 	@FXML
 	void gererZoom(ScrollEvent event) {
 
@@ -513,20 +517,12 @@ public class ControlleurVue {
 		}
 	}
 
-	@FXML
-	void gererReset(KeyEvent event) {
-
-		if (event.getCode() == KeyCode.R && !application.isMatNull()) {
-
-			// TODO : MARCHE PAS. Le code se perd dans JMonkeyApp.......
-
-			application.setZoomTransformMat(Transform.IDENTITY.toTransformMatrix());
-			setZoomMat(Transform.IDENTITY);
-			System.out.println("reset GROS");
-		}
-
-	}
-
+	/**
+	 * Permet d'ajuster la translation par rapport au zoom
+	 * 
+	 * @param v(vecteur
+	 *            de translation)
+	 */
 	private Vector2f scaleWrtZoom(Vector2f v) {
 		Vector2f out = v;
 		float zoom = getZoomMat().m00;
@@ -539,6 +535,11 @@ public class ControlleurVue {
 		return out;
 
 	}
+
+	/*
+	 * getters and setters
+	 * 
+	 */
 
 	public Scene getScene() {
 		return scene;
@@ -576,16 +577,43 @@ public class ControlleurVue {
 		this.zoomMat = mat;
 	}
 
+	/*
+	 * getters and setters END
+	 * 
+	 */
+
+	/**
+	 * Méthode qui change l'équation de la fractale
+	 * 
+	 * @param eq
+	 */
 	public void changerEquation(String eq) throws IOException {
 		getControleurPrincipal().writeFormula(eq);
 		application.refreshMaterial(getControleurPrincipal().getMatUpdated());
 	}
 
+	/**
+	 * Méthode qui change la matrice de courbure selon les 4 strings recu en
+	 * paramètres
+	 * 
+	 * @param string1
+	 * @param string2
+	 * @param string3
+	 * @param string4
+	 */
 	public void changerMetric(String string1, String string2, String string3, String string4) {
 		getControleurPrincipal().writeMetric(string1, string2, string3, string4);
 		application.refreshMaterial(getControleurPrincipal().getMatUpdated());
 	}
 
+	/**
+	 * Méthode qui change le mapping de la fractale selon les Strings reçus en
+	 * paramètres
+	 * 
+	 * @param string1
+	 * @param string2
+	 * @param string3
+	 */
 	public void changerChart(String string1, String string2, String string3) {
 		getControleurPrincipal().writeChart(string1, string2, string3);
 		application.refreshMaterial(getControleurPrincipal().getMatUpdated());
@@ -598,7 +626,7 @@ public class ControlleurVue {
 	private Controleur getControleurPrincipal() {
 		return this.controleurPrincipal;
 	}
-	
+
 	private void displayFirstFractal(int time) {
 		// Quitte a être hacky, pourquoi ne pas aller jusqu'au bout !
 		final ScheduledThreadPoolExecutor executor = new ScheduledThreadPoolExecutor(0);
@@ -624,9 +652,7 @@ public class ControlleurVue {
 				System.out.println("Exception lance dans la methode hacky pour regler le zoom au lancement de l'app");
 				e.printStackTrace();
 			}
-			
-			
-			
+
 		}
 	}
 
@@ -647,8 +673,9 @@ public class ControlleurVue {
 	/**
 	 * Méthode permettant d'effectuer un zoom de la grandeur reçue en paramètre
 	 * 
-	 * @param x
-	 *            (grandeur du zoom)
+	 * @param x(grandeur
+	 *            du zoom)
+	 * 
 	 */
 	public void zoom(float x) {
 		// if (x < 0 && Math.abs(x) != 1) {
@@ -707,6 +734,8 @@ public class ControlleurVue {
 			}
 		};
 
+		// Lorsque le service commence, donc que le zoom automatique est commencé,
+		// l'image du bouton est changé à l'image Stop.png.
 		zoomService.setOnScheduled(event -> {
 			Image imageTemp = new Image(getClass().getResourceAsStream("/images/Stop.png"));
 			ImageView imageViewTemp = new ImageView((imageTemp));
@@ -717,6 +746,9 @@ public class ControlleurVue {
 			bZoom.setGraphic(imageViewTemp);
 		});
 
+		// Lorsque le service est arêtté par l'utilisateur, donc que le zoom automatique
+		// est arrêté,
+		// l'image du bouton est changé à l'image Zoom.png
 		zoomService.setOnCancelled(event -> {
 			Image imageTemp = new Image(getClass().getResourceAsStream("/images/zoom-in.png"));
 			ImageView imageViewTemp = new ImageView((imageTemp));
@@ -728,6 +760,9 @@ public class ControlleurVue {
 
 		});
 
+		// Lorsque le service est arêtté par l'utilisateur, donc que le zoom automatique
+		// est arrêté,
+		// l'image du bouton est changé à l'image Zoom.png
 		zoomService.setOnSucceeded(event -> {
 			Image imageTemp = new Image(getClass().getResourceAsStream("/images/zoom-in.png"));
 			ImageView imageViewTemp = new ImageView((imageTemp));
