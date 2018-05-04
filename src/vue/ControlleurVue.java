@@ -50,7 +50,8 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 
 public class ControlleurVue {
-
+	
+	
 	public static final int DEFAULT_LOADING_TIME = 5;
 	public static final boolean DEFAULT_DEBUG_MODE = false;
 
@@ -149,10 +150,10 @@ public class ControlleurVue {
 			visibleSet = FXCollections.observableSet();
 			zoomThatShit();
 			initHoverInfos();
-
-			// Start de la fonction hacky pour afficher la première fractale
+			
+			// Start de la fonction hacky pour afficher la première fractale	
 			loadingTime = DEFAULT_LOADING_TIME;
-			displayFirstFractal(loadingTime);
+		    displayFirstFractal(loadingTime);
 
 		} catch (Exception ex) {
 			System.out.println("Exception lors du chargement des ressources dans controlleur vue");
@@ -519,12 +520,15 @@ public class ControlleurVue {
 	}
 
 	@FXML
+<<<<<<< HEAD
 	void handleDebugButton(ActionEvent event) {
 		debugMode = !debugMode;
 		application.setGridOnOrOff(debugMode);
 	}
 
 	@FXML
+=======
+>>>>>>> parent of 0514593... Documentation
 	void gererReset(KeyEvent event) {
 
 		if (event.getCode() == KeyCode.R && !application.isMatNull()) {
@@ -609,7 +613,7 @@ public class ControlleurVue {
 	private Controleur getControleurPrincipal() {
 		return this.controleurPrincipal;
 	}
-
+	
 	private void displayFirstFractal(int time) {
 		// Quitte a être hacky, pourquoi ne pas aller jusqu'au bout !
 		final ScheduledThreadPoolExecutor executor = new ScheduledThreadPoolExecutor(0);
