@@ -17,9 +17,13 @@ public class CurvedFractal extends Application {
 
 	@Override
 	public void start(Stage stage) throws Exception {
-		controleur = new Controleur();
+		//avec ca, la translation est fluide... on ne prend probablement pas les coordonnées de la souris en fonction de la bonne affaire (genre p/r a image view vs Stage))
+//		controleur = new Controleur(stage.getWidth(), stage.getHeight());
+		controleur = new Controleur(1920.0d, 1080.0d);
 		stage.setTitle("CurvedFractals");
 		stage.setScene(controleur.getScene());
+		stage.sizeToScene();
+		stage.setFullScreen(false);
 		stage.show();
 		stage.setMaximized(true);
 		stage.setOnCloseRequest(new EventHandler<WindowEvent>() {

@@ -57,6 +57,9 @@ public class ControlleurVue {
 	private Vector2f vecTranslation = new Vector2f(0, 0);
 	private boolean changed = false;
 	private Task currenttask;
+	
+	private static float ResX;
+	private static float ResY;
 
 	private boolean dragging = true;
 
@@ -90,11 +93,13 @@ public class ControlleurVue {
 	private ColorPicker colpic1, colpic2;
 	private int nbrZoom;
 
-	private Transform zoomTrans = new Transform();
 
-	public ControlleurVue(Controleur ctrl) {
+	public ControlleurVue(Controleur ctrl, double ResX, double ResY) {
 		try {
 			setControleurPrincipal(ctrl);
+			
+			this.ResX = (float) ResX;
+			this.ResY = (float) ResY;
 
 			// Création du loader.
 			FXMLLoader fxmlLoader = new FXMLLoader(this.getClass().getResource("/vue/FxmlVue.fxml"));
@@ -106,6 +111,7 @@ public class ControlleurVue {
 			Parent root = fxmlLoader.load();
 
 			scene = new Scene(root);
+//			scene = new Scene(root, ResX, ResY);
 
 			// TODO Ajouter la feuille de style
 			// attacher la feuille de style
@@ -343,7 +349,7 @@ public class ControlleurVue {
 	void gererZoom(ScrollEvent event) {
 
 		// zoomFix = (event.getDeltaY() / 40f == 1f) ? zoomFix + 1f : zoomFix - 1f;
-
+//		https://stackoverflow.com/questions/27356577/scale-at-pivot-point-in-an-already-scaled-node
 		changerEquationInitilialisation();
 
 		float ds = (float) event.getTextDeltaY();
@@ -481,9 +487,13 @@ public class ControlleurVue {
 	}
 
 	@FXML
-	void positionInit() {
-		xInitLocation = (float) MouseInfo.getPointerInfo().getLocation().getX();
-		yInitLocation = (float) MouseInfo.getPointerInfo().getLocation().getY();
+	void positionInit(MouseEvent event) {
+//		xInitLocation = (float) MouseInfo.getPointerInfo().getLocation().getX();
+//		yInitLocation = (float) MouseInfo.getPointerInfo().getLocation().getY();
+		
+		xInitLocation = (float) event.getSceneX();
+		yInitLocation = (float) event.getSceneY();
+
 	}
 
 	@FXML
@@ -492,21 +502,19 @@ public class ControlleurVue {
 	 * Elle permet de changer le vecteur de translation selon le déplacement de la
 	 * souris après le clic.
 	 */
-	void mouseDrag() {
+	void mouseDrag(MouseEvent event) {
 
 		Vector2f NvecTranslation = new Vector2f(
-				(float) (xInitLocation - MouseInfo.getPointerInfo().getLocation().getX()) / 100.0f,
-				(float) -(yInitLocation - MouseInfo.getPointerInfo().getLocation().getY()) / 100.0f);
+				(float) (xInitLocation - (float) event.getSceneX()) / 50.0f,
+				(float) -(yInitLocation - (float) event.getSceneY()) / 50.0f);
 		System.out.println("[ " + NvecTranslation.x + " " + NvecTranslation.y + " ]");
 		System.out.println("                [ " + vecTranslation.x + " " + vecTranslation.y + " ]");
 
 		System.out.println(xInitLocation + ", " + yInitLocation);
 
 		if (!application.isMatNull()) {
-			vecTranslation = vecTranslation.add(NvecTranslation);
+			vecTranslation = vecTranslation.add(scaleWrtZoom(NvecTranslation));
 			application.setTranslateTransformMat(vecTranslation);
-			// System.out.println(zoomTrans.toTransformMatrix());
-			// application.setZoomTransformMat(zoomTrans.toTransformMatrix());
 		}
 	}
 
@@ -522,6 +530,19 @@ public class ControlleurVue {
 			System.out.println("reset GROS");
 		}
 
+	}
+	
+	private Vector2f scaleWrtZoom(Vector2f v) {
+		Vector2f out = v;
+		float zoom = getZoomMat().m00;
+		if(zoom < 1 && zoom != 0.0f) {
+			out.mult(zoom*zoom);
+		}
+		if(zoom > 1) {
+			out.divide(-zoom);
+		}
+		return out;
+		
 	}
 
 	public Scene getScene() {
@@ -610,7 +631,10 @@ public class ControlleurVue {
 
 		AppSettings settings = JmeToJFXIntegrator.prepareSettings(new AppSettings(true), 60);
 
-		final JMonkeyApp application = new JMonkeyApp(1920, 1280);
+		settings.setWidth((int) ResX);
+		settings.setHeight((int) ResY);
+//		final JMonkeyApp application = new JMonkeyApp(1920, 1280);
+		final JMonkeyApp application = new JMonkeyApp(ResX, ResY);
 		application.setSettings(settings);
 		application.setShowSettings(false);
 		application.setDisplayFps(true);

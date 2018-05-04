@@ -15,12 +15,12 @@ public class Controleur {
 	private ControlleurVue vue;
 	private MaterialHandler matHandler;
 
-	public Controleur() {
+	public Controleur(double ResX, double ResY) {
 		try {
 			File shadFrag = new File(this.getClass().getResource("/vue/genericShaderFrag.glsl").toURI());
 			File matBase = new File(this.getClass().getResource("/vue/genericMat.j3md").toURI());
 			matHandler = new MaterialHandler(shadFrag, matBase);
-			vue = new ControlleurVue(this);
+			vue = new ControlleurVue(this, ResX, ResY);
 
 		} catch (URISyntaxException e) {
 			System.out.println("Exception dans le controlleur entre le modele et la vue");
