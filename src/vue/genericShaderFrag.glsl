@@ -200,7 +200,7 @@ vec3 chart(in vec2 pM) {
 int mandelbrot(vec2 c) {
 	c.x = -2 + 2.0*(c.x +1.0);
 	c.y = -2 + 2.0*(c.y +1.0);
-	c+= vec2(1.0,0.0);
+	//c+= vec2(1.0,0.0);
 	vec2 z = c;
 	for (int i = 0; i < 800; i++) {
 		// dot(z, z) > 4.0 is the same as length(z) > 2.0, but perhaps faster.
@@ -225,17 +225,14 @@ vec4 Image(vec2 f) {
 	vec4 c = vec4(uv.x, uv.y, 0, 0);
 
 	vec4 transInit = vec4(0., 0.0, 0, 0);
-	vec2 translation = (m_Translat * 2.0 - m_Resolution) / m_Resolution.x;
+	vec2 translation = (m_Translat * 2.0 - m_Resolution) / m_Resolution.xy;
+	//on scale translation entre 0 et 1TODO
 	vec4 t = vec4(translation.x, translation.y, 0, 0);
 	vec4 transtot = transInit + t;
 
-	if (m_Zoom[0][0] != 1.0) {
-		c -= transtot;
-		c *= m_Zoom;
-		c += transtot;
-	} else {
-		c += transtot;
-	}
+	c -= transtot;
+	c *= m_Zoom;
+	c += transtot;
 
 	//float ret = mandelbrot(0.4 * chart2(0.5 *(1./3.14) *c.xy).xy + 0.1 * normal(c.xy).pR3.xy );
 //	float ret = mandelbrot(0.49 * chart2(0.8* c.xy + vec2(-0., -0.)).xy + 1. * normal(c.xy).pR3.xy);

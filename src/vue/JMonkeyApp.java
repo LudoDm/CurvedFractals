@@ -44,7 +44,7 @@ public class JMonkeyApp extends JmeToJFXApplication {
 	private ColorRGBA ColorMax = ColorRGBA.Blue;
 
 	private Vector2f Resolution;
-	private Matrix4f ZoomTransform = new Transform().IDENTITY.toTransformMatrix();
+	private Matrix4f ZoomTransform = Transform.IDENTITY.toTransformMatrix();
 	private Vector2f TranslatTransform = new Vector2f(0, 0);
 
 	public JMonkeyApp(float Resx, float Resy) {
@@ -56,8 +56,11 @@ public class JMonkeyApp extends JmeToJFXApplication {
 	public void simpleInitApp() {
 		setColorMin(ColorRGBA.Blue);
 		setColorMax(ColorRGBA.Magenta);
-		float w = 1920f;
-		float h = this.getContext().getSettings().getHeight();
+//		float w = 1920f;
+//		float w = this.getContext().getSettings().getWidth();
+//		float h = this.getContext().getSettings().getHeight();
+		float w = this.Resolution.x;
+		float h = this.Resolution.y;
 		System.out.println("w: " + w + " h: " + h);
 		cam.setLocation(Vector3f.ZERO.add(new Vector3f(0.0f, 0.0f, 10f)));
 		float camZ = cam.getLocation().getZ();
@@ -187,7 +190,7 @@ public class JMonkeyApp extends JmeToJFXApplication {
 		mat = new Material(assetManager, thePath);
 		setColorMinMat(getColorMin());
 		setColorMaxMat(getColorMax());
-		mat.setVector2("Resolution", new Vector2f(1920, 1080));
+		mat.setVector2("Resolution", new Vector2f(this.Resolution.x, this.Resolution.y));
 		setZoomTransformMat(getZoomTransform());
 		setTranslateTransformMat(getTranslateTransform());
 		player.setMaterial(mat);
@@ -201,7 +204,7 @@ public class JMonkeyApp extends JmeToJFXApplication {
 			Material temp = new Material(assetManager, thePath);
 			setColorMinMat(getColorMin());
 			setColorMaxMat(getColorMax());
-			temp.setVector2("Resolution", new Vector2f(1920, 1080));
+			temp.setVector2("Resolution", new Vector2f(this.Resolution.x, this.Resolution.y));
 			setZoomTransformMat(getZoomTransform());
 			setTranslateTransformMat(getTranslateTransform());
 
@@ -259,7 +262,7 @@ public class JMonkeyApp extends JmeToJFXApplication {
 	}
 
 	private void setZoomTransform(Matrix4f zoomTransform) {
-		ZoomTransform = zoomTransform;
+		this.ZoomTransform = zoomTransform;
 	}
 
 	public void setZoomTransformMat(Matrix4f zoomTransform) {
