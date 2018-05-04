@@ -58,10 +58,11 @@ public class ControlleurVue {
 	private float xInitLocation, yInitLocation, X, U, V;
 	private Vector2f vecTranslation = new Vector2f(0, 0);
 	private boolean changed = false;
-	
+
 	private static float ResX;
 	private static float ResY;
 	private Service<Void> zoomService;
+	private ArrayList<Color> listeCouleur;
 
 	private boolean dragging = true;
 
@@ -95,11 +96,10 @@ public class ControlleurVue {
 	private ColorPicker colpic1, colpic2;
 	private int nbrZoom;
 
-
 	public ControlleurVue(Controleur ctrl, double ResX, double ResY) {
 		try {
 			setControleurPrincipal(ctrl);
-			
+
 			this.ResX = (float) ResX;
 			this.ResY = (float) ResY;
 
@@ -113,7 +113,7 @@ public class ControlleurVue {
 			Parent root = fxmlLoader.load();
 
 			scene = new Scene(root);
-//			scene = new Scene(root, ResX, ResY);
+			// scene = new Scene(root, ResX, ResY);
 
 			// TODO Ajouter la feuille de style
 			// attacher la feuille de style
@@ -144,6 +144,7 @@ public class ControlleurVue {
 		}
 
 	}
+
 
 	/**
 	 * Cette méthode est appelée lors du lancement de l'application. Elle met le
@@ -280,7 +281,7 @@ public class ControlleurVue {
 			try {
 				this.nbrZoom = Integer.parseInt(zoomVal);
 
-				if(zoomService.isRunning()) {
+				if (zoomService.isRunning()) {
 					zoomService.cancel();
 				} else {
 					zoomService.restart();
@@ -336,7 +337,7 @@ public class ControlleurVue {
 	void gererZoom(ScrollEvent event) {
 
 		// zoomFix = (event.getDeltaY() / 40f == 1f) ? zoomFix + 1f : zoomFix - 1f;
-//		https://stackoverflow.com/questions/27356577/scale-at-pivot-point-in-an-already-scaled-node
+		// https://stackoverflow.com/questions/27356577/scale-at-pivot-point-in-an-already-scaled-node
 		changerEquationInitilialisation();
 
 		float ds = (float) event.getTextDeltaY();
@@ -437,7 +438,7 @@ public class ControlleurVue {
 	 */
 	void showZoomBox(ActionEvent event) {
 		if (!zoombox.isVisible()) {
-			if(zoomService.isRunning()) {
+			if (zoomService.isRunning()) {
 				zoomService.cancel();
 				tZoom.setText(Integer.toString(0));
 			}
@@ -470,9 +471,9 @@ public class ControlleurVue {
 
 	@FXML
 	void positionInit(MouseEvent event) {
-//		xInitLocation = (float) MouseInfo.getPointerInfo().getLocation().getX();
-//		yInitLocation = (float) MouseInfo.getPointerInfo().getLocation().getY();
-		
+		// xInitLocation = (float) MouseInfo.getPointerInfo().getLocation().getX();
+		// yInitLocation = (float) MouseInfo.getPointerInfo().getLocation().getY();
+
 		xInitLocation = (float) event.getSceneX();
 		yInitLocation = (float) event.getSceneY();
 
@@ -488,8 +489,7 @@ public class ControlleurVue {
 		Bounds b = theImageView.boundsInLocalProperty().get();
 		System.out.println("bounds: " + b);
 
-		Vector2f NvecTranslation = new Vector2f(
-				(float) (xInitLocation - (float) event.getSceneX()) / 50.0f,
+		Vector2f NvecTranslation = new Vector2f((float) (xInitLocation - (float) event.getSceneX()) / 50.0f,
 				(float) -(yInitLocation - (float) event.getSceneY()) / 50.0f);
 		System.out.println("[ " + NvecTranslation.x + " " + NvecTranslation.y + " ]");
 		System.out.println("                [ " + vecTranslation.x + " " + vecTranslation.y + " ]");
@@ -515,18 +515,18 @@ public class ControlleurVue {
 		}
 
 	}
-	
+
 	private Vector2f scaleWrtZoom(Vector2f v) {
 		Vector2f out = v;
 		float zoom = getZoomMat().m00;
-		if(zoom < 1 && zoom != 0.0f) {
-			out.mult(zoom*zoom);
+		if (zoom < 1 && zoom != 0.0f) {
+			out.mult(zoom * zoom);
 		}
-		if(zoom > 1) {
+		if (zoom > 1) {
 			out.divide(-zoom);
 		}
 		return out;
-		
+
 	}
 
 	public Scene getScene() {
@@ -588,7 +588,6 @@ public class ControlleurVue {
 		return this.controleurPrincipal;
 	}
 
-	// TODO faire mieux ?
 	/***
 	 * Methode hacky pour changer faire marcher le zoom lors d'ouverture de
 	 * l'application
@@ -610,14 +609,13 @@ public class ControlleurVue {
 		}
 	}
 
-	// TODO Enlever l'annotation @notnull ?
 	private static @NotNull JMonkeyApp makeJmeApplication() {
 
 		AppSettings settings = JmeToJFXIntegrator.prepareSettings(new AppSettings(true), 60);
 
 		settings.setWidth((int) ResX);
 		settings.setHeight((int) ResY);
-//		final JMonkeyApp application = new JMonkeyApp(1920, 1280);
+		// final JMonkeyApp application = new JMonkeyApp(1920, 1280);
 		final JMonkeyApp application = new JMonkeyApp(ResX, ResY);
 		application.setSettings(settings);
 		application.setShowSettings(false);
@@ -625,12 +623,18 @@ public class ControlleurVue {
 		return application;
 	}
 
+	/**
+	 * Méthode permettant d'effectuer un zoom de la grandeur reçue en paramètre
+	 * 
+	 * @param x
+	 *            (grandeur du zoom)
+	 */
 	public void zoom(float x) {
-//		if (x < 0 && Math.abs(x) != 1) {
-//			x = 1.0f / -x;
-//		} else if (x == 0) {
-//			x = 1;
-//		}
+		// if (x < 0 && Math.abs(x) != 1) {
+		// x = 1.0f / -x;
+		// } else if (x == 0) {
+		// x = 1;
+		// }
 		float z = (float) Math.pow(1.1, -x);
 		float out = zoomMat.getScale().x;
 		zoomMat = zoomMat.setScale(out * z);
@@ -642,6 +646,16 @@ public class ControlleurVue {
 		System.out.println(getZoomMat());
 	}
 
+	/*
+	 * Méthode qui crée un service afin de zoomer tout en changeant l'image du
+	 * bouton bZoom à l'image Stop.png dans le fichier image
+	 * 
+	 * Le zoom est gérer par un task qui appelle la méthode nbrZoom fois
+	 * 
+	 * Le changemant d'image est gérer par les méthodes setOnCancelled,
+	 * setOnScheduld et setOnSucceeded
+	 * 
+	 */
 	public void zoomThatShit() {
 
 		zoomService = new Service<Void>() {
@@ -692,7 +706,7 @@ public class ControlleurVue {
 			bZoom.setGraphic(imageViewTemp);
 
 		});
-		
+
 		zoomService.setOnSucceeded(event -> {
 			Image imageTemp = new Image(getClass().getResourceAsStream("/images/zoom-in.png"));
 			ImageView imageViewTemp = new ImageView((imageTemp));
