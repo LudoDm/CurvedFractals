@@ -7,7 +7,6 @@ import java.net.URISyntaxException;
 import com.jme3.material.Material;
 
 import javafx.scene.Scene;
-import modele.FractalFactory;
 import modele.MaterialHandler;
 import vue.ControlleurVue;
 
