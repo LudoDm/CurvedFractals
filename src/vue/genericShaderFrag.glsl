@@ -5,6 +5,7 @@ uniform vec4 m_ColorMax;
 uniform vec2 m_Resolution;
 uniform mat4 m_Zoom;
 uniform vec2 m_Translat;
+uniform bool m_grid;
 
 out vec4 color;
 
@@ -14,7 +15,6 @@ struct MxR3 {
 };
 
 #define M_PI 3.1415926535897932384626433832795
-bool grid = true;
 
 vec3 chart2(vec2 p) {
 
@@ -243,7 +243,7 @@ vec4 Image(vec2 f) {
 	vec4 couleurfinaletest;
 
 	vec4 p = vec4(chart(c.xy).xyz, 1.0);
-	if ((fract(p.x / 0.1f) < 0.01f || fract(p.y / 0.1f) < 0.01f) && grid) {
+	if ((fract(p.x / 0.1f) < 0.01f || fract(p.y / 0.1f) < 0.01f) && m_grid) {
 		couleurfinale = vec4(1.,0.,0.,1.);
 	} else {
 		// Turn the iteration count into a color.

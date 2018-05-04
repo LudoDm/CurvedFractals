@@ -50,9 +50,10 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 
 public class ControlleurVue {
-
-	public static final int DEFAULT_LOADING_TIME = 5;
 	
+	
+	public static final int DEFAULT_LOADING_TIME = 5;
+
 	private Scene scene;
 	private Controleur controleurPrincipal;
 	private String m11, m12, m21, m22, function, zoomVal;
@@ -63,17 +64,12 @@ public class ControlleurVue {
 	private float xInitLocation, yInitLocation, X, U, V;
 	private Vector2f vecTranslation = new Vector2f(0, 0);
 	private boolean changed = false;
-<<<<<<< HEAD
-	private Task currenttask;
-	private boolean enabledButtons = false;
-=======
 	
 	private static float ResX;
 	private static float ResY;
 	private Service<Void> zoomService;
 
 	private boolean dragging = true;
->>>>>>> master
 
 	private float zoomFix = 0f;
 	int loadingTime;
@@ -104,10 +100,6 @@ public class ControlleurVue {
 	private TextField tFunction, tZoom, tMatrix1, tMatrix2, tMatrix3, tMatrix4, tX, tU, tV;
 	@FXML
 	private ColorPicker colpic1, colpic2;
-	
-	@FXML
-	private TextField loadingText;
-	
 	private int nbrZoom;
 
 
@@ -148,18 +140,14 @@ public class ControlleurVue {
 			matrixbox.setVisible(false);
 			zoombox.setVisible(false);
 			r2tor3box.setVisible(false);
-			loadingText.setVisible(true);
 
 			visibleSet = FXCollections.observableSet();
-<<<<<<< HEAD
-=======
 			zoomThatShit();
->>>>>>> master
 			initHoverInfos();
 			
 			// Start de la fonction hacky pour afficher la première fractale	
 			loadingTime = DEFAULT_LOADING_TIME;
-			displayFirstFractal(loadingTime);
+		    displayFirstFractal(loadingTime);
 
 		} catch (Exception ex) {
 			System.out.println("Exception lors du chargement des ressources dans controlleur vue");
@@ -313,15 +301,6 @@ public class ControlleurVue {
 			}
 		}
 
-<<<<<<< HEAD
-		if (currenttask == null) {
-			creerTask();
-		} else if (!currenttask.isRunning()) {
-			creerTask();
-		}
-
-=======
->>>>>>> master
 		zoombox.setVisible(false);
 		visibleSet.remove(zoombox);
 		bZoom.setStyle("-fx-background-radius: 15");
@@ -364,8 +343,6 @@ public class ControlleurVue {
 
 	}
 
-	
-	//TODO remmettre les sysout si on veut tester
 	@FXML
 	void gererZoom(ScrollEvent event) {
 
@@ -376,27 +353,8 @@ public class ControlleurVue {
 		float ds = (float) event.getTextDeltaY();
 		ds /= 10;
 
-<<<<<<< HEAD
-		//System.out.println(ds);
-		System.out.println("Zoom en cours");
-		if (ds < 0 && Math.abs(ds) != 1) {
-			ds = 1.0f / -ds;
-		} else if (ds == 0) {
-			ds = 1;
-		}
-		float out = zoomMat.getScale().x;
-		zoomMat = zoomMat.setScale(out * ds);
-
-		if (!application.isMatNull()) {
-			application.setZoomTransformMat(getZoomMat());
-		} else {
-			System.out.println("FUUUUUUUUUUUUUUUUUUCCCCCCCCCCCCCCCCCCCLLLLLLLLLLLLLLLLLL");
-		}
-		//System.out.println(getZoomMat());
-=======
 		zoom(ds);
 
->>>>>>> master
 	}
 
 	@FXML
@@ -531,17 +489,6 @@ public class ControlleurVue {
 	}
 
 	@FXML
-<<<<<<< HEAD
-	//TODO remettre les sysout pour tester
-	
-	void mouseDrag() {
-
-		Vector2f NvecTranslation = new Vector2f(
-				(float) (xInitLocation - MouseInfo.getPointerInfo().getLocation().getX()) / 100.0f,
-				(float) -(yInitLocation - MouseInfo.getPointerInfo().getLocation().getY()) / 100.0f);
-		//System.out.println("[ " + NvecTranslation.x + " " + NvecTranslation.y + " ]");
-		//System.out.println("                [ " + vecTranslation.x + " " + vecTranslation.y + " ]");
-=======
 	/**
 	 * Cette méthode est appelée lorsque le clic gauche de la souris est appuyé.
 	 * Elle permet de changer le vecteur de translation selon le déplacement de la
@@ -556,7 +503,6 @@ public class ControlleurVue {
 				(float) -(yInitLocation - (float) event.getSceneY()) / 50.0f);
 		System.out.println("[ " + NvecTranslation.x + " " + NvecTranslation.y + " ]");
 		System.out.println("                [ " + vecTranslation.x + " " + vecTranslation.y + " ]");
->>>>>>> master
 
 		System.out.println(xInitLocation + ", " + yInitLocation);
 
@@ -656,17 +602,14 @@ public class ControlleurVue {
 		// Quitte a être hacky, pourquoi ne pas aller jusqu'au bout !
 		final ScheduledThreadPoolExecutor executor = new ScheduledThreadPoolExecutor(0);
 		executor.schedule(() -> changerEquationInitilialisation(), time, TimeUnit.SECONDS);
-		loadingText.setVisible(false);
 	}
 
 	// TODO faire mieux ?
-	// Reponse: nan 
 	/***
 	 * Methode hacky pour changer faire marcher le zoom lors d'ouverture de
 	 * l'application
 	 */
 	private void changerEquationInitilialisation() {
-
 		if (changed == false) {
 
 			try {
@@ -681,8 +624,6 @@ public class ControlleurVue {
 				e.printStackTrace();
 			}
 		}
-		
-		
 	}
 
 	// TODO Enlever l'annotation @notnull ?
@@ -716,11 +657,6 @@ public class ControlleurVue {
 		}
 		System.out.println(getZoomMat());
 	}
-<<<<<<< HEAD
-
-	public void creerTask() {
-=======
->>>>>>> master
 
 	public void zoomThatShit() {
 

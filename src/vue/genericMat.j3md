@@ -5,6 +5,7 @@ MaterialDef Test Material 123{
 	    Vector2 Resolution
 	    Matrix4 Zoom
 	    Vector2 Translat
+	    Boolean grid
 	}
 	Technique {
    		VertexShader GLSL150 : /vue/shaderVert.glsl
