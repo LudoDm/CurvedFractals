@@ -439,6 +439,7 @@ public class ControlleurVue {
 		if (!zoombox.isVisible()) {
 			if(zoomService.isRunning()) {
 				zoomService.cancel();
+				tZoom.setText(Integer.toString(0));
 			}
 			zoombox.setVisible(true);
 			visibleSet.add(zoombox);
@@ -652,10 +653,10 @@ public class ControlleurVue {
 					protected Void call() throws Exception {
 
 						for (int i = 0; i < nbrZoom; i++) {
-							zoom((float) 0.9);
+							zoom((float) 0.1);
 
 							try {
-								Thread.sleep(1000);
+								Thread.sleep(100);
 
 							} catch (InterruptedException interrupted) {
 								if (isCancelled()) {
