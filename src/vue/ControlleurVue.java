@@ -92,7 +92,7 @@ public class ControlleurVue {
 			bR2toR3Enter;
 
 	@FXML
-	private Label lX, lXValue, lY, lYValue, lFunction, lZoom, lArrow;
+	private Label lX, lXValue, lY, lYValue, lFunction, lZoom, lArrow, lLoading;
 
 	@FXML
 	private HBox functionbox, zoombox, matrixbox, colorbox, r2tor3box;
@@ -619,10 +619,14 @@ public class ControlleurVue {
 				application.setZoomTransformMat(Transform.IDENTITY.toTransformMatrix());
 				setZoomMat(Transform.IDENTITY);
 				changed = true;
+				lLoading.setVisible(false);
 			} catch (IOException e) {
 				System.out.println("Exception lance dans la methode hacky pour regler le zoom au lancement de l'app");
 				e.printStackTrace();
 			}
+			
+			
+			
 		}
 	}
 

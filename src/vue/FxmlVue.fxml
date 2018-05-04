@@ -15,7 +15,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane fx:id="borderpane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<BorderPane fx:id="borderpane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1">
    <center>
       <StackPane fx:id="stackpane" onKeyReleased="#gererReset" onMouseClicked="#showSideMenu" prefHeight="150.0" prefWidth="200.0" BorderPane.alignment="CENTER">
          <children>
@@ -170,6 +170,11 @@
                   <Button fx:id="bR2toR3Enter" maxHeight="-Infinity" maxWidth="-Infinity" mnemonicParsing="false" onAction="#closeR2toR3Box" prefHeight="25.0" prefWidth="30.0" styleClass="confirm-button" text="✓" textFill="#39ff14" />
                </children>
             </HBox>
+            <Label fx:id="lLoading" alignment="CENTER" contentDisplay="CENTER" text="Loading..." textFill="#39ff14">
+               <font>
+                  <Font name="Consolas" size="59.0" />
+               </font>
+            </Label>
          </children>
       </StackPane>
    </center>
