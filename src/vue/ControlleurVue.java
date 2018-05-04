@@ -18,6 +18,7 @@ import javafx.application.Platform;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableSet;
+import javafx.concurrent.Service;
 import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -57,10 +58,10 @@ public class ControlleurVue {
 	private float xInitLocation, yInitLocation, X, U, V;
 	private Vector2f vecTranslation = new Vector2f(0, 0);
 	private boolean changed = false;
-	private Task currenttask;
 	
 	private static float ResX;
 	private static float ResY;
+	private Service<Void> zoomService;
 
 	private boolean dragging = true;
 
@@ -134,27 +135,14 @@ public class ControlleurVue {
 			r2tor3box.setVisible(false);
 
 			visibleSet = FXCollections.observableSet();
-
+			zoomThatShit();
 			initHoverInfos();
-			// initButton();
 
 		} catch (Exception ex) {
 			System.out.println("Exception lors du chargement des ressources dans controlleur vue");
 			ex.printStackTrace();
 		}
 
-	}
-
-	private void initButton() {
-		// Image imageTemp = new
-		// Image(getClass().getResourceAsStream("/images/zoom-in.png"));
-		// ImageView imageViewTemp = new ImageView((imageTemp));
-
-		// imageViewTemp.setFitWidth(50);
-		// imageViewTemp.setFitHeight(50);
-
-		bZoom.setGraphic(null);
-		bZoom.setText("allo");
 	}
 
 	/**
@@ -280,8 +268,8 @@ public class ControlleurVue {
 
 	@FXML
 	/**
-	 * Cette méthode est appelée lorsque le boutton bZoomEnter est appuyé ou
-	 * lorsque le boutton bZoom est appuyé si le sous-menu était déja ouvert.
+	 * Cette méthode est appelée lorsque le boutton bZoomEnter est appuyé ou lorsque
+	 * le boutton bZoom est appuyé si le sous-menu était déja ouvert.
 	 * 
 	 * @param event
 	 */
@@ -291,17 +279,15 @@ public class ControlleurVue {
 		if (zoomVal != "") {
 			try {
 				this.nbrZoom = Integer.parseInt(zoomVal);
+
+				if(zoomService.isRunning()) {
+					zoomService.cancel();
+				} else {
+					zoomService.restart();
+				}
 			} catch (Exception e) {
 
 			}
-		}
-
-		if (currenttask == null) {
-			creerTask();
-		} else if (!currenttask.isRunning()) {
-			creerTask();
-		} else if (currenttask.isRunning()) {
-			currenttask.cancel();
 		}
 
 		zoombox.setVisible(false);
@@ -381,8 +367,8 @@ public class ControlleurVue {
 
 	@FXML
 	/**
-	 * Cette méthode est appelée lorsque le boutton bFunction est appuyé et que
-	 * le sous-menu n'était pas ouvert.
+	 * Cette méthode est appelée lorsque le boutton bFunction est appuyé et que le
+	 * sous-menu n'était pas ouvert.
 	 * 
 	 * @param event
 	 */
@@ -451,20 +437,14 @@ public class ControlleurVue {
 	 */
 	void showZoomBox(ActionEvent event) {
 		if (!zoombox.isVisible()) {
+			if(zoomService.isRunning()) {
+				zoomService.cancel();
+			}
 			zoombox.setVisible(true);
 			visibleSet.add(zoombox);
 			bZoom.setStyle("-fx-background-radius: 0 50 30 0;");
-			if (currenttask.isRunning()) {
-				currenttask.cancel();
-				Image imageTemp = new Image(getClass().getResourceAsStream("/images/zoom-in.png"));
-				ImageView imageViewTemp = new ImageView((imageTemp));
-
-				imageViewTemp.setFitWidth(50);
-				imageViewTemp.setFitHeight(50);
-				bZoom.setGraphic(imageViewTemp);
-			}
-
 		} else {
+
 			closeZoomBox(event);
 		}
 	}
@@ -661,38 +641,68 @@ public class ControlleurVue {
 		System.out.println(getZoomMat());
 	}
 
-	public void creerTask() {
+	public void zoomThatShit() {
 
-		Image imageTemp = new Image(getClass().getResourceAsStream("/images/Stop.png"));
-		ImageView imageViewTemp = new ImageView((imageTemp));
+		zoomService = new Service<Void>() {
 
-		imageViewTemp.setFitWidth(50);
-		imageViewTemp.setFitHeight(50);
-
-		bZoom.setGraphic(imageViewTemp);
-
-		currenttask = new Task<Void>() {
 			@Override
-			protected Void call() throws Exception {
+			protected Task<Void> createTask() {
+				return new Task<Void>() {
+					@Override
+					protected Void call() throws Exception {
 
-				for (int i = 0; i < nbrZoom; i++) {
-					zoom((float) 0.9);
+						for (int i = 0; i < nbrZoom; i++) {
+							zoom((float) 0.9);
 
-					try {
-						Thread.sleep(1000);
+							try {
+								Thread.sleep(1000);
 
-					} catch (InterruptedException interrupted) {
-						if (isCancelled()) {
-							updateMessage("Cancelled");
-							break;
+							} catch (InterruptedException interrupted) {
+								if (isCancelled()) {
+									updateMessage("Cancelled");
+									break;
+								}
+							}
+
 						}
+						return null;
 					}
-				}
-				return null;
+				};
 			}
 		};
 
-		new Thread(currenttask).start();
+		zoomService.setOnScheduled(event -> {
+			Image imageTemp = new Image(getClass().getResourceAsStream("/images/Stop.png"));
+			ImageView imageViewTemp = new ImageView((imageTemp));
+
+			imageViewTemp.setFitWidth(50);
+			imageViewTemp.setFitHeight(50);
+
+			bZoom.setGraphic(imageViewTemp);
+		});
+
+		zoomService.setOnCancelled(event -> {
+			Image imageTemp = new Image(getClass().getResourceAsStream("/images/zoom-in.png"));
+			ImageView imageViewTemp = new ImageView((imageTemp));
+
+			imageViewTemp.setFitWidth(50);
+			imageViewTemp.setFitHeight(50);
+
+			bZoom.setGraphic(imageViewTemp);
+
+		});
+		
+		zoomService.setOnSucceeded(event -> {
+			Image imageTemp = new Image(getClass().getResourceAsStream("/images/zoom-in.png"));
+			ImageView imageViewTemp = new ImageView((imageTemp));
+
+			imageViewTemp.setFitWidth(50);
+			imageViewTemp.setFitHeight(50);
+
+			bZoom.setGraphic(imageViewTemp);
+
+		});
+
 	}
 
 }
