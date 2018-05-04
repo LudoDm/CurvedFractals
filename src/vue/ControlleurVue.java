@@ -66,9 +66,11 @@ public class ControlleurVue {
 	private boolean changed = false;
 	private boolean debugMode = DEFAULT_DEBUG_MODE;
 
+
 	private static float ResX;
 	private static float ResY;
 	private Service<Void> zoomService;
+	private ArrayList<Color> listeCouleur;
 
 	private boolean dragging = true;
 
@@ -92,7 +94,7 @@ public class ControlleurVue {
 			bR2toR3Enter;
 
 	@FXML
-	private Label lX, lXValue, lY, lYValue, lFunction, lZoom, lArrow;
+	private Label lX, lXValue, lY, lYValue, lFunction, lZoom, lArrow, lLoading;
 
 	@FXML
 	private HBox functionbox, zoombox, matrixbox, colorbox, r2tor3box;
@@ -158,6 +160,7 @@ public class ControlleurVue {
 		}
 
 	}
+
 
 	/**
 	 * Cette méthode est appelée lors du lancement de l'application. Elle met le
@@ -453,6 +456,7 @@ public class ControlleurVue {
 		if (!zoombox.isVisible()) {
 			if (zoomService.isRunning()) {
 				zoomService.cancel();
+				tZoom.setText(Integer.toString(0));
 			}
 			zoombox.setVisible(true);
 			visibleSet.add(zoombox);
@@ -612,7 +616,6 @@ public class ControlleurVue {
 		executor.schedule(() -> changerEquationInitilialisation(), time, TimeUnit.SECONDS);
 	}
 
-	// TODO faire mieux ?
 	/***
 	 * Methode hacky pour changer faire marcher le zoom lors d'ouverture de
 	 * l'application
@@ -627,14 +630,17 @@ public class ControlleurVue {
 				application.setZoomTransformMat(Transform.IDENTITY.toTransformMatrix());
 				setZoomMat(Transform.IDENTITY);
 				changed = true;
+				lLoading.setVisible(false);
 			} catch (IOException e) {
 				System.out.println("Exception lance dans la methode hacky pour regler le zoom au lancement de l'app");
 				e.printStackTrace();
 			}
+			
+			
+			
 		}
 	}
 
-	// TODO Enlever l'annotation @notnull ?
 	private static @NotNull JMonkeyApp makeJmeApplication() {
 
 		AppSettings settings = JmeToJFXIntegrator.prepareSettings(new AppSettings(true), 60);
@@ -649,6 +655,12 @@ public class ControlleurVue {
 		return application;
 	}
 
+	/**
+	 * Méthode permettant d'effectuer un zoom de la grandeur reçue en paramètre
+	 * 
+	 * @param x
+	 *            (grandeur du zoom)
+	 */
 	public void zoom(float x) {
 		// if (x < 0 && Math.abs(x) != 1) {
 		// x = 1.0f / -x;
@@ -666,6 +678,16 @@ public class ControlleurVue {
 		System.out.println(getZoomMat());
 	}
 
+	/*
+	 * Méthode qui crée un service afin de zoomer tout en changeant l'image du
+	 * bouton bZoom à l'image Stop.png dans le fichier image
+	 * 
+	 * Le zoom est gérer par un task qui appelle la méthode nbrZoom fois
+	 * 
+	 * Le changemant d'image est gérer par les méthodes setOnCancelled,
+	 * setOnScheduld et setOnSucceeded
+	 * 
+	 */
 	public void zoomThatShit() {
 
 		zoomService = new Service<Void>() {
@@ -677,10 +699,10 @@ public class ControlleurVue {
 					protected Void call() throws Exception {
 
 						for (int i = 0; i < nbrZoom; i++) {
-							zoom((float) 0.9);
+							zoom((float) 0.1);
 
 							try {
-								Thread.sleep(1000);
+								Thread.sleep(100);
 
 							} catch (InterruptedException interrupted) {
 								if (isCancelled()) {
