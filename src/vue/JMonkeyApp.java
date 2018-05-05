@@ -56,9 +56,9 @@ public class JMonkeyApp extends JmeToJFXApplication {
 	public void simpleInitApp() {
 		setColorMin(ColorRGBA.Blue);
 		setColorMax(ColorRGBA.Magenta);
-//		float w = 1920f;
-//		float w = this.getContext().getSettings().getWidth();
-//		float h = this.getContext().getSettings().getHeight();
+		// float w = 1920f;
+		// float w = this.getContext().getSettings().getWidth();
+		// float h = this.getContext().getSettings().getHeight();
 		float w = this.Resolution.x;
 		float h = this.Resolution.y;
 		System.out.println("w: " + w + " h: " + h);
@@ -79,6 +79,7 @@ public class JMonkeyApp extends JmeToJFXApplication {
 		mat.setVector2("Resolution", new Vector2f(w, h));
 		mat.setMatrix4("Zoom", getZoomTransform());
 		mat.setVector2("Translat", getTranslateTransform());
+		
 		// pour désactiver le mouvement
 		flyCam.setEnabled(false);
 		player.setMaterial(mat);
@@ -273,6 +274,17 @@ public class JMonkeyApp extends JmeToJFXApplication {
 
 	public Vector2f getTranslateTransform() {
 		return this.TranslatTransform;
+	}
+
+	public void setGridOnOrOff(boolean pBool) {
+		mat.setBoolean("grid", pBool);
+		
+		if (pBool == true)
+			try {
+				
+			}catch(Exception e) {
+			}
+		
 	}
 
 	private void setTranslateTransform(Vector2f translateTransform) {

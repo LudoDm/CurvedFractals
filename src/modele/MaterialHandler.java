@@ -14,7 +14,7 @@ public class MaterialHandler {
 	private File matdefBase;
 	private ArrayList<String> dataMatDef;
 	private File matdefBaseUpdated;
-	private ShaderHandler shaderHandler;
+	// private ShaderHandler shaderHandler;
 	// private MetricHandler metricHandler;
 	// private ChartHandler chartHandler;
 	private FormulasHandler formHandler;
@@ -111,7 +111,7 @@ public class MaterialHandler {
 
 			for (int i = 0; i < data.size(); i++) {
 				out.println(data.get(i));
-				System.out.println("ecriture ligne " + i);
+				System.out.println("L'ecriture des lignes de 0 à " + data.size() + " a été effectuée");
 			}
 			out.flush();
 			out.close();
@@ -167,10 +167,5 @@ public class MaterialHandler {
 
 	public File getMatdefBase() {
 		return matdefBase;
-	}
-
-	public ShaderHandler getShaderHandler() {
-
-		return shaderHandler;
 	}
 }

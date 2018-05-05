@@ -5,7 +5,6 @@ uniform vec4 m_ColorMax;
 uniform vec2 m_Resolution;
 uniform mat4 m_Zoom;
 uniform vec2 m_Translat;
-uniform bool m_grid;
 
 out vec4 color;
 
@@ -15,6 +14,7 @@ struct MxR3 {
 };
 
 #define M_PI 3.1415926535897932384626433832795
+bool grid = false;
 
 vec3 chart2(vec2 p) {
 
@@ -44,54 +44,12 @@ mat2 metric(vec2 p) {
 	return g;
 }
 
-//le tenseur metrique qui s'evalue a chaque point de la surface sur laquelle se trouve la fractale
-//chaque composante de la matrice doit etre une fonction qui, soit ne depend de rien (genre un nombre, ex g11(x,y) = 1), mais avec
-
-mat2 metricTensor(in vec2 p) {
-	float x = p.x;
-	float y = p.y;
-	float g11 = 1.0;
-	float g21 = 0.0;
-	float g12 = 0.0;
-	float g22 = 1.0;
-	mat2 g = mat2(g11, g21, g12, g22);
-	//on doit ecrire "\tg11 = " + "FONCTION g11 qui depend de x et/ou y ou ne depend de rien" + ";"
-	//OUTPUT_METRIC_G11_NEXT_LINE
-
-	if(!isinf(g11) && !isnan(g11)) {
-		g[0][0] = g11;
-	}
-
-	//on doit ecrire "\tg21 = " + "FONCTION g21 qui depend de x et/ou y ou ne depend de rien" + ";"
-	//OUTPUT_METRIC_G21_NEXT_LINE
-
-	if(!isinf(g21) && !isnan(g21)) {
-		g[1][0] = g21;
-	}
-
-	//on doit ecrire "\tg12 = " + "FONCTION g12 qui depend de x et/ou y ou ne depend de rien" + ";"
-	//OUTPUT_METRIC_G12_NEXT_LINE
-
-	if(!isinf(g12) && !isnan(g12)) {
-		g[0][1] = g12;
-	}
-
-	//on doit ecrire "\tg22 = " + "FONCTION g22 qui depend de x et/ou y ou ne depend de rien" + ";"
-	//OUTPUT_METRIC_G22_NEXT_LINE
-
-	if(!isinf(g22) && !isnan(g22)) {
-		g[1][1] = g22;
-	}
-
-	return g;
-}
-
 mat2 inverseMetric(vec2 p) {
-	return inverse(metricTensor(p));
+	return inverse(metric(p));
 }
 
 float innerProdAt(vec2 p, vec2 a, vec2 b) {
-	mat2 g = metricTensor(p);
+	mat2 g = metric(p);
 	return g[0][0] * a.x * b.x + g[1][0] * a.y * b.x + g[0][1] * a.x * b.y
 			+ g[1][1] * a.y * b.y;
 }
@@ -128,6 +86,15 @@ MxR3 normal(vec2 p) {
 	return n;
 }
 
+//float Gamma(vec2 p, int i, int j, int k){
+//	float resTemp = 0.;
+//	for(int i = 0; i < 3; i++){
+
+//	}
+
+//	return 0.;
+//}
+
 vec2 ccjg(in vec2 c) {
 	return vec2(c.x, -c.y);
 }
@@ -151,6 +118,51 @@ float cnorm(in vec2 c) {
 	return sqrt(c.x * c.x + c.y * c.y);
 }
 
+//le tenseur metrique qui s'evalue a chaque point de la surface sur laquelle se trouve la fractale
+//chaque composante de la matrice doit etre une fonction qui, soit ne depend de rien (genre un nombre, ex g11(x,y) = 1), mais avec
+
+mat2 metricTensor(in vec2 p) {
+	float x = p.x;
+	float y = p.y;
+	float g11 = 1.0;
+	float g21 = 0.0;
+	float g12 = 0.0;
+	float g22 = 1.0;
+	mat2 g = mat2(g11, g21, g12, g22);
+	//on doit ecrire "\tg11 = " + "FONCTION g11 qui depend de x et/ou y ou ne depend de rien" + ";"
+	//OUTPUT_METRIC_G11_NEXT_LINE
+        g11 = 1;
+
+	if(!isinf(g11) && !isnan(g11)) {
+		g[0][0] = g11;
+	}
+
+	//on doit ecrire "\tg21 = " + "FONCTION g21 qui depend de x et/ou y ou ne depend de rien" + ";"
+	//OUTPUT_METRIC_G21_NEXT_LINE
+        g21 = 0;
+
+	if(!isinf(g21) && !isnan(g21)) {
+		g[1][0] = g21;
+	}
+
+	//on doit ecrire "\tg12 = " + "FONCTION g12 qui depend de x et/ou y ou ne depend de rien" + ";"
+	//OUTPUT_METRIC_G12_NEXT_LINE
+        g12 = 1;
+
+	if(!isinf(g12) && !isnan(g12)) {
+		g[0][1] = g12;
+	}
+
+	//on doit ecrire "\tg22 = " + "FONCTION g22 qui depend de x et/ou y ou ne depend de rien" + ";"
+	//OUTPUT_METRIC_G22_NEXT_LINE
+        g22 = 0;
+
+	if(!isinf(g22) && !isnan(g22)) {
+		g[1][1] = g22;
+	}
+
+	return g;
+}
 
 //la parametrisation (fonction de M -> R3, M etant la surface sur laquelle la fractale est definie et R3 l'espace selon lequel on observe la fractale) (on a que M est une sous variete de R3, l'hyper surface de M)
 //la fonction x(u,v) prend des parametres u et v reel entre -2 et 2 inclu et doit etre definit partout sur cet interval (chacune des 3 fonctions de composantes doit l'etre)
@@ -167,6 +179,7 @@ vec3 chart(in vec2 pM) {
 
 	//on doit ecrire "\ta = " + "FONCTION 1 de x(u,v) (le premier textField) qui depend soit de rien (genre un nombre), de u et/ou de v" + ";"
 	//OUTPUT_CHART_FUNCTION_1_NEXT_LINE
+        a = u;
 
 	if(!isinf(a) && !isnan(a)) {
 		pR3.x = a;
@@ -174,6 +187,7 @@ vec3 chart(in vec2 pM) {
 
 	//on doit ecrire "\tb = " + "FONCTION 2 de x(u,v) (le deuxieme textField) qui depend soit de rien (genre un nombre), de u et/ou de v" + ";"
 	//OUTPUT_CHART_FUNCTION_2_NEXT_LINE
+        b = v;
 
 	if(!isinf(b) && !isnan(b)) {
 		pR3.y = b;
@@ -181,6 +195,7 @@ vec3 chart(in vec2 pM) {
 
 	//on doit ecrire "\tc = " + "FONCTION 3 de x(u,v) (le troisieme textField) qui depend soit de rien (genre un nombre), de u et/ou de v" + ";"
 	//OUTPUT_CHART_FUNCTION_3_NEXT_LINE
+        c = 1;
 
 	if(!isinf(c) && !isnan(c)) {
 		pR3.z = c;
@@ -202,6 +217,7 @@ int mandelbrot(vec2 c) {
 		//Equation (la ligne suivante sera celle qui sera overwrite par l'utilisateur
 		//Elle doit mettre en relation la variable d'it?ration(nombre complexe aka vecteur R2) et la condition initiale (le point a tester) (nb complexe aka vec R2)
 		//OUTPUT_EQ_NEXT_LINE
+        z = cpow(z,2) + c;
 
 	}
 	return 0;
@@ -209,15 +225,22 @@ int mandelbrot(vec2 c) {
 
 vec4 Image(vec2 f) {
 	//coord entre -1 et 1
-	vec2 uv = vec2(-1.0, -1.0) + (2.0/m_Resolution)*f;
-	//uv.x = -1.0 + (2.0/m_Resolution.y)*f.x;
-	//uv.y = -1.0 + (2.0/m_Resolution.y)*f.y;
+	vec2 uv;
+	uv.x = -1.0 + (2.0/m_Resolution.x)*f.x;
+	uv.y = -1.0 + (2.0/m_Resolution.y)*f.y;
 	//vec2 uv = (2.0 * f.xy - m_Resolution) / m_Resolution.y;
 	//vec2 uv = (2.0 * f.xy - m_Resolution) / max(m_Resolution.x,m_Resolution.y);
+	vec4 c = vec4(uv.x, uv.y, 0, 0);
 
-	//pour aller chercher les composantes de translstion dans m_zoom, on a besoin du 1
-	vec4 c = vec4(uv.x, uv.y, 0.0, 0.1);
-	c = m_Zoom * c;
+	vec4 transInit = vec4(0., 0.0, 0, 0);
+	vec2 translation = (m_Translat * 2.0 - m_Resolution) / m_Resolution.xy;
+	//on scale translation entre 0 et 1TODO
+	vec4 t = vec4(translation.x, translation.y, 0, 0);
+	vec4 transtot = transInit + t;
+
+	c -= transtot;
+	c *= m_Zoom;
+	c += transtot;
 
 	//float ret = mandelbrot(0.4 * chart2(0.5 *(1./3.14) *c.xy).xy + 0.1 * normal(c.xy).pR3.xy );
 //	float ret = mandelbrot(0.49 * chart2(0.8* c.xy + vec2(-0., -0.)).xy + 1. * normal(c.xy).pR3.xy);
@@ -227,8 +250,8 @@ vec4 Image(vec2 f) {
 	vec4 couleurfinale;
 	vec4 couleurfinaletest;
 
-	vec4 p = vec4(chart(c.xy).xyz + normal(c.xy).pR3.xyz, 1.0);
-	if ((fract(p.x / 0.1f) < 0.01f || fract(p.y / 0.1f) < 0.01f) && m_grid) {
+	vec4 p = vec4(chart(c.xy).xyz, 1.0);
+	if ((fract(p.x / 0.1f) < 0.01f || fract(p.y / 0.1f) < 0.01f) && grid) {
 		couleurfinale = vec4(1.,0.,0.,1.);
 	} else {
 		// Turn the iteration count into a color.
@@ -247,9 +270,9 @@ vec4 Image(vec2 f) {
 				vec4(normal(c.xy).pR3.xy, 1. * normal(c.xy).pR3.z, 1.0), 0.2);
 	}
 
-	if (m_grid && ((uv.x > -0.001 && uv.x < 0.001) || (uv.y > -0.001 && uv.y < 0.001)
+	if ((uv.x > -0.001 && uv.x < 0.001) || (uv.y > -0.001 && uv.y < 0.001)
 			|| (c.x > -1.01 && c.x < -0.99) || (c.y > -1.01 && c.y < -0.99)
-			|| (c.x < 1.01 && c.x > 0.99) || (c.y < 1.01 && c.y > 0.99))) {
+			|| (c.x < 1.01 && c.x > 0.99) || (c.y < 1.01 && c.y > 0.99)) {
 		return vec4(1., 1., 1., 1.);
 	}
 	return couleurfinaletest;

@@ -4,6 +4,9 @@ import java.awt.MouseInfo;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ScheduledThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
+
 import org.jetbrains.annotations.NotNull;
 import org.lwjgl.system.MathUtil;
 
@@ -51,6 +54,9 @@ import modele.MatUtils;
 
 public class ControlleurVue {
 
+	public static final int DEFAULT_LOADING_TIME = 5;
+	public static final boolean DEFAULT_DEBUG_MODE = false;
+
 	private Scene scene;
 	private Controleur controleurPrincipal;
 	private String m11, m12, m21, m22, function, zoomVal;
@@ -61,14 +67,18 @@ public class ControlleurVue {
 	private float xInitLocation, yInitLocation, X, U, V;
 	private Vector2f vecTranslation = new Vector2f(0, 0);
 	private boolean changed = false;
+	private boolean debugMode = DEFAULT_DEBUG_MODE;
+
 
 	private static float ResX;
 	private static float ResY;
 	private Service<Void> zoomService;
+	private ArrayList<Color> listeCouleur;
 
 	private boolean dragging = true;
 
 	private float zoomFix = 0f;
+	int loadingTime;
 
 	@FXML
 	private ImageView theImageView;
@@ -87,7 +97,7 @@ public class ControlleurVue {
 			bR2toR3Enter;
 
 	@FXML
-	private Label lX, lXValue, lY, lYValue, lFunction, lZoom, lArrow;
+	private Label lX, lXValue, lY, lYValue, lFunction, lZoom, lArrow, lLoading;
 
 	@FXML
 	private HBox functionbox, zoombox, matrixbox, colorbox, r2tor3box;
@@ -96,6 +106,9 @@ public class ControlleurVue {
 	private TextField tFunction, tZoom, tMatrix1, tMatrix2, tMatrix3, tMatrix4, tX, tU, tV;
 	@FXML
 	private ColorPicker colpic1, colpic2;
+	@FXML
+	private Button debugButton;
+
 	private int nbrZoom;
 
 	public ControlleurVue(Controleur ctrl, double ResX, double ResY) {
@@ -140,12 +153,17 @@ public class ControlleurVue {
 			zoomThatShit();
 			initHoverInfos();
 
+			// Start de la fonction hacky pour afficher la première fractale
+			loadingTime = DEFAULT_LOADING_TIME;
+			displayFirstFractal(loadingTime);
+
 		} catch (Exception ex) {
 			System.out.println("Exception lors du chargement des ressources dans controlleur vue");
 			ex.printStackTrace();
 		}
 
 	}
+
 
 	/**
 	 * Cette méthode est appelée lors du lancement de l'application. Elle met le
@@ -441,6 +459,7 @@ public class ControlleurVue {
 		if (!zoombox.isVisible()) {
 			if (zoomService.isRunning()) {
 				zoomService.cancel();
+				tZoom.setText(Integer.toString(0));
 			}
 			zoombox.setVisible(true);
 			visibleSet.add(zoombox);
@@ -477,12 +496,11 @@ public class ControlleurVue {
 		Bounds b = theImageView.boundsInLocalProperty().get();
 		float width = (float) b.getWidth();
 		float height = (float) b.getHeight();
-		float X = MatUtils.scale((float) event.getSceneX(), 0.0f, width, -1.0f, 1.0f);
-		float Y = MatUtils.scale((float) event.getSceneY(), 0.0f, height, -1.0f, 1.0f);
+		float X = (float) MatUtils.scale((float) event.getSceneX(), 0.0f, width, -1.0f, 1.0f);
+		float Y = (float) MatUtils.scale((float) event.getSceneY(), 0.0f, height, -1.0f, 1.0f);
 
 		xInitLocation = X;
 		yInitLocation = Y;
-
 	}
 
 	@FXML
@@ -497,8 +515,8 @@ public class ControlleurVue {
 		float width = (float) b.getWidth();
 		float height = (float) b.getHeight();
 
-		float X = MatUtils.scale((float) event.getSceneX(), 0.0f, width, -1.0f, 1.0f);
-		float Y = MatUtils.scale((float) event.getSceneY(), 0.0f, height, -1.0f, 1.0f);
+		float X = (float) MatUtils.scale((float) event.getSceneX(), 0.0f, width, -1.0f, 1.0f);
+		float Y = (float) MatUtils.scale((float) event.getSceneY(), 0.0f, height, -1.0f, 1.0f);
 
 		Vector2f NvecTranslation = new Vector2f((float) (xInitLocation - X), (float) -(yInitLocation - Y));
 		System.out.println("[ " + NvecTranslation.x + " " + NvecTranslation.y + " ]");
@@ -519,6 +537,12 @@ public class ControlleurVue {
 			System.out.println("transformMat: " + MatUtils.toDesiredForm(getZoomMat()));
 			// application.setTranslateTransformMat(vecTranslation);
 		}
+	}
+
+	@FXML
+	void handleDebugButton(ActionEvent event) {
+		debugMode = !debugMode;
+		application.setGridOnOrOff(debugMode);
 	}
 
 	@FXML
@@ -610,7 +634,12 @@ public class ControlleurVue {
 		return this.controleurPrincipal;
 	}
 
-	// TODO faire mieux ?
+	private void displayFirstFractal(int time) {
+		// Quitte a être hacky, pourquoi ne pas aller jusqu'au bout !
+		final ScheduledThreadPoolExecutor executor = new ScheduledThreadPoolExecutor(0);
+		executor.schedule(() -> changerEquationInitilialisation(), time, TimeUnit.SECONDS);
+	}
+
 	/***
 	 * Methode hacky pour changer faire marcher le zoom lors d'ouverture de
 	 * l'application
@@ -625,14 +654,17 @@ public class ControlleurVue {
 				application.setZoomTransformMat(Transform.IDENTITY.toTransformMatrix());
 				setZoomMat(Transform.IDENTITY);
 				changed = true;
+				lLoading.setVisible(false);
 			} catch (IOException e) {
 				System.out.println("Exception lance dans la methode hacky pour regler le zoom au lancement de l'app");
 				e.printStackTrace();
 			}
+			
+			
+			
 		}
 	}
 
-	// TODO Enlever l'annotation @notnull ?
 	private static @NotNull JMonkeyApp makeJmeApplication() {
 
 		AppSettings settings = JmeToJFXIntegrator.prepareSettings(new AppSettings(true), 60);
@@ -647,6 +679,12 @@ public class ControlleurVue {
 		return application;
 	}
 
+	/**
+	 * Méthode permettant d'effectuer un zoom de la grandeur reçue en paramètre
+	 * 
+	 * @param x
+	 *            (grandeur du zoom)
+	 */
 	public void zoom(float x) {
 		// if (x < 0 && Math.abs(x) != 1) {
 		// x = 1.0f / -x;
@@ -664,6 +702,15 @@ public class ControlleurVue {
 		}
 	}
 
+	 * Méthode qui crée un service afin de zoomer tout en changeant l'image du
+	 * bouton bZoom à l'image Stop.png dans le fichier image
+	 * 
+	 * Le zoom est gérer par un task qui appelle la méthode nbrZoom fois
+	 * 
+	 * Le changemant d'image est gérer par les méthodes setOnCancelled,
+	 * setOnScheduld et setOnSucceeded
+	 * 
+	 */
 	public void zoomThatShit() {
 
 		zoomService = new Service<Void>() {
@@ -674,11 +721,10 @@ public class ControlleurVue {
 					@Override
 					protected Void call() throws Exception {
 
-						for (int i = 0; i < nbrZoom; i++) {
-							zoom((float) 0.9);
-
+						for (int i = 0; i < nbrZoom*10; i++) {
+							zoom((float) 0.15);
 							try {
-								Thread.sleep(1000);
+								Thread.sleep(90);
 
 							} catch (InterruptedException interrupted) {
 								if (isCancelled()) {
