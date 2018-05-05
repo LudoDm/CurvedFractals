@@ -702,6 +702,7 @@ public class ControlleurVue {
 		}
 	}
 
+	/*
 	 * Méthode qui crée un service afin de zoomer tout en changeant l'image du
 	 * bouton bZoom à l'image Stop.png dans le fichier image
 	 * 
