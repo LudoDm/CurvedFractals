@@ -15,7 +15,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane fx:id="borderpane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1">
+<BorderPane fx:id="borderpane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1">
    <center>
       <StackPane fx:id="stackpane" onKeyReleased="#gererReset" onMouseClicked="#showSideMenu" prefHeight="150.0" prefWidth="200.0" BorderPane.alignment="CENTER">
          <children>
@@ -114,10 +114,10 @@
                   </Label>
                   <FlowPane alignment="CENTER" hgap="5.0" prefHeight="72.0" prefWidth="76.0" vgap="5.0">
                      <children>
-                        <TextField fx:id="tMatrix1" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="30.0" prefWidth="30.0" />
-                        <TextField fx:id="tMatrix2" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="30.0" prefWidth="30.0" />
-                        <TextField fx:id="tMatrix3" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="30.0" prefWidth="30.0" />
-                        <TextField fx:id="tMatrix4" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="30.0" prefWidth="30.0" />
+                        <TextField fx:id="tMatrix1" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="30.0" prefWidth="30.0" text="1" />
+                        <TextField fx:id="tMatrix2" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="30.0" prefWidth="30.0" text="0" />
+                        <TextField fx:id="tMatrix3" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="30.0" prefWidth="30.0" text="0" />
+                        <TextField fx:id="tMatrix4" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="30.0" prefWidth="30.0" text="1" />
                      </children>
                   </FlowPane>
                   <Button fx:id="bMatrixEnter" maxHeight="-Infinity" maxWidth="-Infinity" mnemonicParsing="false" onAction="#closeMatrixBox" prefHeight="25.0" prefWidth="30.0" styleClass="confirm-button" text="✓" textFill="#39ff14">
@@ -161,16 +161,16 @@
                      </font>
                   </Label>
                   <Label prefHeight="17.0" prefWidth="0.0" text="(" />
-                  <TextField fx:id="tX" prefHeight="27.0" prefWidth="40.0" />
+                  <TextField fx:id="tX" prefHeight="27.0" prefWidth="40.0" text="u" />
                   <Label prefHeight="17.0" prefWidth="0.0" text="," />
-                  <TextField fx:id="tU" prefHeight="27.0" prefWidth="40.0" />
+                  <TextField fx:id="tU" prefHeight="27.0" prefWidth="40.0" text="v" />
                   <Label prefHeight="17.0" prefWidth="0.0" text="," />
-                  <TextField fx:id="tV" prefHeight="27.0" prefWidth="40.0" />
+                  <TextField fx:id="tV" prefHeight="27.0" prefWidth="40.0" text="1" />
                   <Label text=")" />
                   <Button fx:id="bR2toR3Enter" maxHeight="-Infinity" maxWidth="-Infinity" mnemonicParsing="false" onAction="#closeR2toR3Box" prefHeight="25.0" prefWidth="30.0" styleClass="confirm-button" text="✓" textFill="#39ff14" />
                </children>
             </HBox>
-            <Label fx:id="lLoading" alignment="CENTER" contentDisplay="CENTER" text="Loading..." textFill="#39ff14">
+            <Label fx:id="lLoading" alignment="CENTER" contentDisplay="CENTER" text="Chargement..." textFill="#39ff14">
                <font>
                   <Font name="Consolas" size="59.0" />
                </font>

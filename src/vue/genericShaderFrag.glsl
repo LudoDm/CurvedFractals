@@ -44,80 +44,6 @@ mat2 metric(vec2 p) {
 	return g;
 }
 
-mat2 inverseMetric(vec2 p) {
-	return inverse(metric(p));
-}
-
-float innerProdAt(vec2 p, vec2 a, vec2 b) {
-	mat2 g = metric(p);
-	return g[0][0] * a.x * b.x + g[1][0] * a.y * b.x + g[0][1] * a.x * b.y
-			+ g[1][1] * a.y * b.y;
-}
-
-float inverseinnerProdAt(vec2 p, vec2 a, vec2 b) {
-	mat2 g = inverseMetric(p);
-	return g[0][0] * a.x * b.x + g[1][0] * a.y * b.x + g[0][1] * a.x * b.y
-			+ g[1][1] * a.y * b.y;
-}
-
-float inducedInnerProdAt(vec2 p, MxR3 a, MxR3 b) {
-	return innerProdAt(p, projection(a), projection(b));
-}
-
-float inverseinducedInnerProdAt(vec2 p, MxR3 a, MxR3 b) {
-	return inverseinnerProdAt(p, projection(a), projection(b));
-}
-
-MxR3 gNormalize(MxR3 a) {
-	a.pR3 /= sqrt(inducedInnerProdAt(projection(a), a, a));
-	return a;
-}
-
-MxR3 normal(vec2 p) {
-	MxR3 n;
-	vec3 n1in = (chart2(vec2(p.x + 0.01, p.y)) - chart2(p));
-	MxR3 n1 = MxR3(p, n1in);
-	vec3 n2in = chart2(vec2(p.x, p.y + 0.01)) - chart2(p);
-	MxR3 n2 = MxR3(p, n2in);
-	n = MxR3(p, cross(n1.pR3, n2.pR3));
-	//n.pR3 = normalize(n.pR3);
-	n.pR3 = gNormalize(n).pR3;
-	//200em COMMIT
-	return n;
-}
-
-//float Gamma(vec2 p, int i, int j, int k){
-//	float resTemp = 0.;
-//	for(int i = 0; i < 3; i++){
-
-//	}
-
-//	return 0.;
-//}
-
-vec2 ccjg(in vec2 c) {
-	return vec2(c.x, -c.y);
-}
-
-vec2 cmul(in vec2 a, in vec2 b) {
-	return vec2(a.x * b.x - a.y * b.y, a.y * b.x + a.x * b.y);
-}
-
-vec2 cpow(in vec2 c, int p) {
-	for (int i = 1; i < p; ++i) {
-		c = cmul(c, c);
-	}
-	return c;
-}
-
-vec2 cdiv(in vec2 a, in vec2 b) {
-	return cmul(a, ccjg(b));
-}
-
-float cnorm(in vec2 c) {
-	return sqrt(c.x * c.x + c.y * c.y);
-}
-
 //le tenseur metrique qui s'evalue a chaque point de la surface sur laquelle se trouve la fractale
 //chaque composante de la matrice doit etre une fonction qui, soit ne depend de rien (genre un nombre, ex g11(x,y) = 1), mais avec
 
@@ -159,6 +85,72 @@ mat2 metricTensor(in vec2 p) {
 
 	return g;
 }
+
+mat2 inverseMetric(vec2 p) {
+	return inverse(metricTensor(p));
+}
+
+float innerProdAt(vec2 p, vec2 a, vec2 b) {
+	mat2 g = metricTensor(p);
+	return g[0][0] * a.x * b.x + g[1][0] * a.y * b.x + g[0][1] * a.x * b.y
+			+ g[1][1] * a.y * b.y;
+}
+
+float inverseinnerProdAt(vec2 p, vec2 a, vec2 b) {
+	mat2 g = inverseMetric(p);
+	return g[0][0] * a.x * b.x + g[1][0] * a.y * b.x + g[0][1] * a.x * b.y
+			+ g[1][1] * a.y * b.y;
+}
+
+float inducedInnerProdAt(vec2 p, MxR3 a, MxR3 b) {
+	return innerProdAt(p, projection(a), projection(b));
+}
+
+float inverseinducedInnerProdAt(vec2 p, MxR3 a, MxR3 b) {
+	return inverseinnerProdAt(p, projection(a), projection(b));
+}
+
+MxR3 gNormalize(MxR3 a) {
+	a.pR3 /= sqrt(inducedInnerProdAt(projection(a), a, a));
+	return a;
+}
+
+MxR3 normal(vec2 p) {
+	MxR3 n;
+	vec3 n1in = (chart2(vec2(p.x + 0.01, p.y)) - chart2(p));
+	MxR3 n1 = MxR3(p, n1in);
+	vec3 n2in = chart2(vec2(p.x, p.y + 0.01)) - chart2(p);
+	MxR3 n2 = MxR3(p, n2in);
+	n = MxR3(p, cross(n1.pR3, n2.pR3));
+	//n.pR3 = normalize(n.pR3);
+	n.pR3 = gNormalize(n).pR3;
+	//200em COMMIT
+	return n;
+}
+
+vec2 ccjg(in vec2 c) {
+	return vec2(c.x, -c.y);
+}
+
+vec2 cmul(in vec2 a, in vec2 b) {
+	return vec2(a.x * b.x - a.y * b.y, a.y * b.x + a.x * b.y);
+}
+
+vec2 cpow(in vec2 c, int p) {
+	for (int i = 1; i < p; ++i) {
+		c = cmul(c, c);
+	}
+	return c;
+}
+
+vec2 cdiv(in vec2 a, in vec2 b) {
+	return cmul(a, ccjg(b));
+}
+
+float cnorm(in vec2 c) {
+	return sqrt(c.x * c.x + c.y * c.y);
+}
+
 
 //la parametrisation (fonction de M -> R3, M etant la surface sur laquelle la fractale est definie et R3 l'espace selon lequel on observe la fractale) (on a que M est une sous variete de R3, l'hyper surface de M)
 //la fonction x(u,v) prend des parametres u et v reel entre -2 et 2 inclu et doit etre definit partout sur cet interval (chacune des 3 fonctions de composantes doit l'etre)
@@ -217,22 +209,15 @@ int mandelbrot(vec2 c) {
 
 vec4 Image(vec2 f) {
 	//coord entre -1 et 1
-	vec2 uv;
-	uv.x = -1.0 + (2.0/m_Resolution.x)*f.x;
-	uv.y = -1.0 + (2.0/m_Resolution.y)*f.y;
+	vec2 uv = vec2(-1.0, -1.0) + (2.0/m_Resolution)*f;
+	//uv.x = -1.0 + (2.0/m_Resolution.y)*f.x;
+	//uv.y = -1.0 + (2.0/m_Resolution.y)*f.y;
 	//vec2 uv = (2.0 * f.xy - m_Resolution) / m_Resolution.y;
 	//vec2 uv = (2.0 * f.xy - m_Resolution) / max(m_Resolution.x,m_Resolution.y);
-	vec4 c = vec4(uv.x, uv.y, 0, 0);
 
-	vec4 transInit = vec4(0., 0.0, 0, 0);
-	vec2 translation = (m_Translat * 2.0 - m_Resolution) / m_Resolution.xy;
-	//on scale translation entre 0 et 1TODO
-	vec4 t = vec4(translation.x, translation.y, 0, 0);
-	vec4 transtot = transInit + t;
-
-	c -= transtot;
-	c *= m_Zoom;
-	c += transtot;
+	//pour aller chercher les composantes de translstion dans m_zoom, on a besoin du 1
+	vec4 c = vec4(uv.x, uv.y, 0.0, 0.1);
+	c = m_Zoom * c;
 
 	//float ret = mandelbrot(0.4 * chart2(0.5 *(1./3.14) *c.xy).xy + 0.1 * normal(c.xy).pR3.xy );
 //	float ret = mandelbrot(0.49 * chart2(0.8* c.xy + vec2(-0., -0.)).xy + 1. * normal(c.xy).pR3.xy);
@@ -242,7 +227,7 @@ vec4 Image(vec2 f) {
 	vec4 couleurfinale;
 	vec4 couleurfinaletest;
 
-	vec4 p = vec4(chart(c.xy).xyz, 1.0);
+	vec4 p = vec4(chart(c.xy).xyz + normal(c.xy).pR3.xyz, 1.0);
 	if ((fract(p.x / 0.1f) < 0.01f || fract(p.y / 0.1f) < 0.01f) && m_grid) {
 		couleurfinale = vec4(1.,0.,0.,1.);
 	} else {
@@ -262,9 +247,9 @@ vec4 Image(vec2 f) {
 				vec4(normal(c.xy).pR3.xy, 1. * normal(c.xy).pR3.z, 1.0), 0.2);
 	}
 
-	if ((uv.x > -0.001 && uv.x < 0.001) || (uv.y > -0.001 && uv.y < 0.001)
+	if (m_grid && ((uv.x > -0.001 && uv.x < 0.001) || (uv.y > -0.001 && uv.y < 0.001)
 			|| (c.x > -1.01 && c.x < -0.99) || (c.y > -1.01 && c.y < -0.99)
-			|| (c.x < 1.01 && c.x > 0.99) || (c.y < 1.01 && c.y > 0.99)) {
+			|| (c.x < 1.01 && c.x > 0.99) || (c.y < 1.01 && c.y > 0.99))) {
 		return vec4(1., 1., 1., 1.);
 	}
 	return couleurfinaletest;

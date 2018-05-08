@@ -269,6 +269,7 @@ public class JMonkeyApp extends JmeToJFXApplication {
 	public void setZoomTransformMat(Matrix4f zoomTransform) {
 		setZoomTransform(zoomTransform);
 		mat.setMatrix4("Zoom", zoomTransform);
+		System.out.println("matrice envoyée:  " + zoomTransform);
 	}
 
 	public Vector2f getTranslateTransform() {
