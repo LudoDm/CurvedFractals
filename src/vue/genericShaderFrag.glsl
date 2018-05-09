@@ -224,8 +224,9 @@ vec4 Image(vec2 f) {
 	//vec2 uv = (2.0 * f.xy - m_Resolution) / max(m_Resolution.x,m_Resolution.y);
 	vec4 c = vec4(uv.x, uv.y, 0, 0);
 
-	vec4 transInit = vec4(0., 0.0, 0, 0);
-	vec2 translation = (m_Translat * 2.0 - m_Resolution) / m_Resolution.xy;
+	vec4 transInit = vec4(-0.2, 0.0, 0, 0);
+	//vec2 translation = (m_Translat * 2.0 - m_Resolution) / m_Resolution.xy;
+	vec2 translation = m_Translat;
 	//on scale translation entre 0 et 1TODO
 	vec4 t = vec4(translation.x, translation.y, 0, 0);
 	vec4 transtot = transInit + t;
@@ -262,9 +263,9 @@ vec4 Image(vec2 f) {
 				vec4(normal(c.xy).pR3.xy, 1. * normal(c.xy).pR3.z, 1.0), 0.2);
 	}
 
-	if ((uv.x > -0.001 && uv.x < 0.001) || (uv.y > -0.001 && uv.y < 0.001)
+	if (grid && ((uv.x > -0.001 && uv.x < 0.001) || (uv.y > -0.001 && uv.y < 0.001)
 			|| (c.x > -1.01 && c.x < -0.99) || (c.y > -1.01 && c.y < -0.99)
-			|| (c.x < 1.01 && c.x > 0.99) || (c.y < 1.01 && c.y > 0.99)) {
+			|| (c.x < 1.01 && c.x > 0.99) || (c.y < 1.01 && c.y > 0.99))) {
 		return vec4(1., 1., 1., 1.);
 	}
 	return couleurfinaletest;

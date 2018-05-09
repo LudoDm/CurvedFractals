@@ -5,6 +5,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import org.jetbrains.annotations.NotNull;
+import org.lwjgl.system.MathUtil;
+
 import com.jme3.material.Material;
 import com.jme3.math.ColorRGBA;
 import com.jme3.math.Matrix3f;
@@ -45,6 +47,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
+import modele.MatUtils;
 
 public class ControlleurVue {
 
@@ -471,9 +474,15 @@ public class ControlleurVue {
 	void positionInit(MouseEvent event) {
 //		xInitLocation = (float) MouseInfo.getPointerInfo().getLocation().getX();
 //		yInitLocation = (float) MouseInfo.getPointerInfo().getLocation().getY();
-		
-		xInitLocation = (float) event.getSceneX();
-		yInitLocation = (float) event.getSceneY();
+
+		Bounds b = theImageView.boundsInLocalProperty().get();
+		float width = (float) b.getWidth();
+		float height= (float) b.getHeight();
+		float X = MatUtils.scale((float) event.getSceneX(),0.0f, width, -0.0f, 1.0f);
+		float Y = MatUtils.scale((float) event.getSceneY(),0.0f, height, -0.0f, 1.0f);
+
+		xInitLocation = X;
+		yInitLocation = Y;
 
 	}
 
@@ -486,17 +495,25 @@ public class ControlleurVue {
 	void mouseDrag(MouseEvent event) {
 		Bounds b = theImageView.boundsInLocalProperty().get();
 		System.out.println("bounds: " + b);
+		float width = (float) b.getWidth();
+		float height= (float) b.getHeight();
+
+		float X = MatUtils.scale((float) event.getSceneX(),0.0f, width, -1.0f, 1.0f);
+		float Y = MatUtils.scale((float) event.getSceneY(),0.0f, height, -1.0f, 1.0f);
 
 		Vector2f NvecTranslation = new Vector2f(
-				(float) (xInitLocation - (float) event.getSceneX()) / 50.0f,
-				(float) -(yInitLocation - (float) event.getSceneY()) / 50.0f);
+				(float) (xInitLocation - X),
+				(float) -(yInitLocation - Y));
 		System.out.println("[ " + NvecTranslation.x + " " + NvecTranslation.y + " ]");
 		System.out.println("                [ " + vecTranslation.x + " " + vecTranslation.y + " ]");
 
 		System.out.println(xInitLocation + ", " + yInitLocation);
 
 		if (!application.isMatNull()) {
-			vecTranslation = vecTranslation.add(scaleWrtZoom(NvecTranslation));
+			vecTranslation = vecTranslation.add(NvecTranslation);
+//			vecTranslation.x = modele.MatUtils.scale(vecTranslation.x, 0, width, -1.0f, 1.0f);
+//			vecTranslation.y = modele.MatUtils.scale(vecTranslation.y, 0, height, -1.0f, 1.0f);
+			vecTranslation = scaleWrtZoom(vecTranslation);
 			application.setTranslateTransformMat(vecTranslation);
 		}
 	}
@@ -518,11 +535,13 @@ public class ControlleurVue {
 	private Vector2f scaleWrtZoom(Vector2f v) {
 		Vector2f out = v;
 		float zoom = getZoomMat().m00;
-		if(zoom < 1 && zoom != 0.0f) {
-			out.mult(zoom*zoom);
+//		float z = (float) (Math.log(zoom)/Math.log(1.1));
+		float z = (float) zoom;
+		if(z < Math.log(1.0f)/Math.log(1.1f) && z!= 0.0f) {
+			out.mult(z);
 		}
-		if(zoom > 1) {
-			out.divide(-zoom);
+		if(z > 1) {
+			out.mult(-1/z);
 		}
 		return out;
 		
@@ -625,14 +644,15 @@ public class ControlleurVue {
 	}
 
 	public void zoom(float x) {
-//		if (x < 0 && Math.abs(x) != 1) {
-//			x = 1.0f / -x;
-//		} else if (x == 0) {
-//			x = 1;
-//		}
-		float z = (float) Math.pow(1.1, -x);
+		if (x < 0 && Math.abs(x) != 1) {
+			x = 1.0f / -x;
+		} else if (x == 0) {
+			x = 1;
+		}
+//		float z = (float) Math.pow(1.1, -x);
 		float out = zoomMat.getScale().x;
-		zoomMat = zoomMat.setScale(out * z);
+//		zoomMat = zoomMat.setScale(out * z);
+		zoomMat = zoomMat.setScale(out * x);
 
 		if (!application.isMatNull()) {
 			application.setZoomTransformMat(getZoomMat());
