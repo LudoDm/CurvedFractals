@@ -45,7 +45,8 @@ public class JMonkeyApp extends JmeToJFXApplication {
 
 	private Vector2f Resolution;
 	private Matrix4f ZoomTransform = Transform.IDENTITY.toTransformMatrix();
-	private Vector2f TranslatTransform = new Vector2f(0, 0);
+	private boolean gridSwitch = false;
+	// private Vector2f TranslatTransform = new Vector2f(0, 0);
 
 	public JMonkeyApp(float Resx, float Resy) {
 		setResolution(new Vector2f(Resx, Resy));
@@ -78,8 +79,8 @@ public class JMonkeyApp extends JmeToJFXApplication {
 		mat.setColor("ColorMax", getColorMin());
 		mat.setVector2("Resolution", new Vector2f(w, h));
 		mat.setMatrix4("Zoom", getZoomTransform());
-		mat.setVector2("Translat", getTranslateTransform());
-		
+		// mat.setVector2("Translat", getTranslateTransform());
+
 		// pour désactiver le mouvement
 		flyCam.setEnabled(false);
 		player.setMaterial(mat);
@@ -129,10 +130,10 @@ public class JMonkeyApp extends JmeToJFXApplication {
 		Geometry xyGrid;
 		Geometry yzGrid;
 
+		mat = new Material(this.getAssetManager(), "Common/MatDefs/Misc/Unshaded.j3md");
 		// create x-axis
 		Arrow arrowX = new Arrow(new Vector3f(size, 0.0f, 0.0f));
 		xAxis = new Geometry("X-Axis", arrowX);
-		mat = new Material(this.getAssetManager(), "Common/MatDefs/Misc/Unshaded.j3md");
 		mat.setColor("Color", ColorRGBA.Red);
 		xAxis.setMaterial(mat);
 
@@ -193,7 +194,7 @@ public class JMonkeyApp extends JmeToJFXApplication {
 		setColorMaxMat(getColorMax());
 		mat.setVector2("Resolution", new Vector2f(this.Resolution.x, this.Resolution.y));
 		setZoomTransformMat(getZoomTransform());
-		setTranslateTransformMat(getTranslateTransform());
+		// setTranslateTransformMat(getTranslateTransform());
 		player.setMaterial(mat);
 	}
 
@@ -207,7 +208,7 @@ public class JMonkeyApp extends JmeToJFXApplication {
 			setColorMaxMat(getColorMax());
 			temp.setVector2("Resolution", new Vector2f(this.Resolution.x, this.Resolution.y));
 			setZoomTransformMat(getZoomTransform());
-			setTranslateTransformMat(getTranslateTransform());
+			// setTranslateTransformMat(getTranslateTransform());
 
 			Geometry g1 = new Geometry("hey");
 			g1.setMaterial(temp);
@@ -272,28 +273,22 @@ public class JMonkeyApp extends JmeToJFXApplication {
 		System.out.println("matrice envoyée:  " + zoomTransform);
 	}
 
-	public Vector2f getTranslateTransform() {
-		return this.TranslatTransform;
-	}
+	// public Vector2f getTranslateTransform() {
+	// return this.TranslatTransform;
+	// }
 
 	public void setGridOnOrOff(boolean pBool) {
 		mat.setBoolean("grid", pBool);
-		
-		if (pBool == true)
-			try {
-				
-			}catch(Exception e) {
-			}
-		
+		this.gridSwitch = pBool;
 	}
 
-	private void setTranslateTransform(Vector2f translateTransform) {
-		this.TranslatTransform = translateTransform;
-	}
-
-	public void setTranslateTransformMat(Vector2f translateTransform) {
-		setTranslateTransform(translateTransform);
-		mat.setVector2("Translat", translateTransform);
-	}
+	// private void setTranslateTransform(Vector2f translateTransform) {
+	// this.TranslatTransform = translateTransform;
+	// }
+	//
+	// public void setTranslateTransformMat(Vector2f translateTransform) {
+	// setTranslateTransform(translateTransform);
+	// mat.setVector2("Translat", translateTransform);
+	// }
 
 }

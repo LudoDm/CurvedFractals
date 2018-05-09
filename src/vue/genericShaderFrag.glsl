@@ -4,7 +4,6 @@ uniform vec4 m_ColorMin;
 uniform vec4 m_ColorMax;
 uniform vec2 m_Resolution;
 uniform mat4 m_Zoom;
-uniform vec2 m_Translat;
 uniform bool m_grid;
 
 out vec4 color;
@@ -194,7 +193,7 @@ int mandelbrot(vec2 c) {
 	c.y = -2 + 2.0*(c.y +1.0);
 	//c+= vec2(1.0,0.0);
 	vec2 z = c;
-	for (int i = 0; i < 800; i++) {
+	for (int i = 0; i < 600; i++) {
 		// dot(z, z) > 4.0 is the same as length(z) > 2.0, but perhaps faster.
 		// (x+yi)^2 = (x+yi) * (x+yi) = x^2 + (yi)^2 + 2xyi = x^2 - y^2 + 2xyi
 		if (dot(z, z) > 4.0)
