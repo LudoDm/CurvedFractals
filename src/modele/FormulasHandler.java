@@ -26,7 +26,7 @@ public class FormulasHandler {
 	public static final String VAR_POS = "c";
 
 	public static final String SHADERFORMULADEFAUT = ("cpow(z,2)+c");
-	public static final String[] METRICDEFAUT = { "1", "0", "1", "0" };
+	public static final String[] METRICDEFAUT = { "1", "0", "0", "1" };
 	public static final String[] CHARTDEFAUT = { "u", "v", "1" };
 
 	private File shaderBase;
