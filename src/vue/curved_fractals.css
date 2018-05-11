@@ -25,6 +25,12 @@
 	
 }
 
+.debug-button {
+    -fx-background-radius: 15.0 15.0 15.0 15.0;
+    
+}
+
+
 .confirm-button:hover	{
 
 	-fx-effect: dropshadow(three-pass-box, #39FF14, 10.0, 0.3, 0.0, 0.0);

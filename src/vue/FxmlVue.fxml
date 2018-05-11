@@ -15,7 +15,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane fx:id="borderpane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<BorderPane fx:id="borderpane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1">
    <center>
       <StackPane fx:id="stackpane" onKeyReleased="#gererReset" onMouseClicked="#showSideMenu" prefHeight="150.0" prefWidth="200.0" BorderPane.alignment="CENTER">
          <children>
@@ -175,10 +175,19 @@
                   <Font name="Consolas" size="59.0" />
                </font>
             </Label>
+            <Button fx:id="debugButton" mnemonicParsing="false" onAction="#handleDebugButton" styleClass="debug-button" StackPane.alignment="TOP_LEFT">
+               <StackPane.margin>
+                  <Insets left="10.0" top="10.0" />
+               </StackPane.margin>
+               <graphic>
+                  <ImageView fitHeight="40.0" fitWidth="40.0">
+                     <image>
+                        <Image url="@../../res/images/debug.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+            </Button>
          </children>
       </StackPane>
    </center>
-   <top>
-      <Button fx:id="debugButton" mnemonicParsing="false" onAction="#handleDebugButton" text="Debug" BorderPane.alignment="TOP_LEFT" />
-   </top>
 </BorderPane>
