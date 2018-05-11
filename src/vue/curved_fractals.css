@@ -8,6 +8,11 @@
 	
 }
 
+.label-loading	{
+	-fx-text-fill: #39FF14;
+	
+}
+
 .box	{
 	
 	-fx-alignement: center;
@@ -26,6 +31,7 @@
 }
 
 .debug-button {
+    -fx-background-color: #a9a9a9;
     -fx-background-radius: 15.0 15.0 15.0 15.0;
     
 }
