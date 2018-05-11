@@ -4,7 +4,7 @@ uniform vec4 m_ColorMin;
 uniform vec4 m_ColorMax;
 uniform vec2 m_Resolution;
 uniform mat4 m_Zoom;
-uniform vec2 m_Translat;
+//uniform vec2 m_Translat;
 
 out vec4 color;
 
@@ -232,15 +232,8 @@ vec4 Image(vec2 f) {
 	//vec2 uv = (2.0 * f.xy - m_Resolution) / max(m_Resolution.x,m_Resolution.y);
 	vec4 c = vec4(uv.x, uv.y, 0, 0);
 
-	vec4 transInit = vec4(0., 0.0, 0, 0);
-	vec2 translation = (m_Translat * 2.0 - m_Resolution) / m_Resolution.xy;
-	//on scale translation entre 0 et 1TODO
-	vec4 t = vec4(translation.x, translation.y, 0, 0);
-	vec4 transtot = transInit + t;
 
-	c -= transtot;
 	c *= m_Zoom;
-	c += transtot;
 
 	//float ret = mandelbrot(0.4 * chart2(0.5 *(1./3.14) *c.xy).xy + 0.1 * normal(c.xy).pR3.xy );
 //	float ret = mandelbrot(0.49 * chart2(0.8* c.xy + vec2(-0., -0.)).xy + 1. * normal(c.xy).pR3.xy);

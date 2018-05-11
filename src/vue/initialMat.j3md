@@ -8,8 +8,8 @@ MaterialDef Test Material 123{
 
 	}
 	Technique {
-    VertexShader GLSL140 : /vue/shaderVert.glsl
-    FragmentShader GLSL140 :/vue/initialFrag.glsl
+    VertexShader GLSL150 : /vue/shaderVert.glsl
+    FragmentShader GLSL150 :/vue/initialFrag.glsl
    	WorldParameters {
    	WorldViewProjectionMatrix
     }

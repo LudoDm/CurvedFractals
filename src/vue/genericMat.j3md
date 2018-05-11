@@ -4,7 +4,6 @@ MaterialDef Test Material 123{
 	    Vector4 ColorMax
 	    Vector2 Resolution
 	    Matrix4 Zoom
-	    Vector2 Translat
 	    Boolean grid
 	}
 	Technique {

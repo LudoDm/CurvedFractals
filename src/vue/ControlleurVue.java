@@ -536,7 +536,6 @@ public class ControlleurVue {
 			setZoomMat(zoomMat.clone());
 			application.setZoomTransformMat(MatUtils.toDesiredForm(getZoomMat()));
 			System.out.println("transformMat: " + MatUtils.toDesiredForm(getZoomMat()));
-			// application.setTranslateTransformMat(vecTranslation);
 		}
 	}
 
